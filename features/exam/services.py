@@ -57,22 +57,26 @@ def delete_exam(cur, id=None):
         cur.execute(delete_query)
 
         print(cur.fetchall(), "Displaying  deleted hits from Exams Table...")
-
+        get_exam(id = id)
 
     except Error as e:
         print(e)
 
+
+
 # Update specific Exam details
 @connect
-def delete_exam(cur, id=None):
-    delete_query = "DELETE FROM exams "
+def update_exam(cur, columnName, update, id=None):
+    update_query = "UPDATE exams SET "
+    update_query += columnName
+    update_query += ' = "{}"'.format(update)
     if id:
-        delete_query += ' WHERE examCode = "{}"'.format(id)
+        update_query += 'WHERE examCode = "{}"'.format(id)
 
     try:
-        cur.execute(delete_query)
+        cur.execute(update_query)
 
-        print(cur.fetchall(), "Displaying  deleted hits from Exams Table...")
+        print(cur.fetchall(), "Updating hits from Exams Table...")
 
 
     except Error as e:
@@ -81,20 +85,21 @@ def delete_exam(cur, id=None):
 
 
 if __name__ == '__main__':
-    id = "2"
+    id = "10"
     length = 125
     alt = True
     minSize = 21
     maxRooms = 2
     average = 10
-    examCode = "CAT 152"
-
-
+    examCode = "CAT 151"
+    columnName = 'length'
+    update = 120
 
     # insert_exam(id = id,length= length, alt = alt, minSize = minSize,maxRooms =  maxRooms, average = average, examCode = examCode)
+    # update_exam(columnName = columnName, update = update, id=examCode)
     # get_exam()
-
-    get_exam(id = examCode)
+  
+    # get_exam(id = examCode)
 
     # delete_exam(id=examCode)
 

@@ -40,8 +40,8 @@ def get_rooms(cur, id=None):
 
 # Delete specific Room details
 @connect
-def delete_exam(cur, id=None):
-    delete_query = "DELETE FROM exams "
+def delete_room(cur, id=None):
+    delete_query = "DELETE FROM rooms "
     if id:
         delete_query += ' WHERE roomName = "{}"'.format(id)
 
@@ -62,11 +62,12 @@ if __name__ == '__main__':
     coord_longitude = "1223323"
     coord_latitude = "2223"
     name = "EHC_101"
-    id = 3
+    id = 2
 
-    insert_rooms(id = id, roomName= name,size=size, alt=alt, coord_longitude = coord_longitude, coord_latitude=coord_latitude)
+    # insert_rooms(id = id, roomName= name,size=size, alt=alt, coord_longitude = coord_longitude, coord_latitude=coord_latitude)
     # get_rooms()
     # get_rooms(id = name)
+    # delete_room(id = name)
 
 
 
