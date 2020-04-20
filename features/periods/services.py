@@ -34,7 +34,7 @@ def insert_period(cur, id,  length, day, time, penalty):
 @connect
 def get_period(cur, penalty=None):
     get_query = "SELECT * FROM periods"
-    if id:
+    if penalty:
         get_query += ' WHERE penalty = "{}"'.format(penalty)
 
     cur.execute(get_query)
@@ -45,15 +45,34 @@ def get_period(cur, penalty=None):
 
 # Delete specific Period details
 @connect
-def delete_period(cur, id=None):
+def delete_period(cur, penalty=None):
     delete_query = "DELETE FROM periods "
-    if id:
-        delete_query += ' WHERE penalty = "{}"'.format(id)
+    if penalty:
+        delete_query += ' WHERE penalty = "{}"'.format(penalty)
 
     try:
         cur.execute(delete_query)
 
         print(cur.fetchall(), "Displaying  deleted hits from Periods Table...")
+        get_period(penalty=penalty)
+
+    except Error as e:
+        print(e)
+
+
+# Update specific Period details
+@connect
+def update_period(cur, columnName, update, id=None):
+    update_query = "UPDATE periods SET "
+    update_query += columnName
+    update_query += ' = "{}"'.format(update)
+    if id:
+        update_query += 'WHERE id = "{}"'.format(id)
+
+    try:
+        cur.execute(update_query)
+
+        print(cur.fetchall(), "Updating hits from Periods Table...")
 
 
     except Error as e:
@@ -66,12 +85,16 @@ if __name__ == '__main__':
     day = "1997-06-04"
     time = "8:00am-11:30am"
     penalty = 1
-    id = "23"
+    id = "3"
 
-    insert_period(
-                  length=length,
-                  day=day,
-                  time=time,
-                  penalty=penalty,
-    id = id)
+
+    # insert_period(
+    #               length=length,
+    #               day=day,
+    #               time=time,
+    #               penalty=penalty,
+    # id = id)
     # get_period(penalty = penalty)
+    # update_period(columnName = 'length', update = 100, id=id)
+    # delete_period(penalty=penalty)
+    # get_period()

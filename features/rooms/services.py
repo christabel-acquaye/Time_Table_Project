@@ -49,25 +49,44 @@ def delete_room(cur, id=None):
         cur.execute(delete_query)
 
         print(cur.fetchall(), "Displaying  deleted hits from Rooms Table...")
-
+        get_rooms(id = id)
 
     except Error as e:
         print(e)
 
 
+# Update specific Room details
+@connect
+def update_room(cur, columnName, update, id=None):
+    update_query = "UPDATE rooms SET "
+    update_query += columnName
+    update_query += ' = "{}"'.format(update)
+    if id:
+        update_query += 'WHERE roomName = "{}"'.format(id)
+
+    try:
+        cur.execute(update_query)
+
+        print(cur.fetchall(), "Updating hits from Exams Table...")
+
+
+    except Error as e:
+        print(e)
 
 if __name__ == '__main__':
-    size = 58
+    roomSize = 58
     alt = 32
     coord_longitude = "1223323"
     coord_latitude = "2223"
-    name = "EHC_101"
-    id = 2
+    name = "EHC_201"
+    id = 12
+    update = 40
 
-    # insert_rooms(id = id, roomName= name,size=size, alt=alt, coord_longitude = coord_longitude, coord_latitude=coord_latitude)
+    # insert_rooms(id = id, roomName= name,size=roomSize, alt=alt, coord_longitude = coord_longitude, coord_latitude=coord_latitude)
     # get_rooms()
     # get_rooms(id = name)
     # delete_room(id = name)
 
+    # update_room(columnName = 'size', update = update, id = name)
 
 
