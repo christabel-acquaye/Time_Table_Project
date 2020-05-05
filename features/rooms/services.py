@@ -32,10 +32,30 @@ def get_rooms(cur, id=None):
     get_query = "SELECT * FROM rooms"
     if id:
         get_query += ' WHERE roomName = "{}"'.format(id)
-    cur.execute(get_query)
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+    except Error as e:
+        print(e)
+    return data
+    # print(cur.fetchall(), "Displaying  results from Room Table...")
 
-    print(cur.fetchall(), "Displaying  results from Room Table...")
+# Get bounds for rooms id
+@connect
+def get_room_bound(cur):
+    get_query = "Select count(*) from rooms;"
+ 
 
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+  
+        # print(data)
+        # print(cur.fetchall(), "Displaying  results from Exams Table...")
+
+    except Error as e:
+        print(e)
+    return int(data[0][0])
 
 
 # Delete specific Room details
@@ -89,4 +109,5 @@ if __name__ == '__main__':
 
     # update_room(columnName = 'size', update = update, id = name)
 
-
+    data = get_room_bound()
+    print(data)

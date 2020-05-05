@@ -34,17 +34,57 @@ def insert_exam(cur, length, id, alt, minSize, maxRooms, average, examCode):
 def get_exam(cur, id=None):
     get_query = "SELECT * FROM exams "
     if id:
-        get_query += ' WHERE examCode = "{}"'.format(id)
+        get_query += ' WHERE id = "{}"'.format(id)
 
     try:
-        cur.execute(get_query)
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+        # print(data)
+        # print(cur.fetchall(), "Displaying  results from Exams Table...")
 
-        print(cur.fetchall(), "Displaying  results from Exams Table...")
+    except Error as e:
+        print(e)
+    return data
 
+# Get all Exam code
+@connect
+def get_exam_column(cur, columnName, id=None):
+    get_query = "SELECT "
+    get_query += columnName 
+    get_query += " FROM exams "
+    data = []
+    if id:
+        get_query += ' WHERE id = '
+        
+        get_query += '"{}"'.format(id)
+
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+        # print(cur.fetchall(), "Displaying  results from Exams Table...")
+        # print(data)
+        return data
 
     except Error as e:
         print(e)
 
+    
+# Get bounds for Exam id
+@connect
+def get_exam_bound(cur):
+    get_query = "Select count(*) from exams;"
+ 
+
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+  
+        # print(data)
+        # print(cur.fetchall(), "Displaying  results from Exams Table...")
+
+    except Error as e:
+        print(e)
+    return int(data[0][0])
 
 # Delete specific Exam details
 @connect
@@ -85,21 +125,25 @@ def update_exam(cur, columnName, update, id=None):
 
 
 if __name__ == '__main__':
-    id = "10"
+    id = "42"
     length = 125
     alt = True
     minSize = 21
     maxRooms = 2
     average = 10
-    examCode = "CAT 151"
+    examCode = "IRAI ALL"
     columnName = 'length'
     update = 120
 
-    # insert_exam(id = id,length= length, alt = alt, minSize = minSize,maxRooms =  maxRooms, average = average, examCode = examCode)
+    insert_exam(id = id,length= length, alt = alt, minSize = minSize,maxRooms =  maxRooms, average = average, examCode = examCode)
     # update_exam(columnName = columnName, update = update, id=examCode)
     # get_exam()
   
-    # get_exam(id = examCode)
+    # get_exam(id = id)
 
     # delete_exam(id=examCode)
 
+    # get_exam_column(columnName='id', id=None)
+    
+    data =   get_exam_bound()
+    print(data)

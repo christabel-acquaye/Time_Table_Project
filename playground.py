@@ -2,8 +2,6 @@ import MySQLdb
 from _mysql_exceptions import Error
 
 
-
-
 def connect(func):
     def connect_db(**kwargs):
         time_table_db_conn = None
@@ -17,7 +15,7 @@ def connect(func):
             )
 
             cursor = time_table_db_conn.cursor()
-            func(cur=cursor, **kwargs)
+            results = func(cur=cursor, **kwargs)
             time_table_db_conn.commit()
             cursor.close()
         except Error as e:

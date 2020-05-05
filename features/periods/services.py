@@ -20,7 +20,7 @@ def insert_period(cur, id,  length, day, time, penalty):
         id=id
     )
 
-    # print(insert_query)
+
     try:
         cur.execute(insert_query)
 
@@ -29,18 +29,34 @@ def insert_period(cur, id,  length, day, time, penalty):
     except Error as e:
         print(e)
 
+# Get total number of periods in db
+@connect
+def get_period_bound(cur):
+    get_query = "Select count(*) from periods;"
+ 
 
-# Get all Periods
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+
+    except Error as e:
+        print(e)
+    return int(data[0][0])
+
+
+
+# Get Periods 
 @connect
 def get_period(cur, penalty=None):
     get_query = "SELECT * FROM periods"
     if penalty:
         get_query += ' WHERE penalty = "{}"'.format(penalty)
-
-    cur.execute(get_query)
-
-    print(cur.fetchall(), "Displaying  results from Periods Table...")
-
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+    except Error as e:
+        print(e)
+    return data
 
 
 # Delete specific Period details
@@ -98,3 +114,5 @@ if __name__ == '__main__':
     # update_period(columnName = 'length', update = 100, id=id)
     # delete_period(penalty=penalty)
     # get_period()
+    data = get_period()
+    print(data)

@@ -1,7 +1,7 @@
 import openpyxl
 from os import path
 import pandas as pd
-
+import pprint
 from features.exam.services import insert_exam
 from features.rooms.services import insert_rooms
 from features.periods.services import insert_period
@@ -12,7 +12,7 @@ def read_exam(insert = False):
     print(file_path)
     book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
     exam_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='exams')
-    print(room_data.to_dict('record'))
+    print(exam_data.to_dict('record'))
     # print(exam_data.to_dict('record'))
 
     normalized_data = []
@@ -30,7 +30,7 @@ def read_exam(insert = False):
         normalized_data.append(item)
         if insert:
             insert_exam(**item)
-        print(data)
+        # print(data)
 
     return normalized_data
 
@@ -90,7 +90,35 @@ def read_period(insert = False):
     return normalized_data
 
 
+def read_student():
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
+    # print(file_path)
+    book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
+    student_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='students')
+    
+  
+    student_group = []
+    for data in student_data.to_dict('record'):
+        item = list(data.values())
+        dic = {
+        'id' : item[0], 
+        'course' : item[1:]
+        }
+       
+        flipped = []
+
+        for course in dic['course']:
+            # pprint.pprint(course)
+            if course not in flipped:
+                flipped.append(course)
+        dic['course'] = flipped
+        student_group.append(dic)
+        
+    # pprint.pprint(student_group)
+    return student_group
+        
 
 
+       
 if __name__ == '__main__':
-    read_period()
+    read_period(insert = True)
