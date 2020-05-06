@@ -24,12 +24,11 @@ def insert_exam(cur, length, id, alt, minSize, maxRooms, average, examCode):
 
     )
 
-    # print(insert_query)
     cur.execute(insert_query)
 
 
 
-# Get all Exam
+# Get exam 
 @connect
 def get_exam(cur, id=None):
     get_query = "SELECT * FROM exams "
@@ -39,14 +38,12 @@ def get_exam(cur, id=None):
     try:
         data = cur.execute(get_query)
         data = cur.fetchall()
-        # print(data)
-        # print(cur.fetchall(), "Displaying  results from Exams Table...")
 
     except Error as e:
         print(e)
     return data
 
-# Get all Exam code
+# Get Specific  Exam coulmn
 @connect
 def get_exam_column(cur, columnName, id=None):
     get_query = "SELECT "
@@ -61,15 +58,13 @@ def get_exam_column(cur, columnName, id=None):
     try:
         data = cur.execute(get_query)
         data = cur.fetchall()
-        # print(cur.fetchall(), "Displaying  results from Exams Table...")
-        # print(data)
         return data
 
     except Error as e:
         print(e)
 
     
-# Get bounds for Exam id
+# Get total number of exams in db
 @connect
 def get_exam_bound(cur):
     get_query = "Select count(*) from exams;"
@@ -78,9 +73,6 @@ def get_exam_bound(cur):
     try:
         data = cur.execute(get_query)
         data = cur.fetchall()
-  
-        # print(data)
-        # print(cur.fetchall(), "Displaying  results from Exams Table...")
 
     except Error as e:
         print(e)
@@ -135,7 +127,7 @@ if __name__ == '__main__':
     columnName = 'length'
     update = 120
 
-    insert_exam(id = id,length= length, alt = alt, minSize = minSize,maxRooms =  maxRooms, average = average, examCode = examCode)
+    # insert_exam(id = id,length= length, alt = alt, minSize = minSize,maxRooms =  maxRooms, average = average, examCode = examCode)
     # update_exam(columnName = columnName, update = update, id=examCode)
     # get_exam()
   
@@ -145,5 +137,5 @@ if __name__ == '__main__':
 
     # get_exam_column(columnName='id', id=None)
     
-    data =   get_exam_bound()
+    data =  get_exam_column(columnName='id', id=4)
     print(data)

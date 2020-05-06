@@ -24,7 +24,7 @@ def insert_rooms(cur, id, roomName, size, alt, coord_longitude, coord_latitude):
 
     cur.execute(insert_query)
 
-
+# Get rooms
 @connect
 def get_rooms(cur, id=None):
 
@@ -38,9 +38,9 @@ def get_rooms(cur, id=None):
     except Error as e:
         print(e)
     return data
-    # print(cur.fetchall(), "Displaying  results from Room Table...")
+    
 
-# Get bounds for rooms id
+# Get total rooms
 @connect
 def get_room_bound(cur):
     get_query = "Select count(*) from rooms;"
@@ -50,8 +50,6 @@ def get_room_bound(cur):
         data = cur.execute(get_query)
         data = cur.fetchall()
   
-        # print(data)
-        # print(cur.fetchall(), "Displaying  results from Exams Table...")
 
     except Error as e:
         print(e)
