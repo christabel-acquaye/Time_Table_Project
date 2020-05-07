@@ -5,12 +5,19 @@ from features.exam.services import get_exam_bound
 from features.exam.services import get_exam
 from features.exam.services import get_exam_column
 
+
+# Function that generates a random array within a specified range
 def rand_gen(start, finish):
     finish +=1
     rand_arr = list(range(start, finish))
     random.shuffle(rand_arr)
     return rand_arr
 
+
+
+
+
+# Function that matches a particular exam id to a student group 
 def get_exam_student_group_match(exam, student_group):
     related_course = []
     
@@ -24,7 +31,7 @@ def get_exam_student_group_match(exam, student_group):
 
 
 
-
+# Function that returns all students offering similar courses.
 def get_exam_search():
     exam_student_group = []
   
@@ -54,6 +61,6 @@ if __name__ == "__main__":
   
     data = get_exam_search()
     print(data)
-    
+    # 
 
   

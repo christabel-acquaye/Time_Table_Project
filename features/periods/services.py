@@ -4,7 +4,7 @@ from playground import connect
 from uuid import uuid4
 
 
-# Insert Data into Period Table
+# Insert PEriod deatils into Period Table
 @connect
 def insert_period(cur, id,  length, day, time, penalty):
     # print(length, day, time, penalty)
@@ -45,7 +45,7 @@ def get_period_bound(cur):
 
 
 
-# Get Periods 
+# Get all Periods in db
 @connect
 def get_period(cur, penalty=None):
     get_query = "SELECT * FROM periods"
@@ -114,5 +114,5 @@ if __name__ == '__main__':
     # update_period(columnName = 'length', update = 100, id=id)
     # delete_period(penalty=penalty)
     # get_period()
-    data = get_period()
-    print(data)
+    # data = get_period()
+    # print(data)
