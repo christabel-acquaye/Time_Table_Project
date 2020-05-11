@@ -6,7 +6,7 @@ from _mysql_exceptions import Error
 from playground import connect
 
 
-# Insert Data into Exam Table
+# Insert Exam details into Exam Table
 @connect
 def insert_exam(cur, length, id, alt, minSize, maxRooms, average, examCode):
     insert_query = """INSERT INTO exams(id, length, alt, minSize, maxRooms, average, examCode )
@@ -43,7 +43,8 @@ def get_exam(cur, id=None):
         print(e)
     return data
 
-# Get Specific  Exam coulmn
+
+# Get Specific  Exam deatils for a particular exams column
 @connect
 def get_exam_column(cur, columnName, id=None):
     get_query = "SELECT "
@@ -63,7 +64,20 @@ def get_exam_column(cur, columnName, id=None):
     except Error as e:
         print(e)
 
-    
+# Function that gets all exams arranged by decreasing order of enrollment size
+@connect
+def get_exam_order_by_size(cur):
+    get_query = "SELECT * FROM exams ORDER BY minSize DESC"
+   
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+
+    except Error as e:
+        print(e)
+    return data
+
+
 # Get total number of exams in db
 @connect
 def get_exam_bound(cur):
@@ -77,6 +91,8 @@ def get_exam_bound(cur):
     except Error as e:
         print(e)
     return int(data[0][0])
+
+
 
 # Delete specific Exam details
 @connect
@@ -137,5 +153,5 @@ if __name__ == '__main__':
 
     # get_exam_column(columnName='id', id=None)
     
-    data =  get_exam_column(columnName='id', id=4)
+    data =  get_exam_order_by_size()
     print(data)

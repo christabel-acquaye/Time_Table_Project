@@ -6,7 +6,7 @@ from _mysql_exceptions import Error
 from playground import connect
 
 
-# Insert Data into Exam Room Table
+# Insert exam room assignments into Exam Room Table
 @connect
 def insert_exams_rooms(cur, examId, roomId):
     insert_query = """INSERT INTO examRoomRelation(examId, roomId)

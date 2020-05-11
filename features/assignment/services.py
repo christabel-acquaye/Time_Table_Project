@@ -6,7 +6,7 @@ from _mysql_exceptions import Error
 from playground import connect
 
 
-# Insert Data into Assignments Table
+# Insert chromsome details into Assignments Table
 @connect
 def insert_assignment(cur, periodId, roomId, examId):
     insert_query = """INSERT INTO assignment(periodId, roomId, examId)
@@ -36,9 +36,9 @@ def get_assignment(cur,id=None):
         get_query += 'WHERE id = "{}"'.format(id)
 
     try:
-        cur.execute(get_query)
-
-        print(cur.fetchall(), "Displaying all results from Assignment Table...")
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+        
 
 
     except Error as e:
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     exam_id = uuid4().__str__()
 
 
-    insert_assignment(periodId=period_id, roomId=room_id, examId=exam_id)
+    # insert_assignment(periodId=period_id, roomId=room_id, examId=exam_id)
 
+    # # get_assignment()
     # get_assignment()
-    get_assignment()

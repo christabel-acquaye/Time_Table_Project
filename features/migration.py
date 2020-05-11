@@ -63,10 +63,10 @@ def read_room(insert = False):
     return normalized_data
 
 
-# Function that reads the details from the excel file and inserts them into the exams table
+# Function that reads the details from the excel file and inserts them into the periods table
 def read_period(insert = False):
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    print(file_path)
+    # print(file_path)
     book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
     period_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='periods')
     print(period_data.to_dict('record'))
@@ -85,11 +85,12 @@ def read_period(insert = False):
         normalized_data.append(item)
         if insert:
             insert_period(**item)
-        print(data)
+        # print(data)
 
     return normalized_data
 
 
+# Function that reads the details from the excel file and organizes it in a more usable form
 def read_student():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
     # print(file_path)
@@ -114,7 +115,7 @@ def read_student():
         dic['course'] = flipped
         student_group.append(dic)
         
-    # pprint.pprint(student_group)
+    
     return student_group
         
 

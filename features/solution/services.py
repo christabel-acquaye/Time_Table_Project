@@ -55,12 +55,14 @@ def get_exam_search():
 
 
 
-    
+def get_digit_multiplication_factor(max, min, maxDgt, gene_size):
+    digit_multiplication_factor = (max - min)/ (maxDgt* gene_size)
+    return digit_multiplication_factor 
 
 if __name__ == "__main__":
   
-    data = get_exam_search()
+    data = get_digit_multiplication_factor(120, 1, 9, 2 )
     print(data)
-    # 
+    
 
   
