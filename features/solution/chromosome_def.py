@@ -6,60 +6,128 @@ from os import path
 import pandas as pd
 from features.periods.services import get_period_bound
 from features.exam.services import get_exam_bound
-from  features.solution.services import rand_gen
+from features.solution.services import rand_gen
 from features.solution.rooomAssign import period_room_allocation, room_compute
 from features.solution.examAssign import period_exam_allocation
 from features.exam.services import get_exam, get_exam_column, get_exam_order_by_size
-from features.periods.services import get_period
+from features.periods.services import get_period, get_periods_with_lengths
 from features.rooms.services import get_rooms
+from features.students.services import read_student_groups, get_exam_student_group
 import random
 import json
 import pprint
+from sklearn.utils import shuffle
+from errors import NotEnoughRooms
 
 
 def format_rooms(rooms):
     return [{'name': room[1], 'no_of_stds': room[2]} for room in rooms]
 
 
-def chromosome():
-    exams = get_exam_order_by_size()
-    
-    period_finsih = get_period_bound() 
-    period_room= period_room_allocation(get_period(), get_rooms())
-  
-    # print(ran_period)
-    period_exams =[]
-    count = 0
+def best_fit_exams_in_period(exams, duration):
+    best_fit_exams = []  # exams less than duration
+    new_exams_state = []  # exams which do not fit
+
     for exam in exams:
-        # pprint.pprint(type(exam[3]))
-        ran_period = random.randint(1, period_finsih)
-        room_allocated, available_rooms =  room_compute(exam[3], period_room[ran_period - 1])
-        
-        period_room[ran_period - 1] = available_rooms
-        # print('\trooms allocated', format_rooms(room_allocated)) 
-        # print('\tstudents with seats', sum([ room[1] for room in format_rooms(room_allocated)]) )
-        std_with_seats = sum([ room['no_of_stds'] for room in format_rooms(room_allocated)])
-        if not std_with_seats == exam[3]:
-            print('period', ran_period, 'exam', exam[0], 'std_size', exam[3])
-            print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " %(std_with_seats, exam[3])) # problem was over here u forgot the % sign
+        if exam[1] <= duration:
+            best_fit_exams.append(exam)
+        else:
+            new_exams_state.append(exam)
 
-        period_exam_assignment = {
-            'period_id' : ran_period,
-            'exam_id' : exam[0], 
-            'rooms': format_rooms(room_allocated) 
-        }
-        period_exams.append(period_exam_assignment)
+    return best_fit_exams, new_exams_state
 
-    # pprint.pprint(period_exams, indent=1)
 
- 
-    return period_exams
+def fit_exams_in_rooms(exams, rooms_available, period_id):
+    """Fits exams in rooms and returns the exams catered for
+    and the pending ones.
+    Not all exams can be fitted withing the period since we can run
+    out of rooms available when fitting the exams
+
+    Arguments:
+        exams {list} -- list of exams to attempt fitting
+        rooms {[type]} -- [description]
+        period_id {[type]} -- [description]
+    """
+
+    period_exams = []
+    exams_without_rooms = []
+    for position, exam in enumerate(exams):
+        try:
+            room_allocated, available_rooms = room_compute(
+                exam[3],
+                rooms_available[period_id - 1]
+            )
+
+            rooms_available[period_id - 1] = available_rooms
+            # print('\trooms allocated', format_rooms(room_allocated))
+            # print('\tstudents with seats', sum([ room[1] for room in format_rooms(room_allocated)]) )
+            std_with_seats = sum(
+                [room['no_of_stds']for room in format_rooms(room_allocated)]
+            )
+
+            if not std_with_seats == exam[3]:
+                print('period', period_id, 'exam',
+                      exam[0], 'std_size', exam[3])
+                print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
+                    std_with_seats, exam[3]))  # problem was over here u forgot the % sign
+
+            period_exam_assignment = {
+                'period_id': period_id,
+                'exam_id': exam[0],
+                'rooms': format_rooms(room_allocated),
+                'std_with_seats': std_with_seats
+            }
+            period_exams.append(period_exam_assignment)
+        except NotEnoughRooms:
+            # get unassigned exams and send them to a new period
+            exams_without_rooms = exams[position:]
+            break
+
+    return period_exams, exams_without_rooms, rooms_available
+
+
+def generate_chromosome():
+    exams = get_exam_order_by_size()
+    periods = get_periods_with_lengths()
+
+    rooms = get_rooms()
+    period_rooms = period_room_allocation(periods, rooms)
+
+    # shuffle periods to add randomization
+    periods = shuffle(periods, random_state=0)
+
+    chromosome = []
+
+    for period_id, period_duration in periods:
+        # get exams with length < length of current period
+
+        best_fit_exams, next_exams_period = best_fit_exams_in_period(
+            exams,
+            period_duration
+        )
+
+        period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
+            best_fit_exams, period_rooms, period_id
+        )
+
+        # prepend unassigned exams to maintain exam order by size
+        exams_without_rooms.extend(next_exams_period)
+        exams = exams_without_rooms
+
+        chromosome.extend(period_exams)
+    
+    return chromosome
+
+
+def generate_population(size):
+    return  [generate_chromosome()
+                            for i in range(population_size)]
 
 
 if __name__ == "__main__":
     population_size = int(input('Population Size: \t'))
-    generated_chromosome = [chromosome() for i in range(population_size)]
-    pprint.pprint(generated_chromosome)
-  
-    size = [len(chromosome) for chromosome in generated_chromosome]
-    print(size)
+    population = generate_population(population_size)
+    pprint.pprint(population)
+
+    # size = [len(chromosome) for chromosome in generated_chromosome]
+    # print(size)

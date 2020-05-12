@@ -95,13 +95,18 @@ def update_period(cur, columnName, update, id=None):
         print(e)
 
 
+def get_periods_with_lengths():
+    return list(((int(period[0]), period[1]) for period in get_period()))
+
+
 if __name__ == '__main__':
 
-    length = 120
-    day = "1997-06-04"
-    time = "8:00am-11:30am"
-    penalty = 1
-    id = "3"
+    # length = 120
+    # day = "1997-06-04"
+    # time = "8:00am-11:30am"
+    # penalty = 1
+    # id = "3"
+    print(list(get_periods_with_lengths()))
 
 
     # insert_period(

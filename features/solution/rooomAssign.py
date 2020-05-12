@@ -4,6 +4,7 @@ from features.rooms.services import get_rooms
 from sklearn.utils import shuffle
 from features.periods.services import get_period
 import pprint
+from errors import NotEnoughRooms
 
 # Function that updates the room capacity after extracting the number of rooms to be used for a particular exam
 def __update_room_capacity(room, capacity):
@@ -19,12 +20,16 @@ def get_index_max_room_size(room_data):
     return capacities.index(max(capacities)) 
     
 def room_compute(current_student_size, room_data, room_allocated = None):
+    if len(room_data) == 0:
+        raise NotEnoughRooms
+
     room_allocated = room_allocated or [] 
-    
     updated_room = room_data.copy()
     max_room_index = get_index_max_room_size(updated_room) 
     room_capacity = room_data[max_room_index][2] 
     remainder = room_capacity - current_student_size
+
+    
 
     if remainder < 0:
         room_allocated.append(updated_room[max_room_index])
