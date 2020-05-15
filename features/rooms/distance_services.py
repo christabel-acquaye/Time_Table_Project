@@ -7,7 +7,7 @@ import pprint
 
 
 def read_distances():
-    file_path = path.join(path.dirname(path.abspath(__file__)), 'data')
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../../data')
     data = []
     book = openpyxl.load_workbook(file_path + '/exam_input_data_test.xlsx')
     raw_data = pd.read_excel(file_path + '/exam_input_data_test.xlsx', sheet_name='distances')
