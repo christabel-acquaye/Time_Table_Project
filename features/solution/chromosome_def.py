@@ -5,14 +5,14 @@ import openpyxl
 from os import path
 import pandas as pd
 from features.periods.services import get_period_bound
-from features.exam.services import get_exam_bound
+from features.exam.services import get_exam_bound, get_exam_id_from_name
 from features.solution.services import rand_gen
 from features.solution.rooomAssign import period_room_allocation, room_compute
 from features.solution.examAssign import period_exam_allocation
 from features.exam.services import get_exam, get_exam_column, get_exam_order_by_size
 from features.periods.services import get_period, get_periods_with_lengths
 from features.rooms.services import get_rooms
-from features.students.services import read_student_groups, get_exam_student_group
+from features.students.services import read_student_groups, get_exam_student_group, get_student_group_exams
 import random
 import json
 import pprint
@@ -126,12 +126,21 @@ def generate_population(size):
 def get_exam_from_gene(chromosome):
     return [gene["exam_id"] for gene in chromosome]
 
+def get_specific_genes(std_id, chromosome):
+    exams = get_student_group_exams(std_id)
+    exams_id = [get_exam_id_from_name(examName=exam) for exam in exams[0]]
+    genes = []
+    for id in exams_id:
+        res = [gene for gene in chromosome if gene["exam_id"] == id]
+        genes.append(res)
+    return genes
+    
 if __name__ == "__main__":
     population_size = int(input('Population Size: \t'))
     population = generate_population(population_size)
-    pprint.pprint(population)
+    # pprint.pprint(population)
 
     for chromosome in population:
-        print(get_exam_from_gene(chromosome))
+        pprint.pprint(get_specific_genes(1, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)

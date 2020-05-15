@@ -58,6 +58,18 @@ def get_period(cur, penalty=None):
         print(e)
     return data
 
+# Get all Periods in db
+@connect
+def get_period_date(cur, id=None):
+    get_query = "SELECT day FROM periods"
+    if id:
+        get_query += ' WHERE id = "{}"'.format(id)
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+    except Error as e:
+        print(e)
+    return data
 
 # Delete specific Period details
 @connect
@@ -106,8 +118,8 @@ if __name__ == '__main__':
     # time = "8:00am-11:30am"
     # penalty = 1
     # id = "3"
-    print(list(get_periods_with_lengths()))
-
+    # print(list(get_periods_with_lengths()))
+    print(get_period_date(id = 1))
 
     # insert_period(
     #               length=length,
