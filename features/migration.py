@@ -1,10 +1,12 @@
-import openpyxl
-from os import path
-import pandas as pd
 import pprint
+from os import path
+
+import openpyxl
+import pandas as pd
+
 from features.exam.service import insert_exam
-from features.rooms.service import insert_rooms
 from features.periods.service import insert_period
+from features.rooms.service import insert_rooms
 
 
 def read_exam(insert=False):

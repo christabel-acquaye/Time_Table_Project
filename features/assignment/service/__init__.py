@@ -1,6 +1,7 @@
-from _shared import with_key, AuthProvider, uuid, hash_value
-from .queries import use_query, MODE
+from _shared import AuthProvider, hash_value, uuid, with_key
+
 from ..schema import REGISTER_USER_DATA
+from .queries import MODE, use_query
 
 
 def insert_assignment(periodId, roomId, examId):

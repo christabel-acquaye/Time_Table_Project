@@ -21,7 +21,6 @@ its folder-space.
    ├── _shared
    .   └── package
    ├── docs
-   ├── templates
    ├── .env.example
    ├── .env
    ├── Makefile

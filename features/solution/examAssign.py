@@ -1,8 +1,9 @@
-from features.periods.service import get_periods
-from features.exam.service import get_exam_bound, get_exam_order_by_size
-from features.solution.services import rand_gen
-import random
 import pprint
+import random
+
+from features.exam.service import get_exam_bound, get_exam_order_by_size
+from features.periods.service import get_periods
+from features.solution.services import rand_gen
 
 
 # Function that generates a random period and assigns it to an exam.

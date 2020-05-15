@@ -1,6 +1,7 @@
+from typing import Literal
+
 from _shared import in_query
 from _shared.error_service import QUERY_NOT_FOUND
-from typing import Literal
 
 
 @in_query
@@ -32,7 +33,7 @@ def use_query(params: dict, query_type: str):
 
     elif query_type == 'get-exams-count':
         query = '''
-            SELECT COUNT(*) FROM exams
+            SELECT COUNT(*) as count FROM exams
         '''
     else:
         raise QUERY_NOT_FOUND(query_type)

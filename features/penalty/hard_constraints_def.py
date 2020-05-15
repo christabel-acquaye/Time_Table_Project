@@ -1,7 +1,10 @@
-import numpy as np
-from features.solution.chromosome_def import get_specific_genes, checkIfDuplicates_1
-from features.periods.service import get_period_date
 import datetime
+
+import numpy as np
+
+from features.periods.service import get_period_date
+from features.solution.chromosome_def import (checkIfDuplicates_1,
+                                              get_specific_genes)
 
 
 def more_than_one_exams_per_day(chromosome, student_group):
@@ -90,7 +93,7 @@ def hard_constraints_value(chromosome, student_group, period, exam, room):
 
 if __name__ == "__main__":
     chromosome = []
-    student_group = [] 
+    student_group = []
     period = []
     exam = []
     room = []
