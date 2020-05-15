@@ -1,6 +1,6 @@
 
 import MySQLdb
-from _mysql_exceptions import Error
+from MySQLdb._exceptions import Error
 import pandas as pd
 from playground import connect
 from os import path
@@ -9,6 +9,8 @@ from features.exam.services import get_exam
 import pprint
 
 # Insert Data into Students Table
+
+
 @connect
 def insert_students(cur, id, examId, periodId):
     insert_query = """INSERT INTO student(id, examId, periodId)
@@ -78,4 +80,3 @@ if __name__ == '__main__':
     pprint.pprint(get_student_group_exams(2))
     # print(get_exam_student_group('ENGL 352', std_groups))
     # pprint.pprint(get_student_group_exams(get_exam(), read_student_groups()))
-

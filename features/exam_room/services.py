@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 import MySQLdb
-from _mysql_exceptions import Error
+from MySQLdb._exceptions import Error
 
 from playground import connect
 

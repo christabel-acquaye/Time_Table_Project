@@ -4,24 +4,24 @@ import datetime
 import openpyxl
 from os import path
 import pandas as pd
-from features.periods.services import get_period_bound
-from features.exam.services import get_exam_bound, get_exam_id_from_name
+from features.periods.service import get_period_bound
+from features.exam.service import get_exam_bound, get_exam_id_from_name
 from features.solution.services import rand_gen
-from features.solution.rooomAssign import period_room_allocation, room_compute
+from features.solution.roomAssign import period_room_allocation, room_compute
 from features.solution.examAssign import period_exam_allocation
-from features.exam.services import get_exam, get_exam_column, get_exam_order_by_size
-from features.periods.services import get_period, get_periods_with_lengths, get_period_date
-from features.rooms.services import get_rooms
-from features.students.services import read_student_groups, get_exam_student_group, get_student_group_exams
+from features.exam.service import get_exams, get_exam_column, get_exam_order_by_size
+from features.periods.service import get_periods, get_periods_with_lengths
+from features.rooms.service import get_rooms
+from features.students.service import read_student_groups, get_exam_student_group, get_student_group_exams
 import random
 import json
 import pprint
 from sklearn.utils import shuffle
-from errors import NotEnoughRooms
+from _shared import NotEnoughRooms
 
 
 def format_rooms(rooms):
-    return [{'name': room[1], 'no_of_stds': room[2]} for room in rooms]
+    return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
 
 
 def best_fit_exams_in_period(exams, duration):
@@ -29,7 +29,7 @@ def best_fit_exams_in_period(exams, duration):
     new_exams_state = []  # exams which do not fit
 
     for exam in exams:
-        if exam[1] <= duration:
+        if exam['length'] <= duration:
             best_fit_exams.append(exam)
         else:
             new_exams_state.append(exam)
@@ -54,7 +54,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
     for position, exam in enumerate(exams):
         try:
             room_allocated, available_rooms = room_compute(
-                exam[3],
+                exam['minSize'],
                 rooms_available[period_id - 1]
             )
 
@@ -65,15 +65,15 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 [room['no_of_stds']for room in format_rooms(room_allocated)]
             )
 
-            if not std_with_seats == exam[3]:
+            if not std_with_seats == exam['minSize']:
                 print('period', period_id, 'exam',
-                      exam[0], 'std_size', exam[3])
+                      exam['id'], 'std_size', exam['minSize'])
                 print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
-                    std_with_seats, exam[3]))  # problem was over here u forgot the % sign
+                    std_with_seats, exam['minSize']))  # problem was over here u forgot the % sign
 
             period_exam_assignment = {
                 'period_id': period_id,
-                'exam_id': exam[0],
+                'exam_id': exam['id'],
                 'rooms': format_rooms(room_allocated),
                 'std_with_seats': std_with_seats
             }
@@ -115,24 +115,31 @@ def generate_chromosome():
         exams = exams_without_rooms
 
         chromosome.extend(period_exams)
-    
+
     return chromosome
 
 
 def generate_population(size):
-    return  [generate_chromosome()
-                            for i in range(population_size)]
+    return [generate_chromosome()
+            for i in range(population_size)]
+
+
+def get_exam_from_gene(chromosome):
+    return [gene["exam_id"] for gene in chromosome]
+
 
 def a(chromosome):
     data = [gene['period_id'] for gene in chromosome]
     dates = [get_period_date(period) for period in data]
     return checkIfDuplicates_1(dates)
 
+
 def checkIfDuplicates_1(listOfElems):
     if len(listOfElems) == len(set(listOfElems)):
         return False
     else:
         return True
+
 
 def get_specific_genes(std_id, chromosome):
     exams = get_student_group_exams(std_id)
@@ -142,17 +149,15 @@ def get_specific_genes(std_id, chromosome):
         res = [gene for gene in chromosome if gene["exam_id"] == id]
         genes.append(res)
     return genes
-    
 
 
 if __name__ == "__main__":
-    population_size = int(input('Population Size: \t'))
-    population = generate_population(population_size)
-    # pprint.pprint(population)
+    from main import app
+    with app.app_context():
+        population_size = int(input('Population Size: \t'))
+        population = generate_population(population_size)
 
-    for chromosome in population:
-        pprint.pprint(a(chromosome))
+        for chromosome in population:
+            pprint.pprint(get_specific_genes(1, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
-
-   
