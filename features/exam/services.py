@@ -55,9 +55,13 @@ def get_exam_column(cur, columnName, id=None):
         get_query += ' WHERE id = '
         
         get_query += '"{}"'.format(id)
-
     try:
         data = cur.execute(get_query)
+        data = cur.fetchall()
+
+    except Error as e:
+        
+        
         data = cur.fetchall()
         return data
 
@@ -76,6 +80,21 @@ def get_exam_order_by_size(cur):
     except Error as e:
         print(e)
     return data
+
+
+@connect
+def get_exam_id_from_name(cur, examName = None):
+    get_query = "SELECT id FROM exams "
+   
+    if examName:
+        get_query += ' WHERE examCode = "{}"'.format(examName)
+    try:
+        data = cur.execute(get_query)
+        data = cur.fetchall()
+
+    except Error as e:
+        print(e)
+    return data[0][0]
 
 
 # Get total number of exams in db
@@ -153,5 +172,5 @@ if __name__ == '__main__':
 
     # get_exam_column(columnName='id', id=None)
     
-    data =  get_exam_order_by_size()
+    data = get_exam_id_from_name(examName='CAT 154')
     print(data)

@@ -10,8 +10,8 @@ def connect(func):
             time_table_db_conn = MySQLdb.connect(
                 host="localhost",
                 user="root",
-                passwd="jellybean",
-                db="ttdb"
+                passwd="N@n@1459",
+                db="timeTablingDb"
             )
 
             cursor = time_table_db_conn.cursor()

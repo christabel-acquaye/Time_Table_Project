@@ -123,11 +123,15 @@ def generate_population(size):
     return  [generate_chromosome()
                             for i in range(population_size)]
 
+def get_exam_from_gene(chromosome):
+    return [gene["exam_id"] for gene in chromosome]
 
 if __name__ == "__main__":
     population_size = int(input('Population Size: \t'))
     population = generate_population(population_size)
     pprint.pprint(population)
 
+    for chromosome in population:
+        print(get_exam_from_gene(chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)

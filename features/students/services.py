@@ -5,7 +5,8 @@ import pandas as pd
 from playground import connect
 from os import path
 import numpy as np
-
+from features.exam.services import get_exam
+import pprint
 
 # Insert Data into Students Table
 @connect
@@ -63,8 +64,15 @@ def get_exam_student_group(exam_name, std_groups):
     return [exam[0] for exam in std_groups if exam_name in exam]
 
 
+def get_student_group_exams(std_id):
+    return [item[1:] for item in std_id]
+
+
 if __name__ == '__main__':
 
     # insert_students(id = '1', examId = '10', periodId = '23')
     std_groups = read_student_groups()
-    print(get_exam_student_group('ENGL 352', std_groups))
+    pprint.pprint(get_student_group_exams(read_student_groups()))
+    # print(get_exam_student_group('ENGL 352', std_groups))
+    # pprint.pprint(get_student_group_exams(get_exam(), read_student_groups()))
+

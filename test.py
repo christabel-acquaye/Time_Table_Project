@@ -1,14 +1,24 @@
-import datetime
+import openpyxl
+from os import path
+import pandas as pd
+import numpy as np
 
-start_date = datetime.datetime.now()
-number_of_days = 11
-end_date = start_date + datetime.timedelta(days=number_of_days)
-print(start_date)
-print(end_date)
-day_diff = end_date.weekday() - start_date.weekday()
 
-days = ((end_date-start_date).days - day_diff) / 7 * 5 + min(day_diff,5) - (max(end_date.weekday() - 4, 0) % 5)
-print(days)
 
-end_date = start_date + datetime.timedelta(days=(number_of_days + (number_of_days - days)))
-print(end_date)
+
+def read_distances():
+    file_path = path.join(path.dirname(path.abspath(__file__)), 'data')
+    data = []
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test.xlsx')
+    raw_data = pd.read_excel(file_path + '/exam_input_data_test.xlsx', sheet_name='distances')
+    # print(raw_data.to_dict('record'))
+    for row in raw_data.to_dict('record'):
+        data.append(
+        tuple((value for value in row.values() if not pd.isna(value))))
+    formatted_data = list(data[2:])
+    print(formatted_data)
+    return data
+
+
+if __name__ == "__main__":
+    read_distances()
