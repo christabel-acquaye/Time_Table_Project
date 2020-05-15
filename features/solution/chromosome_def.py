@@ -10,7 +10,7 @@ from features.solution.services import rand_gen
 from features.solution.rooomAssign import period_room_allocation, room_compute
 from features.solution.examAssign import period_exam_allocation
 from features.exam.services import get_exam, get_exam_column, get_exam_order_by_size
-from features.periods.services import get_period, get_periods_with_lengths
+from features.periods.services import get_period, get_periods_with_lengths, get_period_date
 from features.rooms.services import get_rooms
 from features.students.services import read_student_groups, get_exam_student_group, get_student_group_exams
 import random
@@ -123,8 +123,16 @@ def generate_population(size):
     return  [generate_chromosome()
                             for i in range(population_size)]
 
-def get_exam_from_gene(chromosome):
-    return [gene["exam_id"] for gene in chromosome]
+def a(chromosome):
+    data = [gene['period_id'] for gene in chromosome]
+    dates = [get_period_date(period) for period in data]
+    return checkIfDuplicates_1(dates)
+
+def checkIfDuplicates_1(listOfElems):
+    if len(listOfElems) == len(set(listOfElems)):
+        return False
+    else:
+        return True
 
 def get_specific_genes(std_id, chromosome):
     exams = get_student_group_exams(std_id)
@@ -135,12 +143,16 @@ def get_specific_genes(std_id, chromosome):
         genes.append(res)
     return genes
     
+
+
 if __name__ == "__main__":
     population_size = int(input('Population Size: \t'))
     population = generate_population(population_size)
     # pprint.pprint(population)
 
     for chromosome in population:
-        pprint.pprint(get_specific_genes(1, chromosome))
+        pprint.pprint(a(chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
+
+   

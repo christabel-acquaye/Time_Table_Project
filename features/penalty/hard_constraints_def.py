@@ -1,11 +1,25 @@
 import numpy as np
+from features.solution.chromosome_def import get_specific_genes, checkIfDuplicates_1
+from features.periods.services import get_period_date
+import datetime
 
 def more_than_one_exams_per_day(chromosome, student_group):
-    return 2
-
+    data = [gene['period_id'] for gene in chromosome]
+    dates = [get_period_date(period) for period in data]
+    if checkIfDuplicates_1(dates):
+        return 2
+    else:
+        return 0
 
 def back_to_back_conflict(chromosome, student_group):
-    return 4
+    data = [gene['period_id'] for gene in chromosome]
+    dates = [get_period_date(period) for period in data]
+    dates.sort()
+    count = 0
+    for i in range(len(dates) - 1):
+        if (dates[i+1] - dates[i]) == 1:
+            count +=1
+    return 4 * count
 
 
 def get_room_distance(roomA, roomB):

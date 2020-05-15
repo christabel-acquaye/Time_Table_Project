@@ -69,7 +69,7 @@ def get_period_date(cur, id=None):
         data = cur.fetchall()
     except Error as e:
         print(e)
-    return data
+    return data[0][0]
 
 # Delete specific Period details
 @connect
