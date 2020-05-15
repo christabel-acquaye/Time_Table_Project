@@ -41,4 +41,5 @@ Here are a list of all the packages and modules included.
 
 ## Authors
 
+- [Christabel Acquaye](https://github.com/Christland)
 - [Benjamin Arko Afrasah](https://github.com/Silvrash)
