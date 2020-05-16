@@ -1,7 +1,8 @@
-import random
 import pprint
-from features.migration import read_student
+import random
+
 from features.exam.service import get_exams
+from features.migration import read_student
 
 
 # Function that generates a random array within a specified range

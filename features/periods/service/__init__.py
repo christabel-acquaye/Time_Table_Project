@@ -1,4 +1,5 @@
 from _shared import uuid
+
 from .queries import use_query
 
 

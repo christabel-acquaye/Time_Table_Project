@@ -2,9 +2,8 @@ import logging as logger
 from functools import partial, wraps
 from typing import Callable, Dict, List, Union
 
-from flask import request
-
 from _shared.error_service import JSON_VALIDATION_ERROR
+from flask import request
 from jsonschema import ValidationError, validate
 
 

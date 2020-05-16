@@ -1,10 +1,9 @@
 import traceback
 
-from flask import Flask, jsonify
-from flask.logging import logging as logger
-
 from _shared.error_service import (HTTP_404_ERROR, HTTP_405_ERROR,
                                    HTTP_500_ERROR, HTTP_503_ERROR, BaseError)
+from flask import Flask, jsonify
+from flask.logging import logging as logger
 
 
 def with_error(err_type: BaseError, static=True):

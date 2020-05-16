@@ -1,9 +1,12 @@
-from .queries import use_query
+import pprint
 from os import path
+
 import numpy as np
 import pandas as pd
+
 from features.exam.service import get_exams
-import pprint
+
+from .queries import use_query
 
 
 def insert_students(cur, id, examId, periodId):

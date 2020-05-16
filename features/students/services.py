@@ -1,12 +1,14 @@
 
-import MySQLdb
-from MySQLdb._exceptions import Error
-import pandas as pd
-from playground import connect
-from os import path
-import numpy as np
-from features.exam.services import get_exam
 import pprint
+from os import path
+
+import MySQLdb
+import numpy as np
+import pandas as pd
+from MySQLdb._exceptions import Error
+
+from features.exam.services import get_exam
+from playground import connect
 
 # Insert Data into Students Table
 

@@ -1,23 +1,28 @@
 
 
 import datetime
-import openpyxl
-from os import path
-import pandas as pd
-from features.periods.service import get_period_bound
-from features.exam.service import get_exam_bound, get_exam_id_from_name
-from features.solution.services import rand_gen
-from features.solution.roomAssign import period_room_allocation, room_compute
-from features.solution.examAssign import period_exam_allocation
-from features.exam.service import get_exams, get_exam_column, get_exam_order_by_size
-from features.periods.service import get_periods, get_periods_with_lengths
-from features.rooms.service import get_rooms
-from features.students.service import read_student_groups, get_exam_student_group, get_student_group_exams
-import random
 import json
 import pprint
+import random
+from os import path
+
+import openpyxl
+import pandas as pd
 from sklearn.utils import shuffle
+
 from _shared import NotEnoughRooms
+from features.exam.service import (get_exam_bound, get_exam_column,
+                                   get_exam_id_from_name,
+                                   get_exam_order_by_size, get_exams)
+from features.periods.service import (get_period_bound, get_periods,
+                                      get_periods_with_lengths)
+from features.rooms.service import get_rooms
+from features.solution.examAssign import period_exam_allocation
+from features.solution.roomAssign import period_room_allocation, room_compute
+from features.solution.services import rand_gen
+from features.students.service import (get_exam_student_group,
+                                       get_student_group_exams,
+                                       read_student_groups)
 
 
 def format_rooms(rooms):

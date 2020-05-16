@@ -1,7 +1,6 @@
-from flask import Flask
-
 from _shared import in_scope
 from features import users
+from flask import Flask
 
 
 def register_urls(app: Flask):

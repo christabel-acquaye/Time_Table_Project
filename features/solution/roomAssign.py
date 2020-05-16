@@ -1,10 +1,13 @@
 import math
-from .services import get_exam_search
-from features.rooms.service import get_rooms
-from sklearn.utils import shuffle
-from features.periods.service import get_periods
 import pprint
+
+from sklearn.utils import shuffle
+
 from _shared import NotEnoughRooms
+from features.periods.service import get_periods
+from features.rooms.service import get_rooms
+
+from .services import get_exam_search
 
 # Function that updates the room capacity after extracting the number of rooms to be used for a particular exam
 

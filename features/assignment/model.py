@@ -1,6 +1,7 @@
-from typing import Union
-import _shared
 import datetime as dt
+from typing import Union
+
+import _shared
 
 
 class Assignment:
