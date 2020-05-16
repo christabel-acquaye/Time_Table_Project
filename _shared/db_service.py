@@ -2,13 +2,13 @@ from functools import wraps
 from typing import Callable, List, Union
 
 import MySQLdb
+from flask import g
+from flask.logging import logging as logger
 from MySQLdb import Connection  # pylint: disable=no-name-in-module
-from MySQLdb._mysql import escape_string
+from MySQLdb import escape_string
 from MySQLdb.cursors import Cursor, DictCursor
 
 import _shared.constants as CONSTANTS
-from flask import g
-from flask.logging import logging as logger
 
 CONNECTION_PARAMS = {
     'host': CONSTANTS.DB_HOST,

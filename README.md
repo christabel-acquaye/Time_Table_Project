@@ -25,7 +25,17 @@ Please find a documentation of the project structure [here](./docs/folder-struct
 
 Here are a list of all the packages and modules included.
 
-- [Flask](https://pypi.org/project/Flask/): Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.
+- [Flask](https://p
+
+nana@christabel-HP-ENVY-x360-m6-Convertible:~/Documents/Professional Projects/TimeTableProject/Time_Table_Project$ git pull remote dev
+fatal: 'remote' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+
+nana@christabel-HP-ENVY-x360-m6-Convertible:~/Documents/Professional Projects/TimeTableProject/Time_Table_Project$ git pull remote dev
+fatal: 'remote' does not appear to be a git repository
+fatal: Could not read from remote repository.
+ypi.org/project/Flask/): Flask is a lightweight WSGI web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.
 
 - [MySQL-python](https://pypi.org/project/MySQL-python/): MySQLdb is an interface to the popular MySQL database server for Python.
 

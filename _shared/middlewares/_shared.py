@@ -1,5 +1,6 @@
-from _shared.db_service import end_db_connection
 from flask import Flask
+
+from _shared.db_service import end_db_connection
 
 
 def add_middlewares(app: Flask):

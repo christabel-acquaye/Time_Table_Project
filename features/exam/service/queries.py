@@ -1,5 +1,3 @@
-from typing import Literal
-
 from _shared import in_query
 from _shared.error_service import QUERY_NOT_FOUND
 
