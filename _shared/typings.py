@@ -31,6 +31,7 @@ class RouterParams(TypedDict):
     schema: Union[Any, None]
     code: Union[int, None]
 
+
 class AuthProvider(Enum):
     LOCAL = 'LOCAL'
     GOOGLE = 'GOOGLE'

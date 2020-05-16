@@ -9,3 +9,5 @@ gitchangelog==3.0.4
 openpyxl==1.0.1
 xlrd==1.2.0
 sklearn==0.23.0
+isort==4.3.21
+autopep8==2.6.0

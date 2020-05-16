@@ -93,7 +93,7 @@ def hard_constraints_value(chromosome, student_group, period, exam, room):
 
 if __name__ == "__main__":
     chromosome = []
-    student_group = [] 
+    student_group = []
     period = []
     exam = []
     room = []

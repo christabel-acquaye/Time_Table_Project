@@ -1,6 +1,7 @@
 HOST=127.0.0.1
 PORT=3000
 pip=pip3
+python=python3
 
 install:
 	$(pip) install -r requirements.txt

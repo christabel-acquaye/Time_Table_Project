@@ -45,7 +45,7 @@ def get_exam_id_from_name(examName):
 def get_exam_bound(cur):
     # Get total number of exams in db
     data = use_query(query_type='get-exams-count')
-    return int(data[0][0])
+    return int(data[0]['count'])
 
 
 if __name__ == '__main__':
