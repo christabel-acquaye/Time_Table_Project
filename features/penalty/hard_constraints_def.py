@@ -7,6 +7,23 @@ from features.solution.chromosome_def import (checkIfDuplicates_1,
                                               get_specific_genes)
 
 
+def max_room_penalty(chromosome: List[dict]) -> int:
+    """compute max rooms hard constraint
+        0 - not to be assigned to a room
+        1 - to be assigned one room
+        2 - to be assigned two rooms
+        3 - to be assigned three rooms
+        4 - to be assigned four rooms
+
+    Arguments:
+        chromosome {List[dict]} -- chromosome
+
+    Returns:
+        int -- penalty value
+    """
+    pass
+
+
 def more_than_one_exams_per_day(chromosome, student_group):
     data = [gene['period_id'] for gene in chromosome]
     dates = [get_period_date(period) for period in data]
