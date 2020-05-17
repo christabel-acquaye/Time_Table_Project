@@ -7,7 +7,7 @@ from features.solution.chromosome_def import (checkIfDuplicates_1,
                                               get_specific_genes)
 
 
-def max_room_penalty(chromosome: List[dict]) -> int:
+def max_room_penalty(gene: dict) -> int:
     """compute max rooms hard constraint
         0 - not to be assigned to a room
         1 - to be assigned one room
@@ -16,7 +16,7 @@ def max_room_penalty(chromosome: List[dict]) -> int:
         4 - to be assigned four rooms
 
     Arguments:
-        chromosome {List[dict]} -- chromosome
+        gene {dict} -- gene
 
     Returns:
         int -- penalty value
