@@ -25,7 +25,7 @@ def use_query(params: dict, query_type: str):
 
         if params.get('maxRooms'):
             query += ' WHERE id = %(id)s'
-        
+
         if params.get('minSize'):
             query += ' WHERE id = %(id)s'
 

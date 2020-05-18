@@ -28,16 +28,18 @@ def read_distances():
             }
             ls.append(dic)
     for distance in ls:
-        distance['Distance'] /=1000
-    
+        distance['Distance'] /= 1000
+
     return ls
+
 
 def get_distance_between_rooms(roomA, roomB):
     ls = read_distances()
     return [room['Distance'] for room in ls if room['Destination'] in roomA and room['Origin'] in roomB]
 
+
 if __name__ == "__main__":
-    
+
     # ls = read_distances()
     roomA = 'NB'
     roomB = 'OLD'
@@ -51,7 +53,3 @@ if __name__ == "__main__":
         print(4)
     elif 2.1 <= actual_distance <= 5.0:
         print(7)
-   
-
-    
-    

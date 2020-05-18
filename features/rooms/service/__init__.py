@@ -17,10 +17,12 @@ def get_rooms(id=None, roomName=None):
     params = {'id': id, 'roomName': roomName}
     return use_query(params=params, query_type='get-rooms')
 
+
 def get_room_size(roomName):
-    data = get_room_size(roomName = roomName)
+    data = get_room_size(roomName=roomName)
     return data[0]['size']
-    
+
+
 if __name__ == '__main__':
     from main import app
     with app.app_context():

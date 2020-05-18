@@ -1,11 +1,11 @@
 from typing import List
-from features.rooms.service.__init__ import  get_room_size
+
 from features.exam.service.__init__ import get_exam_enrollment
 from features.periods.service.__init__ import get_period_penalty
+from features.rooms.service.__init__ import get_room_size
 
 
 def period_penalty(gene):
-    
     """if a period is opened, we assign weights
     -4: strongly prefered
     -1: prefered
@@ -68,13 +68,14 @@ def compute_split_penalty(no_of_rooms: int):
 def room_size_penalty(gene):
     room_data = [assignment['rooms'] for assignment in gene]
     room_size_penalty = []
-    
     for rooms in room_data:
+
         used = [single_room['no_of_size'] for single_room in rooms]
-        actual =  [get_room_size(single_room['name'] for single_room in rooms)
+        actual = [get_room_size(single_room['name'] for single_room in rooms)
         for i in range(0, len(used)):
             percentage = (used[i]/actual[i])*100
             if 1 <= actual_distance <= 10:
+
                 room_size_penalty.append(1)
             if 10 <= actual_distance <= 30:
                 room_size_penalty.append(0)
@@ -82,7 +83,7 @@ def room_size_penalty(gene):
                 room_size_penalty.append(-1)
             if 60 <= actual_distance <= 100:
                 room_size_penalty.append(-2)
-    
+
     return sum(room_split_penalty)
 
 
@@ -101,7 +102,7 @@ def exam_enrolment_penalty(gene, threshold):
             exam_enrolment_penalty.append(10)
         if 60 <= percentage_increase <= 100:
             exam_enrolment_penalty.append(20)
-        
+
     return sum(exam_enrolment_penalty)
 
 

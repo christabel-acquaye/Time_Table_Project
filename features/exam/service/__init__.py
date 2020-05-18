@@ -41,14 +41,17 @@ def get_exam_id_from_name(examName):
     data = get_exams(examCode=examName)
     return data[0]['id']
 
+
 def get_exam_room(id):
     data = get_exam(id=id)
     return data[0]['maxRooms']
 
+
 def get_exam_enrollment(id):
     data = get_exams(id=id)
     return data[0]['minSize']
-    
+
+
 def get_exam_bound(cur):
     # Get total number of exams in db
     data = use_query(query_type='get-exams-count')

@@ -170,5 +170,3 @@ if __name__ == "__main__":
             # pprint.pprint(get_specific_genes(2, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
-
-

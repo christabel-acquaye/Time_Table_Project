@@ -5,6 +5,6 @@ def get_fitness_value(hard_constraints, penalties):
 
 
 if __name__ == "__main__":
-    hard_constraints = [2,4,5,6]
-    penalties = [1,1,1,1,1]
+    hard_constraints = [2, 4, 5, 6]
+    penalties = [1, 1, 1, 1, 1]
     get_fitness_value(hard_constraints, penalties)
