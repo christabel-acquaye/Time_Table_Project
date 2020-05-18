@@ -29,13 +29,15 @@ def read_distances():
             ls.append(dic)
     return ls
 
+
 def get_rooms_in_EHC(room):
     if s.startswith('E'):
         return true
 
+
 if __name__ == "__main__":
-    
+
     # dict = read_distances()
-    
+
     # pprint.pprint(dict)
     print(get_rooms_in_EHC('OLD'))

@@ -10,7 +10,7 @@ isort:
 	sh -c "isort --skip-glob=.tox --recursive . "
 
 format: isort
-	autopep8 --in-place --recursive .
+	autopep8 --in-place --recursive . --indent-size=4
 	pycodestyle features _shared 
 
 changelog:
