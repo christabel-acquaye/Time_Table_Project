@@ -161,12 +161,13 @@ if __name__ == "__main__":
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
+        pprint.pprint(population)
 
-        for chromosome in population:
-            std_gene = get_specific_genes(1, chromosome)
-            room_data = [gene['rooms'] for gene in chromosome]
-            # room_names = [roo['no_of_stds'] for roo in room_data]
-            pprint.pprint(room_data)
-            # pprint.pprint(get_specific_genes(2, chromosome))
+        # for chromosome in population:
+        #     std_gene = get_specific_genes(1, chromosome)
+        #     room_data = [gene['rooms'] for gene in chromosome]
+        #     # room_names = [roo['no_of_stds'] for roo in room_data]
+        #     pprint.pprint(room_data)
+        # pprint.pprint(get_specific_genes(2, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
