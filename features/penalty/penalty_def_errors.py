@@ -40,9 +40,14 @@ def room_availability_penalty(gene: dict) -> int:
     pass
 
 
-def room_split_penalty(gene: dict):
-    no_of_rooms = len(gene['rooms'])
-    return compute_split_penalty(no_of_rooms)
+def room_split_penalty(gene):
+    room_data = [assignment['rooms'] for assignment in gene]
+    room_size_penalty = []
+    for room in room_data:
+        no_of_rooms = len(room_data)
+        penalty = compute_split_penalty(no_of_rooms)
+        room_size_penalty.append(penalty)
+    return sum(room_split_penalty)
 
 
 def compute_split_penalty(no_of_rooms: int):
@@ -55,41 +60,44 @@ def compute_split_penalty(no_of_rooms: int):
 
 
 def room_size_penalty(gene):
-    rooms = gene['rooms']
-    penalty = []
-    used = [single_room['no_of_stds'] for single_room in rooms]
-    actual = [get_room_size(single_room['name']) for single_room in rooms]
+    room_data = [assignment['rooms'] for assignment in gene]
+    room_size_penalty = []
 
-    for i in range(len(used)):
-        percentage = (used[i] / actual[i]) * 100
+    for rooms in room_data:
+        used = [single_room['no_of_size'] for single_room in rooms]
+        actual = [get_room_size(single_room['name'] for single_room in rooms)
 
-        if 1 <= percentage <= 10:
-            penalty.append(1)
-        elif 10 <= percentage <= 30:
-            penalty.append(0)
-        elif 30 <= percentage <= 60:
-            penalty.append(-1)
-        else:
-            penalty.appen(-2)
-    return sum(penalty)
+        for i in range(0, len(used)):
+            percentage = (used[i]/actual[i])*100
+            if 1 <= actual_distance <= 10:
+                room_size_penalty.append(1)
+            if 10 <= actual_distance <= 30:
+                room_size_penalty.append(0)
+            if 30 <= actual_distance <= 60:
+                room_size_penalty.append(-1)
+            if 60 <= actual_distance <= 100:
+                room_size_penalty.append(-2)
+
+    return sum(room_split_penalty)
 
 
 def exam_enrolment_penalty(gene, threshold):
-    penalty = []
-    enrolment = get_exam_enrollment(gene['exam_id'])
-    percentage = ((enrolment - threshold) * 100)/threshold
-    percentage_increase = percentage - 100
+    exam_enrolment_penalty = []
+    exam_data = [assignment['exam_id'] for assignment in gene]
+    for exam in exam_data:
+        enrollment = get_exam_enrollment(exam)
+        percentage = ((enrollment-threshold) * 100)/threshold
+        percentage_increase =  percentage - 100
+        if 1 <= percentage_increase <= 10:
+            exam_enrolment_penalty.append(1)
+        if 10 <= percentage_increase <= 30:
+            exam_enrolment_penalty.append(5)
+        if 30 <= percentage_increase <= 60:
+            exam_enrolment_penalty.append(10)
+        if 60 <= percentage_increase <= 100:
+            exam_enrolment_penalty.append(20)
 
-    if 1 <= percentage_increase <= 10:
-        penalty.append(1)
-    elif 10 <= percentage_increase <= 30:
-        penalty.append(5)
-    elif 30 <= percentage_increase <= 60:
-        penalty.append(10)
-    else:
-        penalty.append(20)
-
-    return sum(penalty)
+    return sum(exam_enrolment_penalty)
 
 
 def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
