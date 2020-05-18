@@ -28,6 +28,9 @@ def use_query(params: dict, query_type: str):
         if params.get('id'):
             query += ' WHERE id = %(id)s'
 
+        if params.get('size'):
+            query += ' WHERE roomName = %(roomName)s'
+
         if params.get('roomName'):
             query += ' WHERE roomName = %(roomName)s'
 

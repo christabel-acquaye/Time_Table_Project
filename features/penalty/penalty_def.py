@@ -1,7 +1,11 @@
 from typing import List
+from features.rooms.service.__init__ import  get_room_size
+from features.exam.service.__init__ import get_exam_enrollment
+from features.periods.service.__init__ import get_period_penalty
 
 
-def period_penalty(gene: dict) -> int:
+def period_penalty(gene):
+    
     """if a period is opened, we assign weights
     -4: strongly prefered
     -1: prefered
@@ -36,16 +40,20 @@ def room_availability_penalty(gene: dict) -> int:
     pass
 
 
-def room_split_penalty(gene: dict) -> int:
-    """if exam is split to several rooms return penalty value
-
-    Arguments:
-        gene {dict} -- [description]
-
-    Returns:
-        int -- [description]
-    """
-    pass
+def room_split_penalty(gene):
+    room_data = [assignment['rooms'] for assignment in gene]
+    room_size_penalty = []
+    for room in room_data:
+        no_of_rooms = len(room_data)
+        if no_of_rooms == 1:
+            room_split_penalty.append(0)
+        if no_of_rooms == 2:
+            room_split_penalty.append(1)
+        if no_of_rooms == 3:
+            room_split_penalty.append(4)
+        if no_of_rooms == 4:
+            room_split_penalty.append(7)
+    return sum(room_split_penalty)
 
 
 def compute_split_penalty(no_of_rooms: int):
@@ -57,38 +65,44 @@ def compute_split_penalty(no_of_rooms: int):
     return (no_of_rooms - 1) ** 2
 
 
-def room_size_penalty(gene: dict) -> int:
-    """determine the room size range
-    1 - 10% - penalty 1
-    10 - 30% - penalty 0
-    30 - 60% - penalty -1
-    60 - 100% - penalty -2
-
-    Arguments:
-        gene {dict} -- [description]
-
-    Returns:
-        int -- [description]
-    """
-    pass
-
-
-def exam_enrolment_penalty(gene: dict, threshold: int) -> int:
-    """exam with enrolment greater than threshold
-    1 - 10% - penalty 1
-    10 - 30% - penalty 5
-    30 - 60% - penalty 10
-    60 - 100% - penalty 20
+def room_size_penalty(gene):
+    room_data = [assignment['rooms'] for assignment in gene]
+    room_size_penalty = []
+    
+    for rooms in room_data:
+        used = [single_room['no_of_size'] for single_room in rooms]
+        actual =  [get_room_size(single_room['name'] for single_room in rooms)
+        for i in range(0, len(used)):
+            percentage = (used[i]/actual[i])*100
+            if 1 <= actual_distance <= 10:
+                room_size_penalty.append(1)
+            if 10 <= actual_distance <= 30:
+                room_size_penalty.append(0)
+            if 30 <= actual_distance <= 60:
+                room_size_penalty.append(-1)
+            if 60 <= actual_distance <= 100:
+                room_size_penalty.append(-2)
+    
+    return sum(room_split_penalty)
 
 
-    Arguments:
-        gene {dict} -- [description]
-        threshold {int} -- [description]
-
-    Returns:
-        int -- [description]
-    """
-    pass
+def exam_enrolment_penalty(gene, threshold):
+    exam_enrolment_penalty = []
+    exam_data = [assignment['exam_id'] for assignment in gene]
+    for exam in exam_data:
+        enrollment = get_exam_enrollment(exam)
+        percentage = ((enrollment-threshold) * 100)/threshold
+        percentage_increase =  percentage - 100
+        if 1 <= percentage_increase <= 10:
+            exam_enrolment_penalty.append(1)
+        if 10 <= percentage_increase <= 30:
+            exam_enrolment_penalty.append(5)
+        if 30 <= percentage_increase <= 60:
+            exam_enrolment_penalty.append(10)
+        if 60 <= percentage_increase <= 100:
+            exam_enrolment_penalty.append(20)
+        
+    return sum(exam_enrolment_penalty)
 
 
 def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:

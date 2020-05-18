@@ -20,6 +20,10 @@ def use_query(params: dict, query_type: str):
 
         if params.get('penalty'):
             query += ' WHERE penalty = %(penalty)s'
+            
+        if params.get('penalty'):
+            query_type += 'WHERE id = %(id)s'
+        
 
     else:
         raise QUERY_NOT_FOUND(query_type)
