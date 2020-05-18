@@ -54,3 +54,5 @@ if __name__ == '__main__':
     # get_period()
     # data = get_period()
     # print(data)
+
+    # print(get_periods(penalty=None, id=1))

@@ -163,6 +163,12 @@ if __name__ == "__main__":
         population = generate_population(population_size)
 
         for chromosome in population:
-            pprint.pprint(get_specific_genes(1, chromosome))
+            std_gene = get_specific_genes(1, chromosome)
+            room_data = [gene['rooms'] for gene in chromosome]
+            # room_names = [roo['no_of_stds'] for roo in room_data]
+            pprint.pprint(room_data)
+            # pprint.pprint(get_specific_genes(2, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
+
+

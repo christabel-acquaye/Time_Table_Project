@@ -16,16 +16,9 @@ def read_distances():
         data.append(
             tuple((value for value in row.values() if not pd.isna(value))))
     # formatted_data = list(data[2:])
-    column = [item for item in data[1][1:]]
+    columns = [item for item in data[1][1:]]
     rows = [item for item in data[2:]]
-
-    return column, rows
-
-
-if __name__ == "__main__":
-    columns, rows = read_distances()
-    # print(rows)
-    dict = []
+    ls = []
     for i in range(len(columns)):
         for j in range(len(rows)):
             dic = {
@@ -33,5 +26,32 @@ if __name__ == "__main__":
                 'Destination': columns[i],
                 'Origin': rows[j][0]
             }
-            dict.append(dic)
-    pprint.pprint(dict)
+            ls.append(dic)
+    for distance in ls:
+        distance['Distance'] /=1000
+    
+    return ls
+
+def get_distance_between_rooms(roomA, roomB):
+    ls = read_distances()
+    return [room['Distance'] for room in ls if room['Destination'] in roomA and room['Origin'] in roomB]
+
+if __name__ == "__main__":
+    
+    # ls = read_distances()
+    roomA = 'NB'
+    roomB = 'OLD'
+    pprint.pprint(get_distance_between_rooms(roomA, roomB))
+    distnce = get_distance_between_rooms(roomA, roomB)
+    actual_distance = distnce[0]
+    print(actual_distance)
+    if 0.1 <= actual_distance <= 1.0:
+        print(2)
+    elif 1.1 <= actual_distance <= 2.0:
+        print(4)
+    elif 2.1 <= actual_distance <= 5.0:
+        print(7)
+   
+
+    
+    
