@@ -1,43 +1,61 @@
-import pprint
-from os import path
+from _shared import uuid
 
-import numpy as np
-import openpyxl
-import pandas as pd
+from .queries import use_query
 
 
-def read_distances():
-    file_path = path.join(path.dirname(path.abspath(__file__)), '../../data')
-    data = []
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test.xlsx')
-    raw_data = pd.read_excel(file_path + '/exam_input_data_test.xlsx', sheet_name='distances')
-    # print(raw_data.to_dict('record'))
-    for row in raw_data.to_dict('record'):
-        data.append(
-            tuple((value for value in row.values() if not pd.isna(value))))
-    # formatted_data = list(data[2:])
-    columns = [item for item in data[1][1:]]
-    rows = [item for item in data[2:]]
-    ls = []
-    for i in range(len(columns)):
-        for j in range(len(rows)):
-            dic = {
-                'Distance': rows[j][i+1],
-                'Destination': columns[i],
-                'Origin': rows[j][0]
-            }
-            ls.append(dic)
-    return ls
+def insert_period(id,  length, day, time, penalty):
+    '''
+    Insert Period deatils into Period Table
+    '''
+    params = {'id': id, 'length': length, 'day': day, 'time': time, 'penalty': penalty}
+    return use_query(params=params, query_type='add-periods')
 
 
-def get_rooms_in_EHC(room):
-    if s.startswith('E'):
-        return true
+def get_periods(penalty=None, id=None):
+    '''Get all Periods in db'''
+    return use_query(params={'penalty': penalty, 'id': id}, query_type='get-periods')
 
 
-if __name__ == "__main__":
+def get_period_date(id=None):
+    data = get_periods(id=id)
+    return [period['day'] for period in data]
 
-    # dict = read_distances()
+def get_period_penalty(id):
+    data = get_period_penalty(id=id)
+    return data[0]['penalty']
+    
+def get_periods_with_lengths():
+    return list(((int(period['id']), period['length']) for period in get_periods()))
 
-    # pprint.pprint(dict)
-    print(get_rooms_in_EHC('OLD'))
+
+def get_period_bound():
+    periods = get_periods()
+    return len(periods)
+
+
+if __name__ == '__main__':
+
+    # length = 120
+    # day = "1997-06-04"
+    # time = "8:00am-11:30am"
+    # penalty = 1
+    # id = "3"
+    # print(list(get_periods_with_lengths()))
+    from main import app
+    with app.app_context():
+        print(get_periods(id=1))
+
+    # insert_period(
+    #               length=length,
+    #               day=day,
+    #               time=time,
+    #               penalty=penalty,
+    # id = id)
+    # get_period(penalty = penalty)
+    # update_period(columnName = 'length', update = 100, id=id)
+    # delete_period(penalty=penalty)
+    # get_period()
+    # data = get_period()
+    # print(data)
+
+    # print(get_periods(penalty=None, id=1))
