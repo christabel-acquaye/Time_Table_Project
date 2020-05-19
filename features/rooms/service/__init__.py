@@ -23,6 +23,10 @@ def get_room_size(roomName):
     return data[0]['size']
 
 
+def get_room_penalty(id):
+    return []
+
+
 if __name__ == '__main__':
     from main import app
     with app.app_context():

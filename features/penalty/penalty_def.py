@@ -2,10 +2,12 @@ from typing import List
 
 from features.exam.service.__init__ import get_exam_enrollment
 from features.periods.service.__init__ import get_period_penalty
-from features.rooms.service.__init__ import get_room_size
+from features.rooms.service.__init__ import get_room_penalty, get_room_size
 
 
 def period_penalty(gene):
+    penalty = get_period_penalty(gene['period_id'])
+
     """if a period is opened, we assign weights
     -4: strongly prefered
     -1: prefered
@@ -19,10 +21,11 @@ def period_penalty(gene):
     Returns:
         int -- penalty value
     """
-    pass
+    return penalty
 
 
-def room_availability_penalty(gene: dict) -> int:
+def room_availability_penalty(gene: dict):
+    penalty = get_room_penalty(id)
     """if a room is not available, we assign weights
         -4: strongly prefered
         -1: prefered
@@ -37,7 +40,7 @@ def room_availability_penalty(gene: dict) -> int:
         int -- penalty value
     """
 
-    pass
+    return penalty
 
 
 def room_split_penalty(gene: dict):
@@ -47,7 +50,7 @@ def room_split_penalty(gene: dict):
 
 def compute_split_penalty(no_of_rooms: int):
     """compute split penalty
-
+# 
     Arguments:
         no_of_rooms {int} -- number of rooms
     """
@@ -70,7 +73,7 @@ def room_size_penalty(gene):
         elif 30 <= percentage <= 60:
             penalty.append(-1)
         else:
-            penalty.appen(-2)
+            penalty.append(-2)
     return sum(penalty)
 
 
@@ -107,7 +110,7 @@ def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
     for gene in chromosome:
         penalty.append(period_penalty(gene))
         penalty.append(room_availability_penalty(gene))
-        penalty.append(max_room_penalty(gene))
+        # penalty.append(max_room_penalty(gene))
         penalty.append(room_split_penalty(gene))
         penalty.append(room_size_penalty(gene))
         penalty.append(exam_enrolment_penalty(gene, params['threshold']))
