@@ -13,7 +13,7 @@ def get_date_input():
 
 # end_date = start_date + datetime.timedelta(days=14)
 def get_period_date(start_date, end_date):
-    date_generated = [start_date + datetime.timedelta(days=x) for x in range(0, (end_date-start_date).days)]
+    date_generated = [start_date + datetime.timedelta(days=x) for x in range(0, (end_date-start_date).days + 1)]
     formatted_data = [data.strftime("%Y,%m,%d") for data in date_generated]
     exam_dates = []
     for date_date in formatted_data:
@@ -66,4 +66,6 @@ if __name__ == "__main__":
     start_date = get_date_input()
     stop_date = get_date_input()
     duration = int(input("Duration:\t"))
-    pprint.pprint(get_period_list(start_date, stop_date, duration))
+    data = get_period_list(start_date, stop_date, duration)
+    pprint.pprint(data)
+    pprint.pprint(len(data))
