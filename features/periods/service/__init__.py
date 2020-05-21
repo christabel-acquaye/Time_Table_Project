@@ -20,7 +20,10 @@ def get_period_date(id=None):
     data = get_periods(id=id)
     return [period['day'] for period in data]
 
-
+def get_period_penalty(id):
+    data = get_period_penalty(id=id)
+    return data[0]['penalty']
+    
 def get_periods_with_lengths():
     return list(((int(period['id']), period['length']) for period in get_periods()))
 
