@@ -1,13 +1,11 @@
 from typing import List
 
-from features.exam.service.__init__ import get_exam_enrollment
-from features.periods.service.__init__ import get_period_penalty
-from features.rooms.service.__init__ import get_room_penalty, get_room_size
+from features.exam.service import get_exam_enrollment
+from features.periods.service import get_period_penalty
+from features.rooms.service import get_room_penalty, get_room_size
 
 
 def period_penalty(gene):
-    penalty = get_period_penalty(gene['period_id'])
-
     """if a period is opened, we assign weights
     -4: strongly prefered
     -1: prefered
@@ -21,6 +19,9 @@ def period_penalty(gene):
     Returns:
         int -- penalty value
     """
+
+    penalty = get_period_penalty(gene['period_id'])
+
     return penalty
 
 
@@ -50,7 +51,6 @@ def room_split_penalty(gene: dict):
 
 def compute_split_penalty(no_of_rooms: int):
     """compute split penalty
-# 
     Arguments:
         no_of_rooms {int} -- number of rooms
     """
