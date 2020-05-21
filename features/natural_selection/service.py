@@ -19,7 +19,9 @@ def non_dorminating_sort(chromosomes):
             y1 = reference_chromosome['soft_constraint']
             y2 = other_chromosome['soft_constraint']
             # (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)
-
+            if ((x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)):
+                domination_count[reference_position] += 1
+                dominated_elements[reference_position].append(other_position)
             """
             if reference is dominant than other then
             domination_count[reference_position] += 1
