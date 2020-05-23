@@ -28,9 +28,10 @@ def read_distances():
             }
             ls.append(dic)
     for distance in ls:
-        distance['Distance'] /=1000
-    
+        distance['Distance'] /= 1000
+
     return ls
+
 
 def get_distance_between_rooms(roomA, roomB):
     ls = read_distances()
@@ -39,17 +40,17 @@ def get_distance_between_rooms(roomA, roomB):
 
 def find_average_distance(rooms):
     distances = []
-    for i in range(0,len(rooms)):
+    for i in range(0, len(rooms)):
         distances.append(get_distance_between_rooms(rooms[i-1], rooms[i])[0])
     return (sum(distances[1:])/len(rooms))
 
-    
+
 if __name__ == "__main__":
-    
+
     # ls = read_distances()
     # roomA = 'NB'
     # roomB = 'OLD'
-    
+
     # distnce = get_distance_between_rooms(roomA, roomB)
     # actual_distance = distnce[0]
     # print(actual_distance)
@@ -59,11 +60,8 @@ if __name__ == "__main__":
     #     print(4)
     # elif 2.1 <= actual_distance <= 5.0:
     #     print(7)
-   
+
     roomA = ['EHC_101', 'NB_232', 'OLD_21', 'EHC_212', 'EHC_212', 'EHC_232', 'NB_232']
     # pprint.pprint(get_distance_between_rooms(roomA[0], roomA[1]))
     # print(len(roomA))
     print(find_average_distance(roomA))
-
-    
-    
