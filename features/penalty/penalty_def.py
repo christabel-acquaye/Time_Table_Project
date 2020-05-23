@@ -95,7 +95,7 @@ def exam_enrolment_penalty(gene, threshold):
     return sum(penalty)
 
 
-def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
+def get_total_penalty_value(chromosome: List[dict], threshold: int) -> int:
     """compute total penalty or chromosome
 
     Arguments:
@@ -113,6 +113,6 @@ def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
         # penalty.append(max_room_penalty(gene))
         penalty.append(room_split_penalty(gene))
         penalty.append(room_size_penalty(gene))
-        penalty.append(exam_enrolment_penalty(gene, params['threshold']))
+        penalty.append(exam_enrolment_penalty(gene, threshold))
 
     return sum(penalty)
