@@ -1,5 +1,5 @@
-from .penalty_def import get_total_penalty_value
 from .hard_constraints_def import get_total_hard_constraints_value
+from .penalty_def import get_total_penalty_value
 
 
 def get_fitness_value(chromosomes, params):
@@ -12,3 +12,8 @@ def get_fitness_value(chromosomes, params):
         }
         restructured_chromosomes.append(restructured_chromosome)
     return restructured_chromosomes
+
+if __name__ == "__main__":
+    chromosomes = []
+    params = []
+    print(get_fitness_value(chromosomes, params))

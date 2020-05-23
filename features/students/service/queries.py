@@ -21,6 +21,11 @@ def use_query(params: dict, query_type: str):
         if params.get('id'):
             query += ' WHERE id = %(id)s'
 
+    elif query_type == 'get-all-students-id':
+        query = '''
+           SELECT id FROM student
+        '''
+
     else:
         raise QUERY_NOT_FOUND(query_type)
 
