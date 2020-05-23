@@ -17,6 +17,9 @@ def insert_students(cur, id, examId, periodId):
 def get_students(id=None):
     return use_query(params={'id': id}, query_type='get-students')
 
+def get_all_student_ids():
+    return use_query(params = None, query_type = 'get_all_student_ids')
+
 
 def read_student_groups():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../../../data')
@@ -43,7 +46,8 @@ def get_student_group_exams(std_id):
 if __name__ == '__main__':
 
     # insert_students(id = '1', examId = '10', periodId = '23')
-    std_groups = read_student_groups()
-    pprint.pprint(get_student_group_exams(2))
+    # std_groups = read_student_groups()
+    # pprint.pprint(get_student_group_exams(2))
     # print(get_exam_student_group('ENGL 352', std_groups))
     # pprint.pprint(get_student_group_exams(get_exam(), read_student_groups()))
+    pprint.pprint(get_all_student_ids())
