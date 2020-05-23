@@ -53,3 +53,7 @@ def natural_selection(population):
     """
 
     non_dominated_chromosomes = non_dominated_chromosomes(population)
+
+
+if __name__ == "__main__":
+    pass

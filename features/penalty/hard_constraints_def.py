@@ -19,7 +19,7 @@ def more_than_one_exams_per_day(chromosome, student_group):
 
 
 def back_to_back_conflict(chromosome, student_group):
-    data = [gene['period_id'] for gene in chromosome]
+    data = [gene['perioprint(fitness_value1, fitness_value2)d_id'] for gene in chromosome]
     dates = [get_period_date(period) for period in data]
     dates.sort()
     count = 0

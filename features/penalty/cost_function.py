@@ -1,7 +1,7 @@
-def get_fitness_value(hard_constraints, penalties):
+def get_fitness_value(chromosome):
     fitness_value1 = sum(hard_constraints)
     fitness_value2 = sum(penalties)
-    print(fitness_value1, fitness_value2)
+    return fitness_value1, fitness_value2
 
 
 if __name__ == "__main__":
