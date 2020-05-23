@@ -92,14 +92,18 @@ def exam_conflict(chromosome, student_group):
     return sum(exam_conflicts)
 
 
-def hard_constraints_value(chromosome,
-                           student_group, period, exam, room):
+def get_total_hard_constraints_value(chromosome):
     hard_constraints = []
 
-    hard_constraints.append(student_conflict(chromosome, student_group))
-    hard_constraints.append(period_conflict(chromosome, period))
-    hard_constraints.append(exam_conflict(chromosome, exam))
-    hard_constraints.append(room_conflict(chromosome, room))
+    # todo: call methods to return the data for these variables
+    student_groups = []
+    periods = []
+    rooms = []
+
+    hard_constraints.append(student_conflict(chromosome, student_groups))
+    hard_constraints.append(period_conflict(chromosome, periods))
+    hard_constraints.append(exam_conflict(chromosome, student_groups))
+    hard_constraints.append(room_conflict(chromosome, rooms))
 
     return hard_constraints
 

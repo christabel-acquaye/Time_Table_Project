@@ -1,10 +1,14 @@
-def get_fitness_value(hard_constraints, penalties):
-    fitness_value1 = sum(hard_constraints)
-    fitness_value2 = sum(penalties)
-    print(fitness_value1, fitness_value2)
+from .penalty_def import get_total_penalty_value
+from .hard_constraints_def import get_total_hard_constraints_value
 
 
-if __name__ == "__main__":
-    hard_constraints = [2, 4, 5, 6]
-    penalties = [1, 1, 1, 1, 1]
-    get_fitness_value(hard_constraints, penalties)
+def get_fitness_value(chromosomes, params):
+    restructured_chromosomes = []
+    for chromosome in chromosomes:
+        restructured_chromosome = {
+            'data': chromosome,
+            'soft_constraint': get_total_penalty_value(chromosome, params['threshold']),
+            'hard_constraint': get_total_hard_constraints_value(chromosome)
+        }
+        restructured_chromosomes.append(restructured_chromosome)
+    return restructured_chromosomes
