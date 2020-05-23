@@ -36,22 +36,34 @@ def get_distance_between_rooms(roomA, roomB):
     ls = read_distances()
     return [room['Distance'] for room in ls if room['Destination'] in roomA and room['Origin'] in roomB]
 
+
+def find_average_distance(rooms):
+    distances = []
+    for i in range(0,len(rooms)):
+        distances.append(get_distance_between_rooms(rooms[i-1], rooms[i])[0])
+    return (sum(distances[1:])/len(rooms))
+
+    
 if __name__ == "__main__":
     
     # ls = read_distances()
-    roomA = 'NB'
-    roomB = 'OLD'
-    pprint.pprint(get_distance_between_rooms(roomA, roomB))
-    distnce = get_distance_between_rooms(roomA, roomB)
-    actual_distance = distnce[0]
-    print(actual_distance)
-    if 0.1 <= actual_distance <= 1.0:
-        print(2)
-    elif 1.1 <= actual_distance <= 2.0:
-        print(4)
-    elif 2.1 <= actual_distance <= 5.0:
-        print(7)
+    # roomA = 'NB'
+    # roomB = 'OLD'
+    
+    # distnce = get_distance_between_rooms(roomA, roomB)
+    # actual_distance = distnce[0]
+    # print(actual_distance)
+    # if 0.1 <= actual_distance <= 1.0:
+    #     print(2)
+    # elif 1.1 <= actual_distance <= 2.0:
+    #     print(4)
+    # elif 2.1 <= actual_distance <= 5.0:
+    #     print(7)
    
+    roomA = ['EHC_101', 'NB_232', 'OLD_21', 'EHC_212', 'EHC_212', 'EHC_232', 'NB_232']
+    # pprint.pprint(get_distance_between_rooms(roomA[0], roomA[1]))
+    # print(len(roomA))
+    print(find_average_distance(roomA))
 
     
     
