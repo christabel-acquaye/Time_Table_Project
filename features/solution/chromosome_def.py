@@ -140,7 +140,6 @@ def a(chromosome):
     return checkIfDuplicates_1(dates)
 
 
-
 if __name__ == "__main__":
     from main import app
     with app.app_context():
@@ -161,6 +160,5 @@ if __name__ == "__main__":
         # pprint.pprint(get_specific_genes(2, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
-        
+
         # pprint.pprint(population[1][1]['period_id'])
-        

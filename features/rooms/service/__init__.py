@@ -24,7 +24,6 @@ def get_room_size(roomName):
     }
     # return use_query(params =params, query_type ='get-room-size')
     return 200
-    
 
 
 def get_room_penalty(id):

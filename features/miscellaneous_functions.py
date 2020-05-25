@@ -61,11 +61,20 @@ def get_period_list(start_date, stop_date, duration):
     return period_list
 
 
+def get_date_difference(date1, date2):
+    date1 = datetime.datetime.strptime(date1, "%Y-%m-%d %H:%M:%S")
+    date2 = datetime.datetime.strptime(date2, "%Y-%m-%d %H:%M:%S")
+    return (date2 - date1).days
+
+
 if __name__ == "__main__":
 
-    start_date = get_date_input()
-    stop_date = get_date_input()
-    duration = int(input("Duration:\t"))
-    data = get_period_list(start_date, stop_date, duration)
-    pprint.pprint(data)
-    pprint.pprint(len(data))
+    # start_date = get_date_input()
+    # stop_date = get_date_input()
+    # duration = int(input("Duration:\t"))
+    # data = get_period_list(start_date, stop_date, duration)
+    # pprint.pprint(data)
+    # pprint.pprint(len(data))
+    f_date = '2020-05-22 00:00:00'
+    l_date = '2020-06-04 00:00:00'
+    print(get_date_difference(f_date, l_date))

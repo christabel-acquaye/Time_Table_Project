@@ -1,12 +1,13 @@
 import datetime
+import pprint
 
 import numpy as np
 
 from features.exam.service.__init__ import get_exam_room
+from features.miscellaneous_functions import get_date_difference
 from features.periods.service import get_period_date
 from features.rooms.distance_services import get_distance_between_rooms
 from features.students.service import get_all_student_ids, get_specific_genes
-import pprint
 
 
 def more_than_one_exams_per_day(student_group_chromosome):
@@ -14,10 +15,8 @@ def more_than_one_exams_per_day(student_group_chromosome):
     dates = [get_period_date(period) for period in data]
     # pprint.pprint(dates[1])
     if checkIfDuplicates_1(dates):
-        print(2)
         return 2
     else:
-        print(4)
         return 0
 
 
@@ -33,42 +32,40 @@ def back_to_back_conflict(student_group_chromosome):
     dates = [get_period_date(period) for period in data]
     dates.sort()
     count = 0
+    print(dates)
     for i in range(len(dates) - 1):
-        if (dates[i+1] - dates[i]) == 1:
+        if (get_date_difference(dates[i+1], dates[i])) == 1:
             count += 1
     return 4 * count
 
 
 def distance_back_to_back_conflict(student_group_chromosome):
+    # room_data = [gene['rooms'] for gene in student_group_chromosome]
+    # room_names = []
+    # for elem in room_data:
+    #     room_name = [room['name'] for room in elem]
+    #     print(room_name)
+    #     room_names.append(room_name)
+    # print(room_name[1])
 
-    room_data = [gene['rooms'] for gene in std_gene]
-    room_names = [room['no_of_stds'] for room in room_data]
-    roomA, roomB = ''
-    distance_back_to_back_conflict = []
-    for i in range(len(room_names)):
-        roomA = room_names[i]
-        roomB = room_names[i+1]
-        distnce = get_distance_between_rooms(roomA, roomB)
-        actual_distance = distnce[0]
-
-        if 0.1 <= actual_distance <= 1.0:
-            distance_back_to_back_conflict.append(2)
-        elif 1.1 <= actual_distance <= 2.0:
-            distance_back_to_back_conflict.append(4)
-        elif 2.1 <= actual_distance <= 5.0:
-            distance_back_to_back_conflict.append(7)
-        else:
-            distance_back_to_back_conflict.append(0)
-    return sum(distance_back_to_back_conflict)
+    # if 0.1 <= actual_distance <= 1.0:
+    #     distance_back_to_back_conflict.append(2)
+    # elif 1.1 <= actual_distance <= 2.0:
+    #     distance_back_to_back_conflict.append(4)
+    # elif 2.1 <= actual_distance <= 5.0:
+    #     distance_back_to_back_conflict.append(7)
+    # else:
+    #     distance_back_to_back_conflict.append(0)
+    return 2
 
 
 def student_conflict(chromosome, student_groups):
     std_gene = [get_specific_genes(student_group_id, chromosome) for student_group_id in student_groups]
     std_conflict = []
     for student_group_chromosome in std_gene:
-        std_conflict.extend(more_than_one_exams_per_day(student_group_chromosome))
-        std_conflict.extend(back_to_back_conflict(student_group_chromosome))
-        std_conflict.extend(distance_back_to_back_conflict(student_group_chromosome))
+        std_conflict.append(more_than_one_exams_per_day(student_group_chromosome))
+        std_conflict.append(back_to_back_conflict(student_group_chromosome))
+        std_conflict.append(distance_back_to_back_conflict(student_group_chromosome))
     return sum(std_conflict)
 
 
@@ -113,7 +110,7 @@ def get_total_hard_constraints_value(chromosome):
     hard_constraints.append(exam_conflict(chromosome))
     hard_constraints.append(room_conflict(chromosome))
 
-    return hard_constraints
+    return sum(hard_constraints)
 
 
 if __name__ == "__main__":

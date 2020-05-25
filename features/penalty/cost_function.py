@@ -1,6 +1,8 @@
+import pprint
+
 from .hard_constraints_def import get_total_hard_constraints_value
 from .penalty_def import get_total_penalty_value
-import pprint
+
 
 def get_fitness_value(chromosomes, params):
     restructured_chromosomes = []

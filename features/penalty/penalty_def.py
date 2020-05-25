@@ -1,9 +1,10 @@
+import pprint
 from typing import List
 
 from features.exam.service.__init__ import get_exam_enrollment
 from features.periods.service.__init__ import get_period_penalty
 from features.rooms.service.__init__ import get_room_penalty, get_room_size
-import pprint
+
 
 def period_penalty(gene):
     penalty = get_period_penalty(gene['period_id'])
@@ -104,7 +105,7 @@ def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
         int -- [description]
     """
     penalty = []
-   
+
     for gene in chromosome:
 
         penalty.append(period_penalty(gene))
@@ -112,5 +113,5 @@ def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
         penalty.append(room_split_penalty(gene))
         penalty.append(room_size_penalty(gene))
         penalty.append(exam_enrolment_penalty(gene, params['threshold']))
-    
+
     return sum(penalty)

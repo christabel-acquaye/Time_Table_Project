@@ -43,7 +43,7 @@ def get_exam_id_from_name(examCode):
 
 
 def get_exam_room(id):
-    data = get_exam(id=id)
+    data = get_exams(id=id)
     return data[0]['maxRooms']
 
 

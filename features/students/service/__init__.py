@@ -1,13 +1,13 @@
 import pprint
 from os import path
+from typing import List
 
 import numpy as np
 import pandas as pd
 
-from features.exam.service import get_exams, get_exam_id_from_name
+from features.exam.service import get_exam_id_from_name, get_exams
 
 from .queries import use_query
-from typing import List
 
 
 def insert_students(cur, id, examId, periodId):
