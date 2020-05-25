@@ -37,8 +37,8 @@ def get_exam_order_by_size():
     return get_exams(order_by='minSize')
 
 
-def get_exam_id_from_name(examName):
-    data = get_exams(examCode=examName)
+def get_exam_id_from_name(examCode):
+    data = get_exams(examCode=examCode)
     return data[0]['id']
 
 

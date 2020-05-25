@@ -3,7 +3,7 @@ from typing import List
 from features.exam.service.__init__ import get_exam_enrollment
 from features.periods.service.__init__ import get_period_penalty
 from features.rooms.service.__init__ import get_room_penalty, get_room_size
-
+import pprint
 
 def period_penalty(gene):
     penalty = get_period_penalty(gene['period_id'])
@@ -62,7 +62,6 @@ def room_size_penalty(gene):
     penalty = []
     used = [single_room['no_of_stds'] for single_room in rooms]
     actual = [get_room_size(single_room['name']) for single_room in rooms]
-
     for i in range(len(used)):
         percentage = (used[i] / actual[i]) * 100
 
@@ -91,7 +90,6 @@ def exam_enrolment_penalty(gene, threshold):
         penalty.append(10)
     else:
         penalty.append(20)
-
     return sum(penalty)
 
 
@@ -106,13 +104,13 @@ def get_total_penalty_value(chromosome: List[dict], params: dict) -> int:
         int -- [description]
     """
     penalty = []
-
+   
     for gene in chromosome:
+
         penalty.append(period_penalty(gene))
         penalty.append(room_availability_penalty(gene))
-        # penalty.append(max_room_penalty(gene))
         penalty.append(room_split_penalty(gene))
         penalty.append(room_size_penalty(gene))
         penalty.append(exam_enrolment_penalty(gene, params['threshold']))
-
+    
     return sum(penalty)

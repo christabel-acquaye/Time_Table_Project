@@ -4,19 +4,28 @@ import numpy as np
 
 from features.exam.service.__init__ import get_exam_room
 from features.periods.service import get_period_date
-from features.students.service import get_all_student_ids
 from features.rooms.distance_services import get_distance_between_rooms
-from features.solution.chromosome_def import (checkIfDuplicates_1,
-                                              get_specific_genes)
+from features.students.service import get_all_student_ids, get_specific_genes
+import pprint
 
 
 def more_than_one_exams_per_day(student_group_chromosome):
     data = [gene['period_id'] for gene in student_group_chromosome]
     dates = [get_period_date(period) for period in data]
+    # pprint.pprint(dates[1])
     if checkIfDuplicates_1(dates):
+        print(2)
         return 2
     else:
+        print(4)
         return 0
+
+
+def checkIfDuplicates_1(listOfElems):
+    if len(listOfElems) == len(set(listOfElems)):
+        return False
+    else:
+        return True
 
 
 def back_to_back_conflict(student_group_chromosome):
@@ -31,7 +40,7 @@ def back_to_back_conflict(student_group_chromosome):
 
 
 def distance_back_to_back_conflict(student_group_chromosome):
-    
+
     room_data = [gene['rooms'] for gene in std_gene]
     room_names = [room['no_of_stds'] for room in room_data]
     roomA, roomB = ''
@@ -54,13 +63,12 @@ def distance_back_to_back_conflict(student_group_chromosome):
 
 
 def student_conflict(chromosome, student_groups):
-    std_gene = [get_specific_genes(student_group_id, chromosome) for id in student_groups]
+    std_gene = [get_specific_genes(student_group_id, chromosome) for student_group_id in student_groups]
     std_conflict = []
     for student_group_chromosome in std_gene:
-        for student in student_group:
-            std_conflict.extend(more_than_one_exams_per_day(student_group_chromosome))
-            std_conflict.extend(back_to_back_conflict(student_group_chromosome))
-            std_conflict.extend(distance_back_to_back_conflict(student_group_chromosome))
+        std_conflict.extend(more_than_one_exams_per_day(student_group_chromosome))
+        std_conflict.extend(back_to_back_conflict(student_group_chromosome))
+        std_conflict.extend(distance_back_to_back_conflict(student_group_chromosome))
     return sum(std_conflict)
 
 
@@ -96,12 +104,10 @@ def exam_conflict(student_group_chromosome):
 
 def get_total_hard_constraints_value(chromosome):
     hard_constraints = []
-
     # todo: call methods to return the data for these variables
     student_groups = get_all_student_ids()
     periods = []
     rooms = []
-
     hard_constraints.append(student_conflict(chromosome, student_groups))
     hard_constraints.append(period_conflict(chromosome))
     hard_constraints.append(exam_conflict(chromosome))

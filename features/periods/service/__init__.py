@@ -17,12 +17,12 @@ def get_periods(penalty=None, id=None):
 
 
 def get_period_date(id=None):
-    data = get_periods(id=id)
-    return [period['day'] for period in data]
+    data = get_periods(id=str(id))
+    return data[0]['day']
 
 
 def get_period_penalty(id):
-    data = get_period_penalty(id=id)
+    data = get_periods(id=id)
     return data[0]['penalty']
 
 

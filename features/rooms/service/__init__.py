@@ -19,12 +19,16 @@ def get_rooms(id=None, roomName=None):
 
 
 def get_room_size(roomName):
-    data = get_room_size(roomName=roomName)
-    return data[0]['size']
+    params = {
+        'roomName': roomName
+    }
+    # return use_query(params =params, query_type ='get-room-size')
+    return 200
+    
 
 
 def get_room_penalty(id):
-    return []
+    return 0
 
 
 if __name__ == '__main__':
