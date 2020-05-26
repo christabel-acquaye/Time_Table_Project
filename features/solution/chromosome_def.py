@@ -14,6 +14,7 @@ from _shared import NotEnoughRooms
 from features.exam.service import (get_exam_bound, get_exam_column,
                                    get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
+from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_periods,
                                       get_periods_with_lengths)
 from features.rooms.service import get_rooms
@@ -139,31 +140,19 @@ def a(chromosome):
     return checkIfDuplicates_1(dates)
 
 
-def checkIfDuplicates_1(listOfElems):
-    if len(listOfElems) == len(set(listOfElems)):
-        return False
-    else:
-        return True
-
-
-def get_specific_genes(std_id, chromosome):
-    exams = get_student_group_exams(std_id)
-    exams_id = [get_exam_id_from_name(examName=exam) for exam in exams[0]]
-    genes = []
-    for id in exams_id:
-        res = [gene for gene in chromosome if gene["exam_id"] == id]
-        genes.append(res)
-    return genes
-
-
 if __name__ == "__main__":
     from main import app
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
-        pprint.pprint(population)
+        params = {
+            'threshold': 1000,
+        }
+        pprint.pprint(get_fitness_value(population, params))
 
-        # for chromosome in population:
+        # updated_population = [ for chromosome in population]
+
+        # fo pprint.pprint(chromosome)r chromosome in population:
         #     std_gene = get_specific_genes(1, chromosome)
         #     room_data = [gene['rooms'] for gene in chromosome]
         #     # room_names = [roo['no_of_stds'] for roo in room_data]
@@ -171,3 +160,5 @@ if __name__ == "__main__":
         # pprint.pprint(get_specific_genes(2, chromosome))
     # size = [len(chromosome) for chromosome in generated_chromosome]
     # print(size)
+
+        # pprint.pprint(population[1][1]['period_id'])

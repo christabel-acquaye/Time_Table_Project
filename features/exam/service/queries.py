@@ -23,14 +23,14 @@ def use_query(params: dict, query_type: str):
         if params.get('id'):
             query += ' WHERE id = %(id)s'
 
+        if params.get('examCode'):
+            query += ' WHERE examCode = %(examCode)s'
+
         if params.get('maxRooms'):
             query += ' WHERE id = %(id)s'
 
         if params.get('minSize'):
             query += ' WHERE id = %(id)s'
-
-        if params.get('examCode'):
-            query += ' WHERE examCode = %(examCode)s'
 
         if params.get('order_by'):
             order_by = params.get('order_by')
@@ -40,7 +40,10 @@ def use_query(params: dict, query_type: str):
         query = '''
             SELECT COUNT(*) as count FROM exams
         '''
-
+    elif query_type == 'get-exam-id':
+        query = '''
+            SELECT id from exams WHERE examCode = %(examCode)s'
+        '''
     else:
         raise QUERY_NOT_FOUND(query_type)
 
