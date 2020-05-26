@@ -11,8 +11,8 @@ import pandas as pd
 from sklearn.utils import shuffle
 
 from _shared import NotEnoughRooms
-from features.exam.service import (get_exam_bound, get_exam_column,
-                                   get_exam_id_from_name,
+from features.exam.service import (get_closed_period, get_exam_bound,
+                                   get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_periods,
@@ -145,8 +145,10 @@ if __name__ == "__main__":
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
+        closed_periods = get_closed_period()
         params = {
             'threshold': 1000,
+            'closed_periods': closed_periods
         }
         pprint.pprint(get_fitness_value(population, params))
 

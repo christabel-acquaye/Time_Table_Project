@@ -42,6 +42,27 @@ def get_exam_id_from_name(examCode):
     return data[0]['id']
 
 
+def get_closed_period():
+    closed_periods = []
+    try:
+        while True:
+            period = input('Period(id): ')
+            exam = input("Enter a list of exams separated by space: ")
+            exit = int(input('Enter 1 to exit and 0 to continue:'))
+            userList = exam.split()
+            if exit == 0:
+                break
+            # exam_id = get_exam_id_from_name(exam)
+            closed_dic = {
+                'Period_id': period,
+                'Exam_id': userList
+            }
+            closed_periods.append(closed_dic)
+    except KeyboardInterrupt:
+        pass
+    return closed_periods
+
+
 def get_exam_room(id):
     data = get_exams(id=id)
     return data[0]['maxRooms']
@@ -82,5 +103,7 @@ if __name__ == '__main__':
 
         # get_exam_column(columnName='id', id=None)
 
-        data = get_exam_id_from_name(examName='CAT 154')
-        print(data)
+        # data = get_exam_id_from_name(examName='CAT 154')
+        # print(data)
+
+        print(get_closed_period())

@@ -68,8 +68,17 @@ def student_conflict(chromosome, student_groups):
     return len(std_conflict)
 
 
-def period_conflict(chromosome):
-    return 5
+def period_conflict(chromosome, closed_periods):
+    hard_count = []
+    for gene in chromosome:
+        hard_count = [1 for closed_cased in chromosome if gene['period_id'] ==
+                      closed_periods['Period_id'] and gene['exam_id'] in closed_periods['Exam_id']]
+    student_group_exams = [exam['exam_id'] for exam in chromosome]
+    for i in range(len(student_group_exams)):
+        for j in range(i + 1, len(student_group_exams)):
+            if (student_group_exams[i] == student_group_exams[j]):
+                hard_count.append(1)
+    return len(hard_count)
 
 
 def room_conflict(chromosome):
@@ -98,14 +107,14 @@ def exam_conflict(student_group_chromosome):
     return len(exam_conflicts)
 
 
-def get_total_hard_constraints_value(chromosome):
+def get_total_hard_constraints_value(chromosome, closed_periods):
     hard_constraints = []
     # todo: call methods to return the data for these variables
     student_groups = get_all_student_ids()
     periods = []
     rooms = []
     hard_constraints.append(student_conflict(chromosome, student_groups))
-    hard_constraints.append(period_conflict(chromosome))
+    hard_constraints.append(period_conflict(chromosome, closed_periods))
     hard_constraints.append(exam_conflict(chromosome))
     hard_constraints.append(room_conflict(chromosome))
 
