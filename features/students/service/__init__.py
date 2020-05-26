@@ -17,8 +17,9 @@ def insert_students(cur, id, examId, periodId):
 def get_students(id=None):
     return use_query(params={'id': id}, query_type='get-students')
 
+
 def get_all_student_ids():
-    return use_query(params = None, query_type = 'get_all_student_ids')
+    return use_query(params=None, query_type='get_all_student_ids')
 
 
 def read_student_groups():

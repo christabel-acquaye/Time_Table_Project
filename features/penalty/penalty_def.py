@@ -50,7 +50,6 @@ def room_split_penalty(gene: dict):
 
 def compute_split_penalty(no_of_rooms: int):
     """compute split penalty
-# 
     Arguments:
         no_of_rooms {int} -- number of rooms
     """

@@ -4,10 +4,10 @@ import numpy as np
 
 from features.exam.service.__init__ import get_exam_room
 from features.periods.service import get_period_date
-from features.students.service import get_all_student_ids
 from features.rooms.distance_services import get_distance_between_rooms
 from features.solution.chromosome_def import (checkIfDuplicates_1,
                                               get_specific_genes)
+from features.students.service import get_all_student_ids
 
 
 def more_than_one_exams_per_day(student_group_chromosome):
@@ -31,7 +31,7 @@ def back_to_back_conflict(student_group_chromosome):
 
 
 def distance_back_to_back_conflict(student_group_chromosome):
-    
+
     room_data = [gene['rooms'] for gene in std_gene]
     room_names = [room['no_of_stds'] for room in room_data]
     roomA, roomB = ''

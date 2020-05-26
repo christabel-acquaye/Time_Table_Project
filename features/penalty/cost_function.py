@@ -13,6 +13,7 @@ def get_fitness_value(chromosomes, params):
         restructured_chromosomes.append(restructured_chromosome)
     return restructured_chromosomes
 
+
 if __name__ == "__main__":
     chromosomes = []
     params = []
