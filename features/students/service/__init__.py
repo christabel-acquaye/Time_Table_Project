@@ -63,6 +63,9 @@ def get_specific_genes(std_id, chromosome):
     genes = []
     for id in exams_ids:
         res = [gene for gene in chromosome if gene["exam_id"] == id]
+
+        if not len(res):
+            continue
         genes.extend(res)
     return genes
 

@@ -14,23 +14,20 @@ def more_than_one_exams_per_day(student_group_chromosome):
     data = [gene['period_id'] for gene in student_group_chromosome]
     dates = [get_period_date(period) for period in data]
     # pprint.pprint(dates[1])
-    if checkIfDuplicates_1(dates):
+    if has_duplicates(dates):
         return 2
-    else:
-        return 0
+
+    return 0
 
 
-def checkIfDuplicates_1(listOfElems):
-    if len(listOfElems) == len(set(listOfElems)):
-        return False
-    else:
-        return True
+def has_duplicates(listOfElems):
+    return len(listOfElems) != len(set(listOfElems))
 
 
 def back_to_back_conflict(student_group_chromosome):
     data = [gene['period_id'] for gene in student_group_chromosome]
     dates = [get_period_date(period) for period in data]
-    dates.sort()
+    dates.sort(key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S"))
     count = 0
     for i in range(len(dates) - 1):
         if (get_date_difference(dates[i+1], dates[i])) == 1:
@@ -68,18 +65,61 @@ def student_conflict(chromosome, student_groups):
     return len(std_conflict)
 
 
-def period_conflict(chromosome, closed_periods):
-    hard_count = []
+def period_conflict(chromosome, closed_periods, student_groups):
+    hard_count = 0
     for gene in chromosome:
-        hard_count = [1 for closed_cased in chromosome if gene['period_id'] ==
-                      closed_periods['Period_id'] and gene['exam_id'] in closed_periods['Exam_id']]
-    student_group_exams = [exam['exam_id'] for exam in chromosome]
-    for i in range(len(student_group_exams)):
-        for j in range(i + 1, len(student_group_exams)):
-            if (student_group_exams[i] == student_group_exams[j]):
-                hard_count.append(1)
-    return len(hard_count)
+        current_period = gene['period_id']
+        closed_exams = closed_periods.get(current_period, [])
 
+        if not len(closed_exams):
+            continue
+
+        if not gene['exam_id'] in closed_exams:
+            hard_count += 1
+
+    # two exams for a student group should not have the same period
+    for student_group_id in student_groups:
+        std_exams = get_specific_genes(student_group_id, chromosome)
+        std_exam_ids = list((gene['period_id'] for gene in std_exams))  # get period ids for student exams
+
+        if has_duplicates(std_exam_ids):
+            hard_count += 1
+
+    # two exams or more in a day for different periods
+        data = [gene['period_id'] for gene in std_exams]
+        dates = [get_period_date(period) for period in data]
+        ls = []
+        for i in range(len(data)):
+            item = {
+                'period_id': data[i],
+                'date': dates[i]
+            }
+        ls.sort(key=lambda item: datetime.datetime.strptime(item['date'], "%Y-%m-%d %H:%M:%S"))
+    
+    grouped = {}
+    for ass in range(len(ls)):
+        period_ls = []
+        if ls[ass-1]['date'] == ls[ass]['date']:
+            period_ls.append(ls[ass-1]['period'])
+            period_ls.append(ls[ass]['period'])
+        else:
+            period_ls.append(ls[ass]['period'])
+        grouped.update({
+            ls[ass]['date']: period_ls
+        })
+    
+    for key in grouped:
+        if len(grouped[key]) > 1:
+            if checkConsecutive(grouped[key]):
+                print(key, '->', grouped[key])
+                hard_count += 1
+
+    return hard_count
+
+
+def checkConsecutive(ls): 
+    return sorted(ls) == list(range(min(ls), max(ls)+1)) 
+      
 
 def room_conflict(chromosome):
     return 5
@@ -114,7 +154,7 @@ def get_total_hard_constraints_value(chromosome, closed_periods):
     periods = []
     rooms = []
     hard_constraints.append(student_conflict(chromosome, student_groups))
-    hard_constraints.append(period_conflict(chromosome, closed_periods))
+    hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
     hard_constraints.append(exam_conflict(chromosome))
     hard_constraints.append(room_conflict(chromosome))
 
