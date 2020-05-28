@@ -1,12 +1,12 @@
 import datetime
 import pprint
-
+import math
 import numpy as np
 
 from features.exam.service.__init__ import get_exam_room
 from features.miscellaneous_functions import get_date_difference
 from features.periods.service import get_period_date
-from features.rooms.distance_services import get_distance_between_rooms
+from features.rooms.distance_services import get_distance_between_rooms, find_average_distance
 from features.students.service import get_all_student_ids, get_specific_genes
 
 
@@ -36,23 +36,35 @@ def back_to_back_conflict(student_group_chromosome):
 
 
 def distance_back_to_back_conflict(student_group_chromosome):
-    # room_data = [gene['rooms'] for gene in student_group_chromosome]
-    # room_names = []
-    # for elem in room_data:
-    #     room_name = [room['name'] for room in elem]
-    #     print(room_name)
-    #     room_names.append(room_name)
-    # print(room_name[1])
+    hard_count = []
+    for i in range(len(student_group_chromosome)):
+        room_names1, room_names2 = [], []
+        room_data1 = student_group_chromosome[i-1]['rooms']
+        room_data2 = student_group_chromosome[i]['rooms']
 
-    # if 0.1 <= actual_distance <= 1.0:
-    #     distance_back_to_back_conflict.append(2)
-    # elif 1.1 <= actual_distance <= 2.0:
-    #     distance_back_to_back_conflict.append(4)
-    # elif 2.1 <= actual_distance <= 5.0:
-    #     distance_back_to_back_conflict.append(7)
-    # else:
-    #     distance_back_to_back_conflict.append(0)
-    return 2
+        for elem in room_data1:
+            room_name1 = [room['name'] for room in elem]
+            room_names1.append(room_name1)
+            if len(room_names1) < 1: continue
+        
+        for elem in room_data2:
+            room_name2 = [room['name'] for room in elem]
+            room_names2.append(room_name2)
+
+        distance1 = find_average_distance(room_names1)
+        distance2 = find_average_distance(room_names2)
+        actual_distance = distance1 - distance2
+        actual_distance = abs(actual_distance)
+
+        if 0.1 <= actual_distance <= 1.0:
+            distance_back_to_back_conflict.append(2)
+        elif 1.1 <= actual_distance <= 2.0:
+            distance_back_to_back_conflict.append(4)
+        elif 2.1 <= actual_distance <= 5.0:
+            distance_back_to_back_conflict.append(7)
+        else:
+            distance_back_to_back_conflict.append(0)
+    return sum(hard_count)
 
 
 def student_conflict(chromosome, student_groups):

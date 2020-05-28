@@ -62,6 +62,8 @@ if __name__ == "__main__":
     #     print(7)
 
     roomA = ['EHC_101', 'NB_232', 'OLD_21', 'EHC_212', 'EHC_212', 'EHC_232', 'NB_232']
+    roomB = ['NB_232', 'EHC_212', 'EHC_232', 'NB_232']
     # pprint.pprint(get_distance_between_rooms(roomA[0], roomA[1]))
     # print(len(roomA))
     print(find_average_distance(roomA))
+    print(find_average_distance(roomB))

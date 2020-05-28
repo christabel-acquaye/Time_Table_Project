@@ -7,16 +7,6 @@ from features.rooms.service.__init__ import get_room_penalty, get_room_size
 
 
 def period_penalty(gene, reserved_periods):
-    penalty = 0
-
-    # penalty = get_period_penalty(gene['period_id'])
-    if gene['period_id'] in reserved_periods:
-        penalty += 4
-    data = [elem['no_of_student'] for elem in gene['rooms']]
-    enrollment = get_exam_enrollment(gene['exam'])
-    if sum(data) < enrollment:
-        penalty += 1
-
     """if a period is opeed, we assign weights
     -4: strongly prefered
     -1: prefered
@@ -26,24 +16,31 @@ def period_penalty(gene, reserved_periods):
 
     Arguments:
         gene {dict} -- gene
+        reserved_periods [list] -- periods reserved for specific occasions
 
     Returns:
         int -- penalty value
     """
+
+    penalty = 0
+
+    # penalty = get_period_penalty(gene['period_id'])
+    if gene['period_id'] in reserved_periods:
+        penalty += 4
+    data = [elem['no_of_students'] for elem in gene['rooms']]
+    enrollment = get_exam_enrollment(gene['exam'])
+    if sum(data) < enrollment:
+        penalty += 1
+
     return penalty
 
 
 def room_availability_penalty(gene: dict):
-    penalty = 0
-    room_size = [get_room_size(item['name']) for item in gene['rooms']
-    ass_room_size = [item['no_of_students'] for item in gene['rooms']
-    for i in range(len(room_size)):
-        if ass_room_size[i] > room_size[i]
-            penalty += 4
-    
-    if len(room_size) != get_exam_enrollment(gene['exam']):
-        penalty += 4
-    """if a room is not available, we aenrollment = get_exam_enrollment(gene['exam'])ssign weights
+    """Function that calculates penalties related to the room availability.
+            It checks if roomwas over assigned.
+            If specified max room matches total number of rooms.
+            If rooms assigned for a particular assignment is in the same area.
+
         -4: strongly prefered
         -1: prefered
         0: neutral
@@ -57,6 +54,18 @@ def room_availability_penalty(gene: dict):
         int -- penalty value
     """
 
+    penalty = 0
+    room_size = [get_room_size(item['name']) for item in gene['rooms']
+    ass_room_size= [item['no_of_students'] for item in gene['rooms']
+    for i in range(len(room_size)):
+        if ass_room_size[i] > room_size[i]:
+            penalty += 4
+
+    if len(room_size) != get_exam_enrollment(gene['exam']):
+        penalty += 4
+
+    if !(check_exams_in_same_vicinity(gene)):
+        penalty +=4
     return penalty
 
 
@@ -65,14 +74,22 @@ def chkList(lst):
 
 
 def check_exams_in_same_vicinity(gene):
-    penalty = 0
-    firsts = [item['name'] for item in gene['rooms']]
-    if chkList(firsts) == False:
-        penalty += 4
+    """ Function that checks if rooms assigned to a student group is in the same vicinty
+    Argument:
+        gene {dict} -- gene
+    Returns:
+        Penalty of 4 if rooms are not in the same vicinity.
 
+    """
+    penalty= 0
+    firsts= [item['name'] for item in gene['rooms']]
+    if !(chkList(firsts[0])):
+       return False
+    else:
+        return True
 
 def room_split_penalty(gene: dict):
-    no_of_rooms = len(gene['rooms'])
+    no_of_rooms= len(gene['rooms'])
     return compute_split_penalty(no_of_rooms)
 
 
@@ -85,12 +102,12 @@ def compute_split_penalty(no_of_rooms: int):
 
 
 def room_size_penalty(gene):
-    rooms = gene['rooms']
-    penalty = []
-    used = [single_room['no_of_stds'] for single_room in rooms]
-    actual = [get_room_size(single_room['name']) for single_room in rooms]
+    rooms= gene['rooms']
+    penalty= []
+    used= [single_room['no_of_stds'] for single_room in rooms]
+    actual= [get_room_size(single_room['name']) for single_room in rooms]
     for i in range(len(used)):
-        percentage = (used[i] / actual[i]) * 100
+        percentage= (used[i] / actual[i]) * 100
 
         if 1 <= percentage <= 10:
             penalty.append(1)
@@ -104,10 +121,10 @@ def room_size_penalty(gene):
 
 
 def exam_enrolment_penalty(gene, threshold):
-    penalty = []
-    enrolment = get_exam_enrollment(gene['exam_id'])
-    percentage = ((enrolment - threshold) * 100)/threshold
-    percentage_increase = percentage - 100
+    penalty= []
+    enrolment= get_exam_enrollment(gene['exam_id'])
+    percentage= ((enrolment - threshold) * 100)/threshold
+    percentage_increase= percentage - 100
 
     if 1 <= percentage_increase <= 10:
         penalty.append(1)
@@ -130,7 +147,7 @@ def get_total_penalty_value(chromosome: List[dict], threshold: int, reserved_per
     Returns:
         int -- [description]
     """
-    penalty = []
+    penalty= []
 
     for gene in chromosome:
 
