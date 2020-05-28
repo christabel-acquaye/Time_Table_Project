@@ -95,7 +95,7 @@ def period_conflict(chromosome, closed_periods, student_groups):
                 'date': dates[i]
             }
         ls.sort(key=lambda item: datetime.datetime.strptime(item['date'], "%Y-%m-%d %H:%M:%S"))
-    
+
     grouped = {}
     for ass in range(len(ls)):
         period_ls = []
@@ -107,7 +107,7 @@ def period_conflict(chromosome, closed_periods, student_groups):
         grouped.update({
             ls[ass]['date']: period_ls
         })
-    
+
     for key in grouped:
         if len(grouped[key]) > 1:
             if checkConsecutive(grouped[key]):
@@ -117,11 +117,17 @@ def period_conflict(chromosome, closed_periods, student_groups):
     return hard_count
 
 
-def checkConsecutive(ls): 
-    return sorted(ls) == list(range(min(ls), max(ls)+1)) 
-      
+def checkConsecutive(ls):
+    return sorted(ls) == list(range(min(ls), max(ls)+1))
 
-def room_conflict(chromosome):
+
+def room_conflict(chromosome, reserved_rooms):
+    hard_count = 0
+    std_exams = get_specific_genes(student_group_id, chromosome)
+    data = [gene['rooms'] for gene in std_exams]
+    for item in data:
+        if item[name] in reserved_rooms:
+            hard_count += 1
     return 5
 
 
@@ -147,7 +153,7 @@ def exam_conflict(student_group_chromosome):
     return len(exam_conflicts)
 
 
-def get_total_hard_constraints_value(chromosome, closed_periods):
+def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms):
     hard_constraints = []
     # todo: call methods to return the data for these variables
     student_groups = get_all_student_ids()
@@ -156,7 +162,7 @@ def get_total_hard_constraints_value(chromosome, closed_periods):
     hard_constraints.append(student_conflict(chromosome, student_groups))
     hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
     hard_constraints.append(exam_conflict(chromosome))
-    hard_constraints.append(room_conflict(chromosome))
+    hard_constraints.append(room_conflict(chromosome, reserved_rooms))
 
     return len(hard_constraints)
 

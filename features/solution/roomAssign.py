@@ -9,14 +9,23 @@ from features.rooms.service import get_rooms
 
 from .services import get_exam_search
 
+
+
 # Function that updates the room capacity after extracting the number of rooms to be used for a particular exam
-
-
 def __update_room_capacity(room, capacity):
     return {**room, 'size': capacity}
 
 
 def get_index_max_room_size(room_data):
+
+ """Function that gets room from room date with largest capacity
+
+    Arguments:
+       room date [list] -- get rooms with multiple room data columns
+
+    Returns:
+       room data with maximum room capacity
+     """
 
     capacities = [room['size'] for room in room_data]
 
@@ -24,6 +33,18 @@ def get_index_max_room_size(room_data):
 
 
 def room_compute(current_student_size, room_data, room_allocated=None):
+    """Function that calculates the rooms to be used by the enrolled students for an exams
+       It assigns the room with maximum seats first. After room has been assigned it is removed from the room data list
+
+    Arguments:
+        current_student_size int -- students enrolled for an exam
+        room_data [list] -- rooms available for a particular period
+
+    Returns:
+       room_allocated [list] -- room data for rooms assigned to pacrticular enrollment
+       updated_room [list] -- room  name with remaining seats if any after assignment
+     """
+
     if len(room_data) == 0:
         raise NotEnoughRooms
 
@@ -50,8 +71,17 @@ def room_compute(current_student_size, room_data, room_allocated=None):
         return room_allocated, updated_room
 
 
-# Function that returns the rooms available for a particular period
 def period_room_allocation(periods, rooms):
+     """Function that returns an assignment of rooms available for a list of period
+        For every period, it shows a list of available rooms after eliminating reserved rooms.
+
+    Arguments:
+        periods [list] -- students enrolled for an exam
+        rooms [list] -- rooms available for a particular period
+
+    Returns:
+       period_room [list] -- room period assignment
+     """
     period_room = []
     periods = list(periods)
     room_arr = list(rooms)

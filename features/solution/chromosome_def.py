@@ -31,6 +31,17 @@ def format_rooms(rooms):
 
 
 def best_fit_exams_in_period(exams, duration):
+
+    """check to see if period duration matches exam duration before assignment
+
+    Arguments:
+        exams [list] -- exams
+        period duration int -- period duration
+
+    Returns:
+       best_fit_exams [list] -- exams whose duration can be accomodated in period's duration
+       new_exams_state [list] -- exams whose duration cannot be accomodated in periods duration
+     """
     best_fit_exams = []  # exams less than duration
     new_exams_state = []  # exams which do not fit
 
@@ -46,13 +57,18 @@ def best_fit_exams_in_period(exams, duration):
 def fit_exams_in_rooms(exams, rooms_available, period_id):
     """Fits exams in rooms and returns the exams catered for
     and the pending ones.
-    Not all exams can be fitted withing the period since we can run
+    Not all exams can be fitted within the period since we can run
     out of rooms available when fitting the exams
 
     Arguments:
         exams {list} -- list of exams to attempt fitting
-        rooms {[type]} -- [description]
-        period_id {[type]} -- [description]
+        rooms {[list]} -- list of available rooms
+        period_id {[int]} -- period for a particular gene assignment
+
+    Returns:
+       period_exams [list] -- periods assigned to exams and rooms
+       exams_without_rooms [list] -- exams which size exceeds room availabilty for the particular period
+       rooms_available [list] -- rooms available after assignment
     """
 
     period_exams = []
@@ -75,7 +91,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 print('period', period_id, 'exam',
                       exam['id'], 'std_size', exam['minSize'])
                 print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
-                    std_with_seats, exam['minSize']))  # problem was over here u forgot the % sign
+                    std_with_seats, exam['minSize'])) 
 
             period_exam_assignment = {
                 'period_id': period_id,
@@ -93,7 +109,26 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
 
 
 def generate_chromosome():
-    exams = get_exam_order_by_size()
+
+    """Function that generates multiple genes to form a chromosome
+    Arguments:
+
+    Returns:
+       chromosome [{list}] -- 
+       [
+            {
+                "period_id": periods_assigned,
+                "exam_id": exams_assigned,
+                "rooms": [
+                    {
+                    "name": name of assigned room,
+                    "no_of_stds": no_of_students_that_were_assigned_in_the_room
+                    },
+            }
+        ]
+     """
+    #  Get exams ordered in descending order of enrollment size
+    exams = get_exam_order_by_size()  
     periods = get_periods_with_lengths()
 
     rooms = get_rooms()
@@ -126,11 +161,26 @@ def generate_chromosome():
 
 
 def generate_population(size):
+     """Generates a list of chromosomes based on specified size
+
+    Arguments:
+       size int -- number of chromosomes in the population
+
+    Returns:
+        A list of chromosomes
+     """
     return [generate_chromosome()
             for i in range(population_size)]
 
 
 def get_exam_from_gene(chromosome):
+     """Filters exam id for every gene in the chromosome
+    Arguments:
+       chromosome [[list]] -- list of genes
+
+    Returns:
+        A list of exam ids in chromosome
+     """
     return [gene["exam_id"] for gene in chromosome]
 
 
@@ -146,9 +196,13 @@ if __name__ == "__main__":
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
         closed_periods = get_closed_period()
+        reserved_periods, reserved_rooms = [], []
+
         params = {
             'threshold': 1000,
-            'closed_periods': closed_periods
+            'closed_periods': closed_periods,
+            'reserved_rooms': reserved_rooms,
+            'reserved_periods': reserved_periods
         }
         pprint.pprint(get_fitness_value(population, params))
 

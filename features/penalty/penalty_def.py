@@ -6,8 +6,16 @@ from features.periods.service.__init__ import get_period_penalty
 from features.rooms.service.__init__ import get_room_penalty, get_room_size
 
 
-def period_penalty(gene):
-    penalty = get_period_penalty(gene['period_id'])
+def period_penalty(gene, reserved_periods):
+    penalty = 0
+
+    # penalty = get_period_penalty(gene['period_id'])
+    if gene['period_id'] in reserved_periods:
+        penalty += 4
+    data = [elem['no_of_student'] for elem in gene['rooms']]
+    enrollment = get_exam_enrollment(gene['exam'])
+    if sum(data) < enrollment:
+        penalty += 1
 
     """if a period is opeed, we assign weights
     -4: strongly prefered
@@ -26,8 +34,16 @@ def period_penalty(gene):
 
 
 def room_availability_penalty(gene: dict):
-    penalty = get_room_penalty(id)
-    """if a room is not available, we assign weights
+    penalty = 0
+    room_size = [get_room_size(item['name']) for item in gene['rooms']
+    ass_room_size = [item['no_of_students'] for item in gene['rooms']
+    for i in range(len(room_size)):
+        if ass_room_size[i] > room_size[i]
+            penalty += 4
+    
+    if len(room_size) != get_exam_enrollment(gene['exam']):
+        penalty += 4
+    """if a room is not available, we aenrollment = get_exam_enrollment(gene['exam'])ssign weights
         -4: strongly prefered
         -1: prefered
         0: neutral
@@ -42,6 +58,17 @@ def room_availability_penalty(gene: dict):
     """
 
     return penalty
+
+
+def chkList(lst):
+    return len(set(lst)) == 1
+
+
+def check_exams_in_same_vicinity(gene):
+    penalty = 0
+    firsts = [item['name'] for item in gene['rooms']]
+    if chkList(firsts) == False:
+        penalty += 4
 
 
 def room_split_penalty(gene: dict):
@@ -93,7 +120,7 @@ def exam_enrolment_penalty(gene, threshold):
     return sum(penalty)
 
 
-def get_total_penalty_value(chromosome: List[dict], threshold: int) -> int:
+def get_total_penalty_value(chromosome: List[dict], threshold: int, reserved_periods) -> int:
     """compute total penalty or chromosome
 
     Arguments:
@@ -107,7 +134,7 @@ def get_total_penalty_value(chromosome: List[dict], threshold: int) -> int:
 
     for gene in chromosome:
 
-        penalty.append(period_penalty(gene))
+        penalty.append(period_penalty(gene, reserved_periods))
         penalty.append(room_availability_penalty(gene))
         penalty.append(room_split_penalty(gene))
         penalty.append(room_size_penalty(gene))
