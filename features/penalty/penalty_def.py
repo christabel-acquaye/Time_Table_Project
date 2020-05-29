@@ -102,6 +102,20 @@ def compute_split_penalty(no_of_rooms: int):
 
 
 def room_size_penalty(gene):
+      """ Function that checks the the percentage of seats occupied of a particular exams.
+      If the percetage falls within a specified range, a particular penalty is assigned.
+          • 1 – 10% of capacity; penalty = 1
+          • 10 – 30% of capacity; penalty = 0
+          • 30 – 60% of capacity; penalty = -1
+          • 60 – 100% of capacity; penalty = -2
+
+    Argument:
+        gene {dict} -- gene
+        
+    Returns:
+        int -- Sum of the total penalty for each room assigned in the gene
+
+    """
     rooms= gene['rooms']
     penalty= []
     used= [single_room['no_of_stds'] for single_room in rooms]
@@ -121,6 +135,18 @@ def room_size_penalty(gene):
 
 
 def exam_enrolment_penalty(gene, threshold):
+    """calaculates the penalty for the percentage the exam enrollment size exceeds a specific threshold
+        • 1 – 10% more than threshold; penalty = 1
+        • 10 – 30% more than threshold; penalty = 5
+        • 30 – 60% more than threshold; penalty = 10
+        • 60 – 100% more than threshold; penalty = 20
+    Arguments:
+        chromosome {List[dict]} -- [description]
+        threshold int -- threshold
+
+    Returns:
+        int -- total penalty calculated for the gene
+    """
     penalty= []
     enrolment= get_exam_enrollment(gene['exam_id'])
     percentage= ((enrolment - threshold) * 100)/threshold

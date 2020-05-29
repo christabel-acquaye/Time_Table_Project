@@ -11,13 +11,24 @@ from features.students.service import get_all_student_ids, get_specific_genes
 
 
 def more_than_one_exams_per_day(student_group_chromosome):
+    """Functions that checks to see if a student group has been assigned more than one exams in a day. 
+        It gets all the period_id's in the chromosome and from that it gets the date for each chromosome.
+        If the date returned is the same, it means we have at least two exams being written on the same day
+    
+    Arguments:
+        student_group_chromosome {List[dict]} -- Contains exams written by only a particular student gorup
+
+    Returns:
+        int -- of 1 if there are periods with the same date and 0 if there exists no such condition/
+    """
+    hard_count = 0
     data = [gene['period_id'] for gene in student_group_chromosome]
     dates = [get_period_date(period) for period in data]
     # pprint.pprint(dates[1])
     if has_duplicates(dates):
-        return 2
+        hard_count = 1
 
-    return 0
+    return 2 * hard_count
 
 
 def has_duplicates(listOfElems):
@@ -25,17 +36,42 @@ def has_duplicates(listOfElems):
 
 
 def back_to_back_conflict(student_group_chromosome):
+     """Functions that checks to see if a student group has been assigned xams that directly follow another exams the next day
+        It gets all the period_id's in the chromosome and from that it gets the date for each chromosome.
+        It sorts the list in ascending order of dates
+        If the difference between the previous date and the current date is 1, it means the student group has two exams on two conservative
+        days during the exam period
+    
+    Arguments:
+        student_group_chromosome {List[dict]} -- Contains exams written by only a particular student gorup
+
+    Returns:
+        int -- of 1 if there are periods with the same date and 0 if there exists no such condition
+    """
     data = [gene['period_id'] for gene in student_group_chromosome]
     dates = [get_period_date(period) for period in data]
     dates.sort(key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S"))
-    count = 0
+    hard_count = 0
     for i in range(len(dates) - 1):
         if (get_date_difference(dates[i+1], dates[i])) == 1:
-            count += 1
-    return 4 * count
+            hard_count += 1
+    return 4 * hard_count
 
 
 def distance_back_to_back_conflict(student_group_chromosome):
+     """Distance back to back refers to the room distance between two adjacent papers by a student group on the same day;
+        So you have period 1 and 2 on the same day and we realize, the student group has exams on these two periods,
+        we calculate the distance between the rooms and it determines the penalty we assign for the distance back to back.
+        NB: For the comparison of 2 rooms against 3 rooms, find the average distance between the 2 rooms and average distance
+        between the 3 rooms and compare both average values.
+    
+    Arguments:
+        student_group_chromosome {List[dict]} -- Contains exams written by only a particular student gorup
+
+    Returns:
+        int -- total distance back to back conflicts
+    """
+    
     hard_count = []
     for i in range(len(student_group_chromosome)):
         room_names1, room_names2 = [], []
@@ -45,7 +81,6 @@ def distance_back_to_back_conflict(student_group_chromosome):
         for elem in room_data1:
             room_name1 = [room['name'] for room in elem]
             room_names1.append(room_name1)
-            if len(room_names1) < 1: continue
         
         for elem in room_data2:
             room_name2 = [room['name'] for room in elem]
@@ -68,6 +103,16 @@ def distance_back_to_back_conflict(student_group_chromosome):
 
 
 def student_conflict(chromosome, student_groups):
+     """compute total hard constraints count for every student conflict
+
+    Arguments:
+        chromosome {List[dict]} -- Contains exams written by only a particular student group.
+        student groups [List] -- list of all student group ids.
+
+
+    Returns:
+        int -- hard_count value for student conflict
+    """
     std_gene = [get_specific_genes(student_group_id, chromosome) for student_group_id in student_groups]
     std_conflict = []
     for student_group_chromosome in std_gene:
@@ -78,6 +123,19 @@ def student_conflict(chromosome, student_groups):
 
 
 def period_conflict(chromosome, closed_periods, student_groups):
+    """compute total hard constraints associated with period assigned in a specific chromosome. 
+       It first checks to ensure that all closed periods; ie periods reserved for specific courses have been assigned correctly, else it assigns a 
+       a hard_count of 1.
+       It also checks to be sure no student group should have two exams for the same period and 
+       if the student group also has two or more exams on consercutive periods.
+
+    Arguments:
+        chromosome {List[dict]} -- Contains exams written by only a particular student group.
+        student groups [List] -- list of all student group ids.
+
+    Returns:
+        int -- hard_count value for period conflict
+    """
     hard_count = 0
     for gene in chromosome:
         current_period = gene['period_id']
@@ -134,38 +192,79 @@ def checkConsecutive(ls):
 
 
 def room_conflict(chromosome, reserved_rooms):
+    """compute total hard constraints associated with rooms assigned in a specific chromosome. 
+       It simply checks to be sure no room marked as reserved was assigned in the chromosome.
+
+    Arguments:
+        chromosome {List[dict]} -- Contains exams written by only a particular student group.
+        reserved_rooms [List] -- list of rooms reserved by the user.
+
+    Returns:
+        int -- hard_count value for every gene that has reserved rooms 
+    """
     hard_count = 0
     std_exams = get_specific_genes(student_group_id, chromosome)
     data = [gene['rooms'] for gene in std_exams]
+
     for item in data:
         if item[name] in reserved_rooms:
             hard_count += 1
-    return 5
+    return hard_count
+
+
+def __get_difference(lenA, lenB):
+    return (lenA - lenB)
 
 
 def exam_conflict(student_group_chromosome):
+    """compute total hard constraints associated with exams. It gets the max_rooms specified by user and the number of rooms assigned for every geen
+       if the rooms assigned exceeds that speicifed by the user by 1: a hard_count of 1 is assigned
+       if the rooms assigned exceeds that speicifed by the user by 2: a hard_count of 2 is assigned
+       if the rooms assigned exceeds that speicifed by the user by 3: a hard_count of 3 is assigned
+       if the rooms assigned exceeds that speicifed by the user by 4 and greater: a hard_count of 4 is assigned
+
+    Arguments:
+        chromosome {List[dict]} -- Contains exams written by only a particular student group
+    
+
+    Returns:
+        int -- hard_count value for every gene that has more rooms than that specified
+    """
+
     exam_data = [gene['exam_id'] for gene in student_group_chromosome]
+    room_data = [gene['rooms'] for gene in student_group_chromosome]
     exam_room_assigned = [get_exam_room(id) for id in exam_data]
-    exam_conflicts = []
-    for room_num in exam_room_assigned:
-        if room_num == 0:
-            exam_conflicts.append(0)
+    hard_count = 0
 
-        if room_num == 1:
-            exam_conflicts.append(1)
+    for i in range(len(exam_room_assigned)):
+        if __get_difference(exam_room_assigned[i], len(room_data[i])) <= 0:
+            hard_count = hard_count
 
-        if room_num == 2:
-            exam_conflicts.append(2)
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 1:
+            hard_count += 1
 
-        if room_num == 3:
-            exam_conflicts.append(3)
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 2:
+            hard_count += 2
+        
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 3:
+            hard_count += 3
 
-        if room_num == 4:
-            exam_conflicts.append(4)
-    return len(exam_conflicts)
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) >= 4 :
+            hard_count += 4
+    
+    return hard_count
 
 
 def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms):
+    """compute total hard constraints  for each chromosome in the population
+
+    Arguments:
+        chromosome {List[dict]} -- [description]
+        params {dict} -- parameters data of closed_periods, and reserved periods
+
+    Returns:
+        int -- total hard constraints counted in the chromosome
+    """
     hard_constraints = []
     # todo: call methods to return the data for these variables
     student_groups = get_all_student_ids()
