@@ -42,7 +42,6 @@ def get_exam_id_from_name(examCode):
     return data[0]['id']
 
 
-
 def get_closed_period():
     closed_periods = {}
     try:

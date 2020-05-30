@@ -27,8 +27,8 @@ def period_penalty(gene, reserved_periods):
     # penalty = get_period_penalty(gene['period_id'])
     if gene['period_id'] in reserved_periods:
         penalty += 4
-    data = [elem['no_of_students'] for elem in gene['rooms']]
-    enrollment = get_exam_enrollment(gene['exam'])
+    data = [elem['no_of_stds'] for elem in gene['rooms']]
+    enrollment = get_exam_enrollment(gene['exam_id'])
     if sum(data) < enrollment:
         penalty += 1
 
@@ -55,17 +55,17 @@ def room_availability_penalty(gene: dict):
     """
 
     penalty = 0
-    room_size = [get_room_size(item['name']) for item in gene['rooms']
-    ass_room_size= [item['no_of_students'] for item in gene['rooms']
+    room_size = [get_room_size(item['name']) for item in gene['rooms']]
+    ass_room_size = [item['no_of_stds'] for item in gene['rooms']]
     for i in range(len(room_size)):
         if ass_room_size[i] > room_size[i]:
             penalty += 4
 
-    if len(room_size) != get_exam_enrollment(gene['exam']):
+    if len(room_size) != get_exam_enrollment(gene['exam_id']):
         penalty += 4
 
-    if !(check_exams_in_same_vicinity(gene)):
-        penalty +=4
+    if not (check_exams_in_same_vicinity(gene)):
+        penalty += 4
     return penalty
 
 
@@ -83,7 +83,7 @@ def check_exams_in_same_vicinity(gene):
     """
     penalty= 0
     firsts= [item['name'] for item in gene['rooms']]
-    if !(chkList(firsts[0])):
+    if not (chkList(firsts[0])):
        return False
     else:
         return True
@@ -102,7 +102,7 @@ def compute_split_penalty(no_of_rooms: int):
 
 
 def room_size_penalty(gene):
-      """ Function that checks the the percentage of seats occupied of a particular exams.
+    """ Function that checks the the percentage of seats occupied of a particular exams.
       If the percetage falls within a specified range, a particular penalty is assigned.
           • 1 – 10% of capacity; penalty = 1
           • 10 – 30% of capacity; penalty = 0
@@ -111,12 +111,13 @@ def room_size_penalty(gene):
 
     Argument:
         gene {dict} -- gene
-        
+
     Returns:
         int -- Sum of the total penalty for each room assigned in the gene
 
     """
-    rooms= gene['rooms']
+
+    rooms = gene['rooms']
     penalty= []
     used= [single_room['no_of_stds'] for single_room in rooms]
     actual= [get_room_size(single_room['name']) for single_room in rooms]
@@ -132,6 +133,7 @@ def room_size_penalty(gene):
         else:
             penalty.append(-2)
     return sum(penalty)
+
 
 
 def exam_enrolment_penalty(gene, threshold):

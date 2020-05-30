@@ -15,8 +15,8 @@ from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
 from features.penalty.cost_function import get_fitness_value
-from features.periods.service import (get_period_bound, get_periods,
-                                      get_periods_with_lengths)
+from features.periods.service import (get_period_bound, get_period_date,
+                                      get_periods, get_periods_with_lengths)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
@@ -31,7 +31,6 @@ def format_rooms(rooms):
 
 
 def best_fit_exams_in_period(exams, duration):
-
     """check to see if period duration matches exam duration before assignment
 
     Arguments:
@@ -91,7 +90,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 print('period', period_id, 'exam',
                       exam['id'], 'std_size', exam['minSize'])
                 print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
-                    std_with_seats, exam['minSize'])) 
+                    std_with_seats, exam['minSize']))
 
             period_exam_assignment = {
                 'period_id': period_id,
@@ -109,12 +108,11 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
 
 
 def generate_chromosome():
-
     """Function that generates multiple genes to form a chromosome
     Arguments:
 
     Returns:
-       chromosome [{list}] -- 
+       chromosome [{list}] --
        [
             {
                 "period_id": periods_assigned,
@@ -128,7 +126,7 @@ def generate_chromosome():
         ]
      """
     #  Get exams ordered in descending order of enrollment size
-    exams = get_exam_order_by_size()  
+    exams = get_exam_order_by_size()
     periods = get_periods_with_lengths()
 
     rooms = get_rooms()
@@ -161,7 +159,7 @@ def generate_chromosome():
 
 
 def generate_population(size):
-     """Generates a list of chromosomes based on specified size
+    """Generates a list of chromosomes based on specified size
 
     Arguments:
        size int -- number of chromosomes in the population
@@ -169,12 +167,11 @@ def generate_population(size):
     Returns:
         A list of chromosomes
      """
-    return [generate_chromosome()
-            for i in range(population_size)]
+    return [generate_chromosome() for i in range(population_size)]
 
 
 def get_exam_from_gene(chromosome):
-     """Filters exam id for every gene in the chromosome
+    """Filters exam id for every gene in the chromosome
     Arguments:
        chromosome [[list]] -- list of genes
 
@@ -182,6 +179,13 @@ def get_exam_from_gene(chromosome):
         A list of exam ids in chromosome
      """
     return [gene["exam_id"] for gene in chromosome]
+
+
+def checkIfDuplicates_1(listOfElems):
+    if len(listOfElems) == len(set(listOfElems)):
+        return False
+    else:
+        return True
 
 
 def a(chromosome):
@@ -196,13 +200,14 @@ if __name__ == "__main__":
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
         closed_periods = get_closed_period()
-        reserved_periods, reserved_rooms = [], []
+        reserved_periods, reserved_rooms, previous_chromosome = [], [], []
 
         params = {
             'threshold': 1000,
             'closed_periods': closed_periods,
             'reserved_rooms': reserved_rooms,
-            'reserved_periods': reserved_periods
+            'reserved_periods': reserved_periods,
+            'previous_chromosome': previous_chromosome
         }
         pprint.pprint(get_fitness_value(population, params))
 

@@ -10,15 +10,13 @@ from features.rooms.service import get_rooms
 from .services import get_exam_search
 
 
-
 # Function that updates the room capacity after extracting the number of rooms to be used for a particular exam
 def __update_room_capacity(room, capacity):
     return {**room, 'size': capacity}
 
 
 def get_index_max_room_size(room_data):
-
- """Function that gets room from room date with largest capacity
+    """Function that gets room from room date with largest capacity
 
     Arguments:
        room date [list] -- get rooms with multiple room data columns
@@ -72,7 +70,7 @@ def room_compute(current_student_size, room_data, room_allocated=None):
 
 
 def period_room_allocation(periods, rooms):
-     """Function that returns an assignment of rooms available for a list of period
+    """Function that returns an assignment of rooms available for a list of period
         For every period, it shows a list of available rooms after eliminating reserved rooms.
 
     Arguments:
