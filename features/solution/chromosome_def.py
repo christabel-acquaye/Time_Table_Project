@@ -24,7 +24,7 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
                                        read_student_groups)
-
+from features.natural_selection.service import non_dorminating_sort
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
@@ -209,7 +209,8 @@ if __name__ == "__main__":
             'reserved_periods': reserved_periods,
             'previous_chromosome': previous_chromosome
         }
-        pprint.pprint(get_fitness_value(population, params))
+        updated_population = get_fitness_value(population, params)
+        pprint.pprint(non_dorminating_sort(updated_population))
 
         # updated_population = [ for chromosome in population]
 
