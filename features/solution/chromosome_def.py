@@ -8,12 +8,12 @@ from os import path
 
 import openpyxl
 import pandas as pd
-from sklearn.utils import shuffle
 
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
+from features.natural_selection.service import non_dorminating_sort
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods, get_periods_with_lengths)
@@ -24,7 +24,7 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
                                        read_student_groups)
-from features.natural_selection.service import non_dorminating_sort
+
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
@@ -133,7 +133,8 @@ def generate_chromosome():
     period_rooms = period_room_allocation(periods, rooms)
 
     # shuffle periods to add randomization
-    periods = shuffle(periods, random_state=0)
+    random.shuffle(periods)
+    print(periods)
 
     chromosome = []
 
@@ -199,6 +200,8 @@ if __name__ == "__main__":
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
+        with open('population.json', 'w') as f:
+            json.dump(population, f, indent=1)
         closed_periods = get_closed_period()
         reserved_periods, reserved_rooms, previous_chromosome = [], [], []
 
@@ -210,6 +213,8 @@ if __name__ == "__main__":
             'previous_chromosome': previous_chromosome
         }
         updated_population = get_fitness_value(population, params)
+        with open('updated_population.json', 'w') as f:
+            json.dump(updated_population, f, indent=1)
         pprint.pprint(non_dorminating_sort(updated_population))
 
         # updated_population = [ for chromosome in population]

@@ -81,15 +81,16 @@ def check_exams_in_same_vicinity(gene):
         Penalty of 4 if rooms are not in the same vicinity.
 
     """
-    penalty= 0
-    firsts= [item['name'] for item in gene['rooms']]
+    penalty = 0
+    firsts = [item['name'] for item in gene['rooms']]
     if not (chkList(firsts[0])):
-       return False
+        return False
     else:
         return True
 
+
 def room_split_penalty(gene: dict):
-    no_of_rooms= len(gene['rooms'])
+    no_of_rooms = len(gene['rooms'])
     return compute_split_penalty(no_of_rooms)
 
 
@@ -118,11 +119,11 @@ def room_size_penalty(gene):
     """
 
     rooms = gene['rooms']
-    penalty= []
-    used= [single_room['no_of_stds'] for single_room in rooms]
-    actual= [get_room_size(single_room['name']) for single_room in rooms]
+    penalty = []
+    used = [single_room['no_of_stds'] for single_room in rooms]
+    actual = [get_room_size(single_room['name']) for single_room in rooms]
     for i in range(len(used)):
-        percentage= (used[i] / actual[i]) * 100
+        percentage = (used[i] / actual[i]) * 100
 
         if 1 <= percentage <= 10:
             penalty.append(1)
@@ -133,7 +134,6 @@ def room_size_penalty(gene):
         else:
             penalty.append(-2)
     return sum(penalty)
-
 
 
 def exam_enrolment_penalty(gene, threshold):
@@ -149,10 +149,10 @@ def exam_enrolment_penalty(gene, threshold):
     Returns:
         int -- total penalty calculated for the gene
     """
-    penalty= []
-    enrolment= get_exam_enrollment(gene['exam_id'])
-    percentage= ((enrolment - threshold) * 100)/threshold
-    percentage_increase= percentage - 100
+    penalty = []
+    enrolment = get_exam_enrollment(gene['exam_id'])
+    percentage = ((enrolment - threshold) * 100)/threshold
+    percentage_increase = percentage - 100
 
     if 1 <= percentage_increase <= 10:
         penalty.append(1)
@@ -175,7 +175,7 @@ def get_total_penalty_value(chromosome: List[dict], threshold: int, reserved_per
     Returns:
         int -- [description]
     """
-    penalty= []
+    penalty = []
 
     for gene in chromosome:
 
