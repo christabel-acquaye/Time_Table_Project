@@ -199,18 +199,24 @@ if __name__ == "__main__":
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
-        closed_periods = get_closed_period()
-        reserved_periods, reserved_rooms, previous_chromosome = [], [], []
+        for i in range(len(population)):
+            print(i, 'Chromosome')
+            pprint.pprint(population[i])
+            print('end\n \n')
+        
 
-        params = {
-            'threshold': 1000,
-            'closed_periods': closed_periods,
-            'reserved_rooms': reserved_rooms,
-            'reserved_periods': reserved_periods,
-            'previous_chromosome': previous_chromosome
-        }
-        updated_population = get_fitness_value(population, params)
-        pprint.pprint(non_dorminating_sort(updated_population))
+        # closed_periods = get_closed_period()
+        # reserved_periods, reserved_rooms, previous_chromosome = [], [], []
+
+        # params = {
+        #     'threshold': 1000,
+        #     'closed_periods': closed_periods,
+        #     'reserved_rooms': reserved_rooms,
+        #     'reserved_periods': reserved_periods,
+        #     'previous_chromosome': previous_chromosome
+        # }
+        # updated_population = get_fitness_value(population, params)
+        # pprint.pprint(non_dorminating_sort(updated_population))
 
         # updated_population = [ for chromosome in population]
 
