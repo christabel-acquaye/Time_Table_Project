@@ -1,5 +1,3 @@
-
-
 import datetime
 import json
 import pprint
@@ -8,12 +6,12 @@ from os import path
 
 import openpyxl
 import pandas as pd
-from sklearn.utils import shuffle
 
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
+from features.natural_selection.service import non_dorminating_sort, over_crowding
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods, get_periods_with_lengths)
@@ -24,7 +22,7 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
                                        read_student_groups)
-from features.natural_selection.service import non_dorminating_sort
+
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
@@ -61,7 +59,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
 
     Arguments:
         exams {list} -- list of exams to attempt fitting
-        rooms {[list]} -- list of available rooms
+        rooms_available {[dict]} -- list of available rooms
         period_id {[int]} -- period for a particular gene assignment
 
     Returns:
@@ -76,10 +74,10 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
         try:
             room_allocated, available_rooms = room_compute(
                 exam['minSize'],
-                rooms_available[period_id - 1]
+                rooms_available[period_id]
             )
 
-            rooms_available[period_id - 1] = available_rooms
+            rooms_available[period_id] = available_rooms
             # print('\trooms allocated', format_rooms(room_allocated))
             # print('\tstudents with seats', sum([ room[1] for room in format_rooms(room_allocated)]) )
             std_with_seats = sum(
@@ -126,14 +124,16 @@ def generate_chromosome():
         ]
      """
     #  Get exams ordered in descending order of enrollment size
-    exams = get_exam_order_by_size()
+    exams = list(get_exams())
+    random.shuffle(exams)
+
     periods = get_periods_with_lengths()
 
     rooms = get_rooms()
     period_rooms = period_room_allocation(periods, rooms)
 
     # shuffle periods to add randomization
-    periods = shuffle(periods, random_state=0)
+    random.shuffle(periods)
 
     chromosome = []
 
@@ -180,7 +180,6 @@ def get_exam_from_gene(chromosome):
      """
     return [gene["exam_id"] for gene in chromosome]
 
-
 def checkIfDuplicates_1(listOfElems):
     if len(listOfElems) == len(set(listOfElems)):
         return False
@@ -199,27 +198,35 @@ if __name__ == "__main__":
     with app.app_context():
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
-        for i in range(len(population)):
-            print(i, 'Chromosome')
-            pprint.pprint(population[i])
-            print('end\n \n')
-        
+        with open('population.json', 'w') as f:
+            json.dump(population, f, indent=1)
+        print('Hi')
+        pprint.pprint(len(population[0]))
+        # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
+        # population[0][0]['rooms'][0]['no_of_stds'] = 2000
+        # population[0][1]['rooms'][0]['no_of_stds'] = 2000
+        # population[0][2]['rooms'][0]['no_of_stds'] = 2000
+        # population[0][0]['std_with_seats'] -= 1 
+        # population[0][1]['std_with_seats'] -= 1 
+        closed_periods = get_closed_period()
+        reserved_periods, reserved_rooms, previous_chromosome = [population[0][1]['period_id']], [], []
 
-        # closed_periods = get_closed_period()
-        # reserved_periods, reserved_rooms, previous_chromosome = [], [], []
-
-        # params = {
-        #     'threshold': 1000,
-        #     'closed_periods': closed_periods,
-        #     'reserved_rooms': reserved_rooms,
-        #     'reserved_periods': reserved_periods,
-        #     'previous_chromosome': previous_chromosome
-        # }
-        # updated_population = get_fitness_value(population, params)
-        # pprint.pprint(non_dorminating_sort(updated_population))
-
+        params = {
+            'threshold': 1000,
+            'closed_periods': closed_periods,
+            'reserved_rooms': reserved_rooms,
+            'reserved_periods': reserved_periods,
+            'previous_chromosome': previous_chromosome
+        }
+        updated_population = get_fitness_value(population, params)
+        with open('updated_population.json', 'w') as f:
+            json.dump(updated_population, f, indent=1)
+        pprint.pprint(non_dorminating_sort(updated_population))
+        for i in range(len(population[0])):
+            pprint.pprint(population[0][i]['period_id'])
+        # dorminating_chromosomes, non_dorminating_chromosomes = non_dorminating_sort(updated_population)
+        # pprint.pprint(over_crowding(non_dorminating_chromosomes, dorminating_chromosomes))
         # updated_population = [ for chromosome in population]
-
         # fo pprint.pprint(chromosome)r chromosome in population:
         #     std_gene = get_specific_genes(1, chromosome)
         #     room_data = [gene['rooms'] for gene in chromosome]

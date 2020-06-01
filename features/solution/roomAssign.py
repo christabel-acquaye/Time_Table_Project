@@ -2,7 +2,7 @@ import math
 import pprint
 
 from sklearn.utils import shuffle
-
+import random
 from _shared import NotEnoughRooms
 from features.periods.service import get_periods
 from features.rooms.service import get_rooms
@@ -78,16 +78,16 @@ def period_room_allocation(periods, rooms):
         rooms [list] -- rooms available for a particular period
 
     Returns:
-       period_room [list] -- room period assignment
+       period_room [dict] -- room period assignment
      """
-    period_room = []
+    period_room = {}
     periods = list(periods)
     room_arr = list(rooms)
 
-    for period in periods:
-        room_arr = shuffle(room_arr, random_state=0)
-        period_room.append(room_arr)
-    # pprint.pprint(period_room)
+    for period_id, _ in periods:
+        room_data = room_arr.copy()
+        random.shuffle(room_data)
+        period_room[period_id] = room_data
     return period_room
 
 

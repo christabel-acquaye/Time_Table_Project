@@ -80,10 +80,8 @@ def distance_back_to_back_conflict(student_group_chromosome):
         room_names1, room_names2 = [], []
         room_data1 = student_group_chromosome[i-1]['rooms']
         room_data2 = student_group_chromosome[i]['rooms']
-        # print('Hi')
-        # print(room_data1[0]['name'])
         for elem in room_data1:
-            room_name1 = elem['name'] 
+            room_name1 = elem['name']
             room_names1.append(room_name1)
 
         for elem in room_data2:

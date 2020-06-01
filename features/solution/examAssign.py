@@ -10,7 +10,6 @@ from features.solution.services import rand_gen
 def period_exam_allocation(exams):
     period_finsih = get_period_bound() + 1
     ran_period = 0
-    print(ran_period)
     period_exams = []
     for exam in exams:
         ran_period = random.randint(1, period_finsih)
