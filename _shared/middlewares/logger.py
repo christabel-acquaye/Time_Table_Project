@@ -108,7 +108,7 @@ class AppLogger(glogging.Logger):
         )
 
 
-logging.basicConfig(format='', level=logging.DEBUG)
+# logging.basicConfig(format='', level=logging.DEBUG)
 if platform.system() == 'Windows':
     # Windows does not support ANSI escapes and
     # we are using API calls to set the console color

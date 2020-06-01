@@ -59,7 +59,7 @@ def get_closed_period():
     return closed_periods
 
 
-def get_exam_room(id):
+def get_exam_max_room(id):
     data = get_exams(id=id)
     return data[0]['maxRooms']
 
