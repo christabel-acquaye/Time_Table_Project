@@ -22,18 +22,27 @@ def non_dorminating_sort(chromosomes):
             x2 = other_chromosome['hard_constraint']
             y1 = reference_chromosome['soft_constraint']
             y2 = other_chromosome['soft_constraint']
-            print((x1, y1))
+            
 
             # (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)
             if ((x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)):
+                print((x1, y1),reference_position, (x2, y2), other_position, (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2))
+                
                 domination_count[reference_position] += 1
-                # print(domination_count[reference_position])
+                domination_count[other_position] -= 1
+                print("Dorminated count(Reference):\t", domination_count[reference_position])
+                print("Dorminated count(Other):\t", domination_count[other_position])
                 dominated_elements[reference_position].append(other_position)
-            """
-            if reference is dominant than other then
-            domination_count[reference_position] += 1
-            dominated_elements[reference_position].append(other_position)
-            """
+                print("Dominated elements:\t", dominated_elements)
+                print("Dominated Count:\t", domination_count)
+            
+            chromosomes_rank = sorted(range(len(domination_count)), reverse = True, key=lambda k: domination_count[k])
+            domination_count = sorted(domination_count, reverse=True)
+    for i in range(len(domination_count)):
+        if domination_count[i] >= 0:
+            non_dorminating_chromosomes.append(chromosomes_rank[i])
+        else:
+            dorminating_chromosomes.append(chromosomes_rank[i])
 
     return dorminating_chromosomes, non_dorminating_chromosomes
 

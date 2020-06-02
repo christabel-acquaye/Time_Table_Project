@@ -130,13 +130,14 @@ def generate_chromosome():
     random.shuffle(exams)
 
     periods = get_periods_with_lengths()
+    
 
     rooms = get_rooms()
     period_rooms = period_room_allocation(periods, rooms)
 
     # shuffle periods to add randomization
     random.shuffle(periods)
-
+    pprint.pprint(periods)
     chromosome = []
 
     for period_id, period_duration in periods:
@@ -204,7 +205,7 @@ if __name__ == "__main__":
         with open('population.json', 'w') as f:
             json.dump(population, f, indent=1)
         # print(population[0][2]['rooms'][0]['name'])
-        # pprint.pprint(population[0][2]['period_id'])
+        
     # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
         # population[0][0]['rooms'][0]['no_of_stds'] = 2000
         #  = 2000
@@ -256,7 +257,8 @@ if __name__ == "__main__":
             json.dump(updated_population, f, indent=1)
         pprint.pprint(non_dorminating_sort(updated_population))
         # for i in range(len(population[0])):
-        #     pprint.pprint(population[0][i]['rooms'])
+        #     pprint.pprint(population[0][i]['period_id'])
+        
         # dorminating_chromosomes, non_dorminating_chromosomes = non_dorminating_sort(updated_population)
         # pprint.pprint(over_crowding(non_dorminating_chromosomes, dorminating_chromosomes))
         # updated_population = [ for chromosome in population]
