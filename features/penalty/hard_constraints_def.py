@@ -4,7 +4,7 @@ import pprint
 
 import numpy as np
 
-from features.exam.service.__init__ import get_exam_room
+from features.exam.service.__init__ import get_exam_max_room
 from features.miscellaneous_functions import get_date_difference
 from features.periods.service import get_period_date
 from features.rooms.distance_services import (find_average_distance,
@@ -261,10 +261,10 @@ def __get_difference(lenA, lenB):
 
 def exam_conflict(student_group_chromosome):
     """compute total hard constraints associated with exams. It gets the max_rooms specified by
-     user and the number of rooms assigned for every gene if the rooms assigned exceeds that 
-     speicifed by the user by 1: a hard_count of 1 is assigned if the rooms assigned exceeds that 
-     speicifed by the user by 2: a hard_count of 2 is assigned if the rooms assigned exceeds that 
-     speicifed by the user by 3: a hard_count of 3 is assigned if the rooms assigned exceeds that 
+     user and the number of rooms assigned for every gene if the rooms assigned exceeds that
+     speicifed by the user by 1: a hard_count of 1 is assigned if the rooms assigned exceeds that
+     speicifed by the user by 2: a hard_count of 2 is assigned if the rooms assigned exceeds that
+     speicifed by the user by 3: a hard_count of 3 is assigned if the rooms assigned exceeds that
      speicifed by the user by 4 and greater: a hard_count of 4 is assigned.
 
     Arguments:
@@ -277,7 +277,7 @@ def exam_conflict(student_group_chromosome):
 
     exam_data = [gene['exam_id'] for gene in student_group_chromosome]
     room_data = [gene['rooms'] for gene in student_group_chromosome]
-    exam_room_assigned = [get_exam_room(id) for id in exam_data]
+    exam_room_assigned = [get_exam_max_room(id) for id in exam_data]
     hard_count = 0
 
     for i in range(len(exam_room_assigned)):
@@ -335,11 +335,11 @@ def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms,
     periods = []
     rooms = []
     hard_constraints.append(student_conflict(chromosome, student_groups))
-    # hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
-    # hard_constraints.append(exam_conflict(chromosome))
-    # hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
-    # if previous_chromosome:
-    #     hard_constraints.appendget_perturbation_penalty(previous_chromosome, current_chromosome)
+    hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
+    hard_constraints.append(exam_conflict(chromosome))
+    hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
+    if previous_chromosome:
+        hard_constraints.append(get_perturbation_penalty(previous_chromosome, current_chromosome))
     return sum(hard_constraints)
 
 

@@ -1,6 +1,7 @@
 import math
 import pprint
 
+
 def non_dorminating_sort(chromosomes):
     """
         [A, B, C]

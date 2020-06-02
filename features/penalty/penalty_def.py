@@ -31,7 +31,7 @@ def period_penalty(gene, reserved_periods):
     enrollment = get_exam_enrollment(gene['exam_id'])
     if gene['std_with_seats'] < enrollment:
         penalty += 1
-    
+
     return penalty
 
 

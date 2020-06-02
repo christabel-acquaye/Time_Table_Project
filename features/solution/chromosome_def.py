@@ -11,7 +11,8 @@ from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
-from features.natural_selection.service import non_dorminating_sort, over_crowding
+from features.natural_selection.service import (non_dorminating_sort,
+                                                over_crowding)
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods, get_periods_with_lengths)
@@ -180,6 +181,7 @@ def get_exam_from_gene(chromosome):
      """
     return [gene["exam_id"] for gene in chromosome]
 
+
 def checkIfDuplicates_1(listOfElems):
     if len(listOfElems) == len(set(listOfElems)):
         return False
@@ -205,9 +207,9 @@ if __name__ == "__main__":
     # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
         # population[0][0]['rooms'][0]['no_of_stds'] = 2000
         # population[0][1]['rooms'][0]['no_of_stds'] = 2000
-        
-        # population[0][0]['std_with_seats'] -= 1 
-        # population[0][1]['std_with_seats'] -= 1 
+        # population[0][2]['rooms'][0]['no_of_stds'] = 2000
+        # population[0][0]['std_with_seats'] -= 1
+        # population[0][1]['std_with_seats'] -= 1
         closed_periods = get_closed_period()
         reserved_periods, previous_chromosome = [], []
         reserved_rooms = []

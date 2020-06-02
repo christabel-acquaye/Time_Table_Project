@@ -1,8 +1,9 @@
 import math
 import pprint
+import random
 
 from sklearn.utils import shuffle
-import random
+
 from _shared import NotEnoughRooms
 from features.periods.service import get_periods
 from features.rooms.service import get_rooms
