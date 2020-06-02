@@ -21,7 +21,7 @@ def non_dorminating_sort(chromosomes):
             x2 = other_chromosome['hard_constraint']
             y1 = reference_chromosome['soft_constraint']
             y2 = other_chromosome['soft_constraint']
-            print((x1, y1), (x2, y2))
+            print((x1, y1))
 
             # (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)
             if ((x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)):
@@ -62,9 +62,9 @@ def over_crowding(non_dorminating_chromosomes, dorminating_chromosomes):
     fitness_value1_sorted = sort_by_values(dorminating_chromosomes, fitness_value1)
     fitness_value2_sorted = sort_by_values(dorminating_chromosomes, fitness_value2)
     pprint.pprint(crowding_distance)
-    # crowding_distance[0] = 4444444444444444
-    # crowding_distance[len(dorminating_chromosomes) - 1] = 4444444444444444
-    # for i in range((1, len(dorminating_chromosomes)-1)):
+    # crowding_distance[0] = 100000000
+    # crowding_distance[len(dorminating_chromosomes) - 1] = 100000000
+    # for i in range((1, len(list(dorminating_chromosomes)-1))):
     #     crowding_distance[i] = crowding_distance[i] + (fitness_value1[fitness_value1_sorted[i+1]] -
     #                                                    fitness_value2[fitness_value1_sorted[i-1]])/(max(fitness_value1)-min(fitness_value1))
     # for i in range((1, len(dorminating_chromosomes)-1)):

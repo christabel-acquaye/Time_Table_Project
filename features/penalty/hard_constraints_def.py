@@ -75,33 +75,74 @@ def distance_back_to_back_conflict(student_group_chromosome):
         int -- total distance back to back conflicts
     """
 
-    hard_count = []
+    hard_count = 0
     for i in range(len(student_group_chromosome)):
-        room_names1, room_names2 = [], []
-        room_data1 = student_group_chromosome[i-1]['rooms']
-        room_data2 = student_group_chromosome[i]['rooms']
-        for elem in room_data1:
-            room_name1 = elem['name']
-            room_names1.append(room_name1)
+        distance1, distance2, actual_distance, distancels = 0, 0, 0, []
+        roomA = [item['name'] for item in student_group_chromosome[i]['rooms']]
+        roomB = [item['name'] for item in student_group_chromosome[i-1]['rooms']]
+        if len(roomA) > 1 and len(roomB) > 1:
+            distance1 = find_average_distance(roomA)
+            distance2 = find_average_distance(roomB)
+            actual_distance = abs(distance1 - distance2)
 
-        for elem in room_data2:
-            room_name2 = elem['name']
-            room_names2.append(room_name2)
+        elif len(roomA) == 1 and len(roomB) > 1:
+            for i in range(len(roomB)):
+                distance = get_distance_between_rooms(roomA[0], roomB[i])
+                distancels.append(distance[0])
+            actual_distance = sum(distancels) / len(roomB)
 
-        distance1 = find_average_distance(room_names1)
-        distance2 = find_average_distance(room_names2)
-        actual_distance = distance1 - distance2
-        actual_distance = abs(actual_distance)
+        elif len(roomA) > 1 and len(roomB) == 1:
+            for i in range(len(roomA)):
+                distance = get_distance_between_rooms(roomB[0], roomA[i])
+                distancels.append(distance[0])
+            actual_distance = sum(distancels) / len(roomA)
 
+        elif len(roomA) == 1 and len(roomB) == 1:
+            actual_distance = get_distance_between_rooms(roomA[0], roomB[0])
+            actual_distance = actual_distance[0]
+        # if len(roomA) > 1:
+        #     distance1 = find_average_distance(roomA)
+        # else:
+        #     nameA = roomA[0]
+        # if len(roomB) > 1:
+        #     distance2 = find_average_distance(roomA)
+        # else:
+        #     nameB = roomB[0]
+        # if distance1 and distance2:
+        #     actual_distance = abs(distance1 - distance2)
+        # else:
+        #     actual_distance = get_distance_between_rooms(roomA,roomB)
+        
+
+        
+        # if (len(student_group_chromosome[i])) > 1:
+        #     room_names1, room_names2 = [], []
+        #     room_data1 = student_group_chromosome[i-1]['rooms']
+        #     room_data2 = student_group_chromosome[i]['rooms']
+        #     for elem in room_data1:
+        #         room_name1 = elem['name']
+        #         room_names1.append(room_name1)
+
+        #     for elem in room_data2:
+        #         room_name2 = elem['name']
+        #         room_names2.append(room_name2)
+
+        #     distance1 = find_average_distance(room_names1)
+        #     distance2 = find_average_distance(room_names2)
+    
+        #     actual_distance = distance1 - distance2
+        #     actual_distance = abs(actual_distance)
+        # else: 
+        #     actual_distance = get_distance_between_rooms(student_group_chromosome[i], student_group_chromosome[i-1])
         if 0.1 <= actual_distance <= 1.0:
-            hard_count.append(2)
+            hard_count += 2
         elif 1.1 <= actual_distance <= 2.0:
-            hard_count.append(4)
+            hard_count += 4
         elif 2.1 <= actual_distance <= 5.0:
-            hard_count.append(7)
+            hard_count += 7
         else:
-            hard_count.append(0)
-    return sum(hard_count)
+            hard_count += 0
+    return hard_count
 
 
 def student_conflict(chromosome, student_groups):
@@ -118,8 +159,8 @@ def student_conflict(chromosome, student_groups):
     std_gene = [get_specific_genes(student_group_id, chromosome) for student_group_id in student_groups]
     std_conflict = []
     for student_group_chromosome in std_gene:
-        std_conflict.append(more_than_one_exams_per_day(student_group_chromosome))
-        std_conflict.append(back_to_back_conflict(student_group_chromosome))
+        # std_conflict.append(more_than_one_exams_per_day(student_group_chromosome))
+        # std_conflict.append(back_to_back_conflict(student_group_chromosome))
         std_conflict.append(distance_back_to_back_conflict(student_group_chromosome))
     return len(std_conflict)
 
@@ -258,37 +299,6 @@ def exam_conflict(student_group_chromosome):
     return hard_count
 
 
-def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms, previous_chromosome):
-    """compute total hard constraints  for each chromosome in the population
-
-    Arguments:
-        chromosome {List[dict]} -- [description]
-        params {dict} -- parameters data of closed_periods, and reserved periods
-
-    Returns:
-        int -- total hard constraints counted in the chromosome
-    """
-    hard_constraints = []
-    # todo: call methods to return the data for these variables
-    student_groups = get_all_student_ids()
-    periods = []
-    rooms = []
-    hard_constraints.append(student_conflict(chromosome, student_groups))
-    hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
-    hard_constraints.append(exam_conflict(chromosome))
-    hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
-    if previous_chromosome:
-        hard_constraints.appendget_perturbation_penalty(previous_chromosome, current_chromosome)
-    return sum(hard_constraints)
-
-
-def get_position_in_chromosome(chromosome, key, value):
-    for i, dic in enumerate(chromosome):
-        if dic[key] == value:
-            return i
-    return -1
-
-
 def get_perturbation_penalty(previous_chromosome, current_chromosome):
     """Find the distance in terms of periods between exams in the initial time table and those in the new one
 
@@ -308,6 +318,38 @@ def get_perturbation_penalty(previous_chromosome, current_chromosome):
         penalty += (previous_chromosome[i]['period_id'] - current_chromosome[position_in_curr_chromosome]['period_id'])
 
     return penalty
+
+def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms, previous_chromosome):
+    """compute total hard constraints  for each chromosome in the population
+
+    Arguments:
+        chromosome {List[dict]} -- [description]
+        params {dict} -- parameters data of closed_periods, and reserved periods
+
+    Returns:
+        int -- total hard constraints counted in the chromosome
+    """
+    hard_constraints = []
+    # todo: call methods to return the data for these variables
+    student_groups = get_all_student_ids()
+    periods = []
+    rooms = []
+    hard_constraints.append(student_conflict(chromosome, student_groups))
+    # hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
+    # hard_constraints.append(exam_conflict(chromosome))
+    # hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
+    # if previous_chromosome:
+    #     hard_constraints.appendget_perturbation_penalty(previous_chromosome, current_chromosome)
+    return sum(hard_constraints)
+
+
+def get_position_in_chromosome(chromosome, key, value):
+    for i, dic in enumerate(chromosome):
+        if dic[key] == value:
+            return i
+    return -1
+
+
 
 
 if __name__ == "__main__":

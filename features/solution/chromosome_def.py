@@ -200,17 +200,18 @@ if __name__ == "__main__":
         population = generate_population(population_size)
         with open('population.json', 'w') as f:
             json.dump(population, f, indent=1)
-        print('Hi')
-        pprint.pprint(len(population[0]))
-        # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
+        # print(population[0][2]['rooms'][0]['name'])
+        # pprint.pprint(len(population[0]))
+    # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
         # population[0][0]['rooms'][0]['no_of_stds'] = 2000
         # population[0][1]['rooms'][0]['no_of_stds'] = 2000
-        # population[0][2]['rooms'][0]['no_of_stds'] = 2000
+        
         # population[0][0]['std_with_seats'] -= 1 
         # population[0][1]['std_with_seats'] -= 1 
         closed_periods = get_closed_period()
-        reserved_periods, reserved_rooms, previous_chromosome = [population[0][1]['period_id']], [], []
-
+        reserved_periods, previous_chromosome = [], []
+        reserved_rooms = []
+        print(reserved_rooms)
         params = {
             'threshold': 1000,
             'closed_periods': closed_periods,
@@ -223,7 +224,7 @@ if __name__ == "__main__":
             json.dump(updated_population, f, indent=1)
         pprint.pprint(non_dorminating_sort(updated_population))
         for i in range(len(population[0])):
-            pprint.pprint(population[0][i]['period_id'])
+            pprint.pprint(population[0][i]['rooms'])
         # dorminating_chromosomes, non_dorminating_chromosomes = non_dorminating_sort(updated_population)
         # pprint.pprint(over_crowding(non_dorminating_chromosomes, dorminating_chromosomes))
         # updated_population = [ for chromosome in population]

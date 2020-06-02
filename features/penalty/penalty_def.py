@@ -1,10 +1,10 @@
 import pprint
 from typing import List
 
-from features.exam.service.__init__ import get_exam_enrollment
+from features.exam.service.__init__ import get_exam_enrollment, get_exam_room
 from features.periods.service.__init__ import get_period_penalty
 from features.rooms.service.__init__ import get_room_penalty, get_room_size
-
+from features.rooms.distance_services import get_distance_between_rooms, find_average_distance
 
 def period_penalty(gene, reserved_periods):
     """if a period is opened, we assign weights
@@ -37,7 +37,7 @@ def period_penalty(gene, reserved_periods):
 
 def room_availability_penalty(gene: dict):
     """Function that calculates penalties related to the room availability.
-            It checks if roomwas over assigned.
+            It checks if room was over assigned.
             If specified max room matches total number of rooms.
             If rooms assigned for a particular assignment is in the same area.
 
@@ -59,34 +59,25 @@ def room_availability_penalty(gene: dict):
     ass_room_size = [item['no_of_stds'] for item in gene['rooms']]
     for i in range(len(room_size)):
         if ass_room_size[i] > room_size[i]:
+            print(room_size[i], ass_room_size[i])
             penalty += 4
 
-    # if len(room_size) != get_exam_enrollment(gene['exam_id']):
-    #     penalty += 4
-
-    # if not (check_exams_in_same_vicinity(gene)):
-    #     penalty += 4
+    if len(room_size) > get_exam_room(gene['exam_id']):
+        penalty += 4
+    
+    rooms = [item['name'] for item in gene['rooms']]
+    # print(len(rooms))
+    if len(rooms) > 1:
+        if (find_average_distance(rooms)) > 0:
+            penalty += 4
+        else:
+            penalty = penalty
     return penalty
 
 
 def chkList(lst):
     return len(set(lst)) == 1
 
-
-def check_exams_in_same_vicinity(gene):
-    """ Function that checks if rooms assigned to a student group is in the same vicinty
-    Argument:
-        gene {dict} -- gene
-    Returns:
-        Penalty of 4 if rooms are not in the same vicinity.
-
-    """
-    penalty = 0
-    firsts = [item['name'] for item in gene['rooms']]
-    if not (chkList(firsts[0])):
-        return False
-    else:
-        return True
 
 
 def room_split_penalty(gene: dict):
@@ -160,8 +151,10 @@ def exam_enrolment_penalty(gene, threshold):
         penalty.append(5)
     elif 30 <= percentage_increase <= 60:
         penalty.append(10)
-    else:
+    elif 60 <= percentage_increase <= 100:
         penalty.append(20)
+    else:
+        penalty.append(0)
     return sum(penalty)
 
 
@@ -178,11 +171,11 @@ def get_total_penalty_value(chromosome: List[dict], threshold: int, reserved_per
     penalty = []
 
     for gene in chromosome:
-        # penalty.append(period_penalty(gene, reserved_periods))
+        penalty.append(period_penalty(gene, reserved_periods))
 
         penalty.append(room_availability_penalty(gene))
-        # penalty.append(room_split_penalty(gene))
-        # penalty.append(room_size_penalty(gene))
-        # penalty.append(exam_enrolment_penalty(gene, threshold))
+        penalty.append(room_split_penalty(gene))
+        penalty.append(room_size_penalty(gene))
+        penalty.append(exam_enrolment_penalty(gene, threshold))
 
     return sum(penalty)
