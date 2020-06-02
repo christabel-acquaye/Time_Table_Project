@@ -18,6 +18,7 @@ from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods, get_periods_with_lengths)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
+from features.miscellaneous_functions import get_date_difference
 from features.solution.roomAssign import period_room_allocation, room_compute
 from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
@@ -203,17 +204,46 @@ if __name__ == "__main__":
         with open('population.json', 'w') as f:
             json.dump(population, f, indent=1)
         # print(population[0][2]['rooms'][0]['name'])
-        # pprint.pprint(len(population[0]))
+        # pprint.pprint(population[0][2]['period_id'])
     # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
         # population[0][0]['rooms'][0]['no_of_stds'] = 2000
-        # population[0][1]['rooms'][0]['no_of_stds'] = 2000
+        #  = 2000
         # population[0][2]['rooms'][0]['no_of_stds'] = 2000
         # population[0][0]['std_with_seats'] -= 1
         # population[0][1]['std_with_seats'] -= 1
-        closed_periods = get_closed_period()
+        
+        
+
+
+
+        # closed_periods = get_closed_period()
         reserved_periods, previous_chromosome = [], []
-        reserved_rooms = []
-        print(reserved_rooms)
+        reserved_rooms = [
+            {
+                'period_id': 1,
+                'reserved_rooms': ['NB_T2', 'EHC_102', 'OLD']
+            },
+
+            {
+                'period_id': population[0][2]['period_id'],
+                'reserved_rooms': [population[0][1]['rooms'][0]['name'], population[0][2]['rooms'][0]['name']]
+            }
+
+        ]
+
+        closed_periods = [
+            {
+                'period_id': 8,
+                'exam_id': ['30', '5', '8']
+            },
+
+            {
+                'period_id': population[0][2]['period_id'],
+                'exam_id': [population[0][1]['exam_id'], population[0][2]['exam_id']]
+            }
+
+        ]
+        print(closed_periods)
         params = {
             'threshold': 1000,
             'closed_periods': closed_periods,
@@ -225,8 +255,8 @@ if __name__ == "__main__":
         with open('updated_population.json', 'w') as f:
             json.dump(updated_population, f, indent=1)
         pprint.pprint(non_dorminating_sort(updated_population))
-        for i in range(len(population[0])):
-            pprint.pprint(population[0][i]['rooms'])
+        # for i in range(len(population[0])):
+        #     pprint.pprint(population[0][i]['rooms'])
         # dorminating_chromosomes, non_dorminating_chromosomes = non_dorminating_sort(updated_population)
         # pprint.pprint(over_crowding(non_dorminating_chromosomes, dorminating_chromosomes))
         # updated_population = [ for chromosome in population]

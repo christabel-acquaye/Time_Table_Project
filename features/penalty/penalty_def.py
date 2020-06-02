@@ -1,7 +1,7 @@
 import pprint
 from typing import List
 
-from features.exam.service.__init__ import get_exam_enrollment, get_exam_room
+from features.exam.service.__init__ import get_exam_enrollment, get_exam_max_room
 from features.periods.service.__init__ import get_period_penalty
 from features.rooms.service.__init__ import get_room_penalty, get_room_size
 from features.rooms.distance_services import get_distance_between_rooms, find_average_distance
@@ -62,7 +62,7 @@ def room_availability_penalty(gene: dict):
             print(room_size[i], ass_room_size[i])
             penalty += 4
 
-    if len(room_size) > get_exam_room(gene['exam_id']):
+    if len(room_size) > get_exam_max_room(gene['exam_id']):
         penalty += 4
     
     rooms = [item['name'] for item in gene['rooms']]

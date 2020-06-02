@@ -23,7 +23,7 @@ def get_fitness_value(chromosomes, params):
             'soft_constraint': get_total_penalty_value(chromosome, params['threshold'],
                                                        params['reserved_periods']),
             'hard_constraint': get_total_hard_constraints_value(chromosome,
-                                                                params['closed_periods'], params['reserved_periods'],
+                                                                params['closed_periods'], params['reserved_rooms'],
                                                                 params['previous_chromosome'])
         }
         restructured_chromosomes.append(restructured_chromosome)
