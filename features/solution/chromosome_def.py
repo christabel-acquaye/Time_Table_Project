@@ -15,7 +15,7 @@ from features.natural_selection.service import (non_dorminating_sort,
                                                 over_crowding)
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
-                                      get_periods, get_periods_with_lengths)
+                                      get_periods, get_periods_with_lengths, get_periods_as_rows_and_columns)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
@@ -189,10 +189,45 @@ def checkIfDuplicates_1(listOfElems):
         return True
 
 
-def a(chromosome):
-    data = [gene['period_id'] for gene in chromosome]
-    dates = [get_period_date(period) for period in data]
-    return checkIfDuplicates_1(dates)
+# def a(chromosome):
+#     data = [gene['period_id'] for gene in chromosome]
+#     dates = [get_period_date(period) for period in data]
+#     return checkIfDuplicates_1(dates)
+
+
+def insert_into_excel(row, column, data):
+    print(f'row {row} column {column} {data}')
+
+
+def export_chromosome(chromosome):
+    columns_and_rows = get_periods_as_rows_and_columns()
+    start_row = 1
+    start_column = 1
+
+    
+    # insert headers as days
+    for position, (_, day) in enumerate(columns_and_rows):
+        insert_into_excel(0, start_column + position, day) 
+
+
+    # insert row data
+    for gene in chromosome['data']:
+        period_id = gene['period_id']
+        rooms = ''.join([room['name'] for room in gene['rooms']])
+        # get column index for period
+        column_index = next((i for i, (_period_id, _) in enumerate(columns_and_rows) if int(_period_id) == int(period_id)))
+        column_index = start_column + column_index 
+        row_index = start_row + period_id
+        exam_id = gene['exam_id']
+        data = f'{exam_id} {rooms}'
+        insert_into_excel(row_index, column_index, data)
+
+
+
+
+def excel_data_export(chromosomes):
+    for chromosome in chromosomes:
+        export_chromosome(chromosome)
 
 
 if __name__ == "__main__":
@@ -221,11 +256,12 @@ if __name__ == "__main__":
             'previous_chromosome': previous_chromosome
         }
         updated_population = get_fitness_value(population, params)
-        with open('updated_population.json', 'w') as f:
-            json.dump(updated_population, f, indent=1)
-        pprint.pprint(non_dorminating_sort(updated_population))
-        for i in range(len(population[0])):
-            pprint.pprint(population[0][i]['period_id'])
+        excel_data_export(updated_population)
+        # with open('updated_population.json', 'w') as f:
+        #     json.dump(updated_population, f, indent=1)
+        # pprint.pprint(non_dorminating_sort(updated_population))
+        # for i in range(len(population[0])):
+        #     pprint.pprint(population[0][i]['period_id'])
         # dorminating_chromosomes, non_dorminating_chromosomes = non_dorminating_sort(updated_population)
         # pprint.pprint(over_crowding(non_dorminating_chromosomes, dorminating_chromosomes))
         # updated_population = [ for chromosome in population]

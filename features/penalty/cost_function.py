@@ -27,6 +27,7 @@ def get_fitness_value(chromosomes, params):
                                                                 params['previous_chromosome'])
         }
         restructured_chromosomes.append(restructured_chromosome)
+
     return restructured_chromosomes
 
 

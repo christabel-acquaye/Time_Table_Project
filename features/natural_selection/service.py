@@ -22,7 +22,7 @@ def non_dorminating_sort(chromosomes):
             x2 = other_chromosome['hard_constraint']
             y1 = reference_chromosome['soft_constraint']
             y2 = other_chromosome['soft_constraint']
-            print((x1, y1), (x2, y2))
+            print((x1, y1), (x2, y2), (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2))
 
             # (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)
             if ((x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)):
