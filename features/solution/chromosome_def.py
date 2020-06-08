@@ -176,7 +176,7 @@ def generate_population(size):
 
 
 def get_exam_from_gene(chromosome):
-    """Filters exam id for every gene in the chromosome
+    """Filters exam id fonana@christabel-HP-ENVY-x360-m6-Convertible:~/Documents/Professional Projects/TimeTableProject$ git pur every gene in the chromosome
     Arguments:
        chromosome [[list]] -- list of genes
 
@@ -199,43 +199,57 @@ def checkIfDuplicates_1(listOfElems):
 #     return checkIfDuplicates_1(dates)
 
 
-def insert_into_excel(row, column, data):
+def insert_into_excel(row, column, data, sheet):
     print(f'row {row} column {column} {data}')
-    book = Workbook()
-    sheet = book.active
     sheet.cell(row=row, column=column).value = data
-    file_path = path.join(path.dirname(path.abspath(__file__)), '../data/input_data.xlsx')
-    book.save(file_path)
+    
 
-
-def export_chromosome(chromosome):
+def export_chromosome(chromosome, sheet):
     columns_and_rows = get_periods_as_rows_and_columns()
     start_row = 1
     start_column = 1
-    # open workbook
+    
 
+    print(start_row)
+    print(start_column)
     # insert headers as days
     for position, (_, day) in enumerate(columns_and_rows):
-        insert_into_excel(0, start_column + position, day)
+        insert_into_excel(0, start_column + position, day, sheet)
 
     # insert row data
     for gene in chromosome['data']:
         period_id = gene['period_id']
         rooms = ''.join([room['name'] for room in gene['rooms']])
-        # get column index for period
+        # get column isheetndex for period
         column_index = next((i for i, (_period_id, _) in enumerate(
             columns_and_rows) if int(_period_id) == int(period_id)))
+        
         column_index = start_column + column_index
         row_index = start_row + period_id
+        print('hi',start_row, period_id)
         exam_id = gene['exam_id']
         data = f'{exam_id} {rooms}'
-        insert_into_excel(row_index, column_index, data)
+        print(row_index)
+        print(column_index)
+        insert_into_excel(row_index, column_index, data, sheet)
 
-    # save workbook
+   
 
 def excel_data_export(chromosomes):
+    # open workbook
+    book = Workbook()
     for chromosome in chromosomes:
-        export_chromosome(chromosome)
+        name = "Chromosome " + str(chromosomes.index(chromosome))
+        book.create_sheet(name)
+        name  = book.active
+        export_chromosome(chromosome, name)
+
+    # save workbook
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
+    book.save(file_path)
+    
+
+
 
 
 if __name__ == "__main__":
