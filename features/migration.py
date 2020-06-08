@@ -1,12 +1,20 @@
 import pprint
 from os import path
 
-import openpyxl
 import pandas as pd
+from openpyxl import Workbook, load_workbook
 
 from features.exam.service import insert_exam
 from features.periods.service import insert_period
 from features.rooms.service import insert_rooms
+
+
+def insert_into_excel(row, column, data):
+    book = Workbook()
+    sheet = book.active
+    sheet.cell(row=row, column=column).value = data
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data/input_data.xlsx')
+    book.save(file_path)
 
 
 def read_exam(insert=False):

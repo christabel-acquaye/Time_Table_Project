@@ -29,9 +29,11 @@ def get_period_penalty(id):
 def get_periods_with_lengths():
     return list(((int(period['id']), period['length']) for period in get_periods()))
 
+
 def get_periods_as_rows_and_columns():
     periods = get_periods()
     return list(((period['id'], period['day']) for period in periods))
+
 
 def get_period_bound():
     periods = get_periods()

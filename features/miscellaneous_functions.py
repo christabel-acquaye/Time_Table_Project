@@ -1,5 +1,6 @@
 
 import datetime
+import math
 import pprint
 
 import pandas as pd
@@ -62,9 +63,17 @@ def get_period_list(start_date, stop_date, duration):
 
 
 def get_date_difference(date1, date2):
-    date1 = datetime.datetime.strptime(date1, "%Y-%m-%d %H:%M:%S")
-    date2 = datetime.datetime.strptime(date2, "%Y-%m-%d %H:%M:%S")
-    return (date2 - date1).days
+    date1 = datetime.datetime.strptime(date1, "%Y-%d-%m %H:%M:%S")
+    date2 = datetime.datetime.strptime(date2, "%Y-%d-%m %H:%M:%S")
+    return abs((date2 - date1).days)
+
+
+def has_same_date(date1, date2):
+    date1 = datetime.datetime.strptime(date1, "%Y-%d-%m %H:%M:%S")
+    date2 = datetime.datetime.strptime(date2, "%Y-%d-%m %H:%M:%S")
+    if date1 == date2:
+        return True
+    return False
 
 
 if __name__ == "__main__":
@@ -75,6 +84,6 @@ if __name__ == "__main__":
     # data = get_period_list(start_date, stop_date, duration)
     # pprint.pprint(data)
     # pprint.pprint(len(data))
-    f_date = '2020-05-22 00:00:00'
-    l_date = '2020-06-04 00:00:00'
-    print(get_date_difference(f_date, l_date))
+    f_date = '2020-04-05 00:00:00'
+    l_date = '2020-04-05 00:00:00'
+    print(has_same_date(f_date, l_date))

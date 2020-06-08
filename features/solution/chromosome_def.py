@@ -11,11 +11,14 @@ from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
                                    get_exam_order_by_size, get_exams)
+from features.miscellaneous_functions import get_date_difference
 from features.natural_selection.service import (non_dorminating_sort,
                                                 over_crowding)
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
-                                      get_periods, get_periods_with_lengths, get_periods_as_rows_and_columns)
+                                      get_periods,
+                                      get_periods_as_rows_and_columns,
+                                      get_periods_with_lengths)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
@@ -23,6 +26,7 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
                                        read_student_groups)
+from openpyxl import Workbook, load_workbook
 
 
 def format_rooms(rooms):
@@ -135,7 +139,7 @@ def generate_chromosome():
 
     # shuffle periods to add randomization
     random.shuffle(periods)
-
+    pprint.pprint(periods)
     chromosome = []
 
     for period_id, period_duration in periods:
@@ -197,33 +201,37 @@ def checkIfDuplicates_1(listOfElems):
 
 def insert_into_excel(row, column, data):
     print(f'row {row} column {column} {data}')
+    book = Workbook()
+    sheet = book.active
+    sheet.cell(row=row, column=column).value = data
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data/input_data.xlsx')
+    book.save(file_path)
 
 
 def export_chromosome(chromosome):
     columns_and_rows = get_periods_as_rows_and_columns()
     start_row = 1
     start_column = 1
+    # open workbook
 
-    
     # insert headers as days
     for position, (_, day) in enumerate(columns_and_rows):
-        insert_into_excel(0, start_column + position, day) 
-
+        insert_into_excel(0, start_column + position, day)
 
     # insert row data
     for gene in chromosome['data']:
         period_id = gene['period_id']
         rooms = ''.join([room['name'] for room in gene['rooms']])
         # get column index for period
-        column_index = next((i for i, (_period_id, _) in enumerate(columns_and_rows) if int(_period_id) == int(period_id)))
-        column_index = start_column + column_index 
+        column_index = next((i for i, (_period_id, _) in enumerate(
+            columns_and_rows) if int(_period_id) == int(period_id)))
+        column_index = start_column + column_index
         row_index = start_row + period_id
         exam_id = gene['exam_id']
         data = f'{exam_id} {rooms}'
         insert_into_excel(row_index, column_index, data)
 
-
-
+    # save workbook
 
 def excel_data_export(chromosomes):
     for chromosome in chromosomes:
@@ -237,17 +245,43 @@ if __name__ == "__main__":
         population = generate_population(population_size)
         with open('population.json', 'w') as f:
             json.dump(population, f, indent=1)
-        print('Hi')
-        pprint.pprint(len(population[0]))
-        # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
+        # print(population[0][2]['rooms'][0]['name'])
+
+    # pprint.pprint(population[0][1]['rooms'][0]['no_of_stds'])
         # population[0][0]['rooms'][0]['no_of_stds'] = 2000
-        # population[0][1]['rooms'][0]['no_of_stds'] = 2000
+        #  = 2000
         # population[0][2]['rooms'][0]['no_of_stds'] = 2000
         # population[0][0]['std_with_seats'] -= 1
         # population[0][1]['std_with_seats'] -= 1
-        closed_periods = get_closed_period()
-        reserved_periods, reserved_rooms, previous_chromosome = [population[0][1]['period_id']], [], []
 
+        # closed_periods = get_closed_period()
+        reserved_periods, previous_chromosome = [], []
+        reserved_rooms = [
+            {
+                'period_id': 1,
+                'reserved_rooms': ['NB_T2', 'EHC_102', 'OLD']
+            },
+
+            {
+                'period_id': population[0][2]['period_id'],
+                'reserved_rooms': [population[0][1]['rooms'][0]['name'], population[0][2]['rooms'][0]['name']]
+            }
+
+        ]
+
+        closed_periods = [
+            {
+                'period_id': 8,
+                'exam_id': ['30', '5', '8']
+            },
+
+            {
+                'period_id': population[0][2]['period_id'],
+                'exam_id': [population[0][1]['exam_id'], population[0][2]['exam_id']]
+            }
+
+        ]
+        print(closed_periods)
         params = {
             'threshold': 1000,
             'closed_periods': closed_periods,
