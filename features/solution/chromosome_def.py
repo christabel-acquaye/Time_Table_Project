@@ -6,6 +6,7 @@ from os import path
 
 import openpyxl
 import pandas as pd
+from openpyxl import Workbook, load_workbook
 
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
@@ -26,7 +27,6 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
                                        read_student_groups)
-from openpyxl import Workbook, load_workbook
 
 
 def format_rooms(rooms):
@@ -201,39 +201,31 @@ def checkIfDuplicates_1(listOfElems):
 
 def insert_into_excel(row, column, data, sheet):
     print(f'row {row} column {column} {data}')
-    sheet.cell(row=row, column=column).value = data
-    
+    cell_value = sheet.cell(row=row, column=column).value or ' \n'
+    sheet.cell(row=row, column=column).value =  cell_value + data
+
 
 def export_chromosome(chromosome, sheet):
     columns_and_rows = get_periods_as_rows_and_columns()
     start_row = 1
     start_column = 1
-    
-
-    print(start_row)
-    print(start_column)
+    period_dates = list(set([day for _, day in columns_and_rows]))
     # insert headers as days
-    for position, (_, day) in enumerate(columns_and_rows):
-        insert_into_excel(0, start_column + position, day, sheet)
+    for position, day in enumerate(period_dates):
+        insert_into_excel(start_row, start_column + position, day, sheet)
 
     # insert row data
     for gene in chromosome['data']:
         period_id = gene['period_id']
         rooms = ''.join([room['name'] for room in gene['rooms']])
         # get column isheetndex for period
-        column_index = next((i for i, (_period_id, _) in enumerate(
-            columns_and_rows) if int(_period_id) == int(period_id)))
-        
-        column_index = start_column + column_index
+        date = next((day for _period, day in columns_and_rows if int(_period) == int(period_id)))
+        column_index = start_column + period_dates.index(date)
         row_index = start_row + period_id
-        print('hi',start_row, period_id)
         exam_id = gene['exam_id']
         data = f'{exam_id} {rooms}'
-        print(row_index)
-        print(column_index)
         insert_into_excel(row_index, column_index, data, sheet)
 
-   
 
 def excel_data_export(chromosomes):
     # open workbook
@@ -241,15 +233,12 @@ def excel_data_export(chromosomes):
     for chromosome in chromosomes:
         name = "Chromosome " + str(chromosomes.index(chromosome))
         book.create_sheet(name)
-        name  = book.active
+        name = book.active
         export_chromosome(chromosome, name)
 
     # save workbook
     file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
     book.save(file_path)
-    
-
-
 
 
 if __name__ == "__main__":

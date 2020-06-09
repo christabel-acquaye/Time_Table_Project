@@ -18,5 +18,5 @@
 
   // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
 "editor.detectIndentation": true,
-"python.pythonPath": "/usr/bin/python"
+"python.pythonPath": "/usr/bin/python3"
 }
