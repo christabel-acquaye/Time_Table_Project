@@ -41,6 +41,9 @@ def get_exam_id_from_name(examCode):
     data = get_exams(examCode=examCode)
     return data[0]['id']
 
+def get_exam_name_from_id(id):
+    data = get_exams(id=id)
+    return data[0]['examCode']
 
 def get_closed_period():
     closed_periods = {}
@@ -78,7 +81,7 @@ def get_exam_bound(cur):
 if __name__ == '__main__':
     from main import app
     with app.app_context():
-        id = "42"
+        id = "2"
         length = 125
         alt = True
         minSize = 21
@@ -93,8 +96,8 @@ if __name__ == '__main__':
         # update_exam(columnName = columnName, update = update, id=examCode)
         # get_exam()
 
-        # get_exam(id = id)
-
+        # get_exams()
+        get_exam_name_from_id(id)
         # delete_exam(id=examCode)
 
         # get_exam_column(columnName='id', id=None)
@@ -102,4 +105,4 @@ if __name__ == '__main__':
         # data = get_exam_id_from_name(examName='CAT 154')
         # print(data)
 
-        print(get_closed_period())
+        # print(get_closed_period())

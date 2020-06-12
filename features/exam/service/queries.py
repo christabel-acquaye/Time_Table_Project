@@ -44,6 +44,10 @@ def use_query(params: dict, query_type: str):
         query = '''
             SELECT id from exams WHERE examCode = %(examCode)s'
         '''
+    elif query_type == 'get-exam-code':
+        query = '''
+            SELECT examCode from exams WHERE id = %(id)s'
+        '''
     else:
         raise QUERY_NOT_FOUND(query_type)
 
