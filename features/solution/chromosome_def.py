@@ -242,8 +242,25 @@ def excel_data_export(chromosomes):
     # open workbook
     book = Workbook()
     sheet = book.active
+    sheet.cell(row=1, column=2).value = "HARD CONSTRAINT VALUE"
+    sheet.cell(row=1, column=3).value = "PENALTY VALUE"
+    start_row = 2
+    start_column = 1
+    
+    for position, chromosome in enumerate(chromosomes):
+        data = "Chromosome " + str(chromosomes.index(chromosome)+ 1)
+        insert_into_excel(start_row + position, start_column , data, sheet)
+    start_row = 1
+    start_column = 2
+   
+    for position, chromosome in enumerate(chromosomes):
+        data = chromosome['hard_constraint']
+        sheet.cell(row=start_row + position + 1, column=start_column).value = data
+        data = chromosome['soft_constraint']
+        sheet.cell(row=start_row + position + 1 , column=start_column + 1).value = data
+    #     insert_into_excel(start_row + position, start_column + 1, data, sheet)
     for chromosome in chromosomes:
-        name = "Chromosome " + str(chromosomes.index(chromosome))
+        name = "Chromosome " + str(chromosomes.index(chromosome)+ 1)
         book.create_sheet(name)
         sheet2 = book[name]
         export_chromosome(chromosome, sheet2)
@@ -305,6 +322,7 @@ if __name__ == "__main__":
             'previous_chromosome': previous_chromosome
         }
         updated_population = get_fitness_value(population, params)
+        # pprint.pprint(updated_population[0]['soft_constraint'])
         excel_data_export(updated_population)
         # with open('updated_population.json', 'w') as f:
         #     json.dump(updated_population, f, indent=1)
