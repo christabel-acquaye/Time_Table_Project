@@ -39,7 +39,12 @@ def get_period_bound():
     periods = get_periods()
     return len(periods)
 
-
+def check_any_on_same_day(period_id, exam_periods):
+    dates = [get_period_date(id) for id in exam_periods]
+    if get_period_date(period_id) in dates:
+        return True
+    return False
+        
 if __name__ == '__main__':
 
     # length = 120

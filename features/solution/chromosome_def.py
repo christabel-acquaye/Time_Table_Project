@@ -19,14 +19,14 @@ from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods,
                                       get_periods_as_rows_and_columns,
-                                      get_periods_with_lengths)
+                                      get_periods_with_lengths, check_any_on_same_day)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
 from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
-                                       read_student_groups)
+                                       read_student_groups, get_std_group_with_exams)
 
 
 def format_rooms(rooms):
@@ -129,8 +129,8 @@ def generate_chromosome():
         ]
      """
     #  Get exams ordered in descending order of enrollment size
-    exams = list(get_exams())
-    random.shuffle(exams)
+    student_groups = get_std_group_with_exams() # [ {'student_id: 1, exams: []},{'student_id: 1, exams: []},  ]
+    random.shuffle(student_groups)
 
     periods = get_periods_with_lengths()
 
@@ -142,23 +142,36 @@ def generate_chromosome():
     pprint.pprint(periods)
     chromosome = []
 
-    for period_id, period_duration in periods:
-        # get exams with length < length of current period
+    for std in student_groups:
+        exams = std['exams']
+        exam_periods = []
 
-        best_fit_exams, next_exams_period = best_fit_exams_in_period(
-            exams,
-            period_duration
-        )
+        for period_id, period_duration in periods:
+            # get exams with length < length of current period
 
-        period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
-            best_fit_exams, period_rooms, period_id
-        )
+            # check if current periods falls on the same day as any in exam periods
+            if check_any_on_same_day(period_id, exam_periods): continue
 
-        # prepend unassigned exams to maintain exam order by size
-        exams_without_rooms.extend(next_exams_period)
-        exams = exams_without_rooms
+            exam_periods.append(period_id)
+            # if it does; skip
+            # continue
 
-        chromosome.extend(period_exams)
+            # append current period to exam periods
+
+            best_fit_exams, next_exams_period = best_fit_exams_in_period(
+                exams,
+                period_duration
+            )
+
+            period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
+                best_fit_exams, period_rooms, period_id
+            )
+
+            # prepend unassigned exams to maintain exam order by size
+            exams_without_rooms.extend(next_exams_period)
+            exams = exams_without_rooms
+
+            chromosome.extend(period_exams)
 
     return chromosome
 
@@ -290,7 +303,9 @@ if __name__ == "__main__":
             'closed_periods': closed_periods,
             'reserved_rooms': reserved_rooms,
             'reserved_periods': reserved_periods,
-            'previous_chromosome': previous_chromosome
+            'previous_chromosome': previous_chromosome,
+            'prefered_rooms': [], # get prefered rooms,r
+            'prefered_periods':  []
         }
         updated_population = get_fitness_value(population, params)
         excel_data_export(updated_population)
