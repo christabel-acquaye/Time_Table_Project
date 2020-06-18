@@ -3,11 +3,11 @@ from os import path
 
 import pandas as pd
 from openpyxl import Workbook, load_workbook
-
+import openpyxl
 from features.exam.service import insert_exam
 from features.periods.service import insert_period
 from features.rooms.service import insert_rooms
-
+from features.miscellaneous_functions import read_period_data
 
 def insert_into_excel(row, column, data):
     book = Workbook()
@@ -23,8 +23,8 @@ def read_exam(insert=False):
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
-    exam_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='exams')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    exam_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='exams')
 
     normalized_data = []
 
@@ -51,8 +51,8 @@ def read_room(insert=False):
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
-    room_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='rooms')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    room_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='rooms')
 
     normalized_data = []
     for data in room_data.to_dict('record'):
@@ -78,19 +78,17 @@ def read_period(insert=False):
     Function that reads the details from the excel file and inserts them into the periods table
     '''
 
-    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
-    period_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='periods')
-
+   
+    period_data = read_period_data()
     normalized_data = []
 
-    for data in period_data.to_dict('record'):
+    for index, data in enumerate(period_data):
         item = {
-            'id': data['PeriodID'],
-            'length': data['Length'],
-            'day': data['Date'],
-            'time': data['Time'],
-            'penalty': data['Penalty']
+            'id': index + 1,
+            'length': data['length'],
+            'day': data['date'],
+            'time': data['time'],
+            'penalty': data['penalty']
 
         }
         normalized_data.append(item)
@@ -106,8 +104,8 @@ def read_student():
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data.xlsx')
-    student_data = pd.read_excel(file_path + '/exam_input_data.xlsx', sheet_name='students')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    student_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='students')
 
     student_group = []
     for data in student_data.to_dict('record'):
@@ -128,8 +126,56 @@ def read_student():
 
     return student_group
 
+def read_room_preference():
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    room_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='room_preference')
+    room_preference = []
+    for data in room_data.to_dict('record'):
+        item = {
+            'examCode': data['ExamCode'],
+            'roomName': data['RoomName']         
 
+        }
+        room_preference.append(item)
+    return room_preference
+    
+def read_precedence():
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    precedence_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='precedence')
+    normalized_data = []
+    for data in precedence_data.to_dict('record'):
+        item = {
+            'examCode': data['ExamCode'],
+            'precedence': data['Precedence']         
+
+        }
+        normalized_data.append(item)
+    return normalized_data
+
+def read_period_preference():
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    period_preference_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='period_preference')
+    normalized_data = []
+    for data in period_preference_data.to_dict('record'):
+        item = {
+            'examCode': data['ExamCode'],
+            'date': data['Date'],
+            'time': data['Time']     
+
+        }
+        normalized_data.append(item)
+    return normalized_data     
+    
 if __name__ == '__main__':
     from main import app
     with app.app_context():
-        print(read_period())
+        print(read_period(insert=True))
+        read_exam(insert=True)
+        read_room(insert=True)
+        read_period(insert=True)
+
+
+

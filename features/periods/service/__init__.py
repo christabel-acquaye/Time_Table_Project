@@ -1,13 +1,14 @@
 from _shared import uuid
 
 from .queries import use_query
-
+from features.miscellaneous_functions import get_date_input
 
 def insert_period(id,  length, day, time, penalty):
     '''
     Insert Period deatils into Period Table
     '''
-    params = {'id': id, 'length': length, 'day': day, 'time': time, 'penalty': penalty}
+    print('time',time)
+    params = {'id': id, 'length': length, 'day': get_date_input(day), 'time': time, 'penalty': penalty}
     return use_query(params=params, query_type='add-periods')
 
 

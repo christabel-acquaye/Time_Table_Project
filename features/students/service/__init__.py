@@ -61,14 +61,22 @@ def get_std_group_with_exams():
     std_dic = []
     for std_group in student_groups:
         exams_codes = get_student_group_exams(std_group)[0]
-        try:
-            item = {
-                'student_id': std_group,
-                'exams': [get_exams(examCode=code)[0] for code in exams_codes]
-            }
-            std_dic.append(item)
-        except IndexError:
-            pass
+
+        exams = []
+        for code in exams_codes:
+            try:
+                exam = get_exams(examCode=code)[0]
+                exams.append(exam)
+            except IndexError:
+                print('404', code)
+                pass
+
+        item = {
+            'student_id': std_group,
+            'exams': exams
+        }
+        std_dic.append(item)
+
     return std_dic
 
 
