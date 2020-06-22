@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 from features.exam.service import get_exam_id_from_name, get_exams
-
 from .queries import use_query
 
 
@@ -65,6 +64,30 @@ def __extract_exam_ids_from_name(exams: List[list]):
         except IndexError:
             pass
     return res
+
+
+def get_std_group_with_exams():
+    student_groups = get_all_student_ids()
+    std_dic = []
+    for std_group in student_groups:
+        exams_codes = get_student_group_exams(std_group)[0]
+
+        exams = []
+        for code in exams_codes:
+            try:
+                exam = get_exams(examCode=code)[0]
+                exams.append(exam)
+            except IndexError:
+                print('404', code)
+                pass
+
+        item = {
+            'student_id': std_group,
+            'exams': exams
+        }
+        std_dic.append(item)
+
+    return std_dic
 
 
 def get_specific_genes(std_id, chromosome):

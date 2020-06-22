@@ -4,7 +4,7 @@ import pprint
 
 import numpy as np
 
-from features.exam.service.__init__ import get_exam_max_room
+from features.exam.service.__init__ import (get_exam_max_room, get_exam_id_from_name)
 from features.miscellaneous_functions import get_date_difference, has_same_date
 from features.periods.service import get_period_date
 from features.rooms.distance_services import (find_average_distance,
@@ -214,10 +214,13 @@ def room_conflict(chromosome, reserved_rooms, student_groups):
         data = [gene for gene in student_group_chromosome]
         for i in range(len(data)):
             for j in range(len(reserved_rooms)):
-                if data[i]['period_id'] == reserved_rooms[j]['period_id']:
-                    data_name = [det['name'] for det in data[i]['rooms']]
-                    if any(item in data_name for item in reserved_rooms[j]['reserved_rooms']):
-                        hard_count += 1
+                try:
+                    if data[i]['exam_id'] == get_exam_id_from_name(examCode = reserved_rooms[j]['examCode']):
+                        data_name = [det['name'] for det in data[i]['rooms']]
+                        if any(item in data_name for item in reserved_rooms[j]['roomName']):
+                            hard_count += 1
+                except IndexError:
+                    pass
 
     return hard_count
 

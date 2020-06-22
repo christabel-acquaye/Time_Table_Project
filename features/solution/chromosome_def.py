@@ -11,7 +11,7 @@ from openpyxl import Workbook, load_workbook
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
-                                   get_exam_order_by_size, get_exams,get_exam_name_from_id)
+                                   get_exam_order_by_size, get_exams, get_exam_name_from_id)
 from features.miscellaneous_functions import get_date_difference
 from features.natural_selection.service import (non_dorminating_sort,
                                                 over_crowding)
@@ -19,15 +19,15 @@ from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (get_period_bound, get_period_date,
                                       get_periods,
                                       get_periods_as_rows_and_columns,
-                                      get_periods_with_lengths)
+                                      get_periods_with_lengths, check_any_on_same_day)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
 from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_student_group_exams,
-                                       read_student_groups)
-
+                                       read_student_groups, get_std_group_with_exams)
+from features.migration import read_room_preference,read_period_preference, read_precedence
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
@@ -129,8 +129,8 @@ def generate_chromosome():
         ]
      """
     #  Get exams ordered in descending order of enrollment size
-    exams = list(get_exams())
-    random.shuffle(exams)
+    student_groups = get_std_group_with_exams()  # [ {'student_id: 1, exams: []},{'student_id: 1, exams: []},  ]
+    random.shuffle(student_groups)
 
     periods = get_periods_with_lengths()
 
@@ -139,26 +139,42 @@ def generate_chromosome():
 
     # shuffle periods to add randomization
     random.shuffle(periods)
+
     pprint.pprint(periods)
     chromosome = []
 
-    for period_id, period_duration in periods:
-        # get exams with length < length of current period
+    for std in student_groups:
+        exams = std['exams']
+        exam_periods = []
+        current_exam_index = 0
 
-        best_fit_exams, next_exams_period = best_fit_exams_in_period(
-            exams,
-            period_duration
-        )
+        for period_id, period_duration in periods:
+            # get exams with length < length of current period
+            # best_fit_exams, next_exams_period = best_fit_exams_in_period(
+            #     exams,
+            #     period_duration,
+            #     period_id
+            # )
 
-        period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
-            best_fit_exams, period_rooms, period_id
-        )
+            if(current_exam_index + 1 > len(exams)):
+                continue
 
-        # prepend unassigned exams to maintain exam order by size
-        exams_without_rooms.extend(next_exams_period)
-        exams = exams_without_rooms
+            if check_any_on_same_day(period_id, exam_periods):
+                continue
 
-        chromosome.extend(period_exams)
+            exam_periods.append(period_id)
+
+            period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
+                [exams[current_exam_index]], period_rooms, period_id
+            )
+
+            current_exam_index += 1
+
+            # prepend unassigned exams to maintain exam order by size
+            # exams_without_rooms.extend(next_exams_period)
+            # exams = exams_without_rooms
+
+            chromosome.extend(period_exams)
 
     return chromosome
 
@@ -215,8 +231,6 @@ def export_chromosome(chromosome, sheet):
         data = 'PERIOD ' + str(period_nos.index(period) + 1)
         insert_into_excel(start_row + position, start_column, data, sheet)
 
-
-
     start_row = 1
     start_column = 2
     period_dates = list(set([day for _, day in columns_and_rows]))
@@ -233,8 +247,8 @@ def export_chromosome(chromosome, sheet):
         date = next((day for _period, day in columns_and_rows if int(_period) == int(period_id)))
         column_index = start_column + period_dates.index(date)
         row_index = start_row + period_id
-        exam_id = get_exam_name_from_id(gene['exam_id'])
-        data = f'{exam_id}: {rooms}; '
+        examCode = get_exam_name_from_id(gene['exam_id'])
+        data = f'{examCode}'
         insert_into_excel(row_index, column_index, data, sheet)
 
 
@@ -246,21 +260,21 @@ def excel_data_export(chromosomes):
     sheet.cell(row=1, column=3).value = "PENALTY VALUE"
     start_row = 2
     start_column = 1
-    
+
     for position, chromosome in enumerate(chromosomes):
-        data = "Chromosome " + str(chromosomes.index(chromosome)+ 1)
-        insert_into_excel(start_row + position, start_column , data, sheet)
+        data = "Chromosome " + str(chromosomes.index(chromosome) + 1)
+        insert_into_excel(start_row + position, start_column, data, sheet)
     start_row = 1
     start_column = 2
-   
+
     for position, chromosome in enumerate(chromosomes):
         data = chromosome['hard_constraint']
         sheet.cell(row=start_row + position + 1, column=start_column).value = data
         data = chromosome['soft_constraint']
-        sheet.cell(row=start_row + position + 1 , column=start_column + 1).value = data
+        sheet.cell(row=start_row + position + 1, column=start_column + 1).value = data
     #     insert_into_excel(start_row + position, start_column + 1, data, sheet)
     for chromosome in chromosomes:
-        name = "Chromosome " + str(chromosomes.index(chromosome)+ 1)
+        name = "Chromosome " + str(chromosomes.index(chromosome) + 1)
         book.create_sheet(name)
         sheet2 = book[name]
         export_chromosome(chromosome, sheet2)
@@ -287,39 +301,22 @@ if __name__ == "__main__":
         # population[0][1]['std_with_seats'] -= 1
 
         # closed_periods = get_closed_period()
-        reserved_periods, previous_chromosome = [], []
-        reserved_rooms = [
-            {
-                'period_id': 1,
-                'reserved_rooms': ['NB_T2', 'EHC_102', 'OLD']
-            },
+        reserved_periods = read_period_preference()
+        previous_chromosome = []
+        reserved_rooms = read_room_preference()
 
-            {
-                'period_id': population[0][2]['period_id'],
-                'reserved_rooms': [population[0][1]['rooms'][0]['name'], population[0][2]['rooms'][0]['name']]
-            }
-
-        ]
 
         closed_periods = [
-            {
-                'period_id': 8,
-                'exam_id': ['30', '5', '8']
-            },
-
-            {
-                'period_id': population[0][2]['period_id'],
-                'exam_id': [population[0][1]['exam_id'], population[0][2]['exam_id']]
-            }
-
         ]
-        print(closed_periods)
+
         params = {
             'threshold': 1000,
             'closed_periods': closed_periods,
             'reserved_rooms': reserved_rooms,
             'reserved_periods': reserved_periods,
-            'previous_chromosome': previous_chromosome
+            'previous_chromosome': previous_chromosome,
+            'prefered_rooms': [],  # get prefered rooms,r
+            'prefered_periods':  []
         }
         updated_population = get_fitness_value(population, params)
         # pprint.pprint(updated_population[0]['soft_constraint'])

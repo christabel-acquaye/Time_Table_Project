@@ -4,16 +4,33 @@ import math
 import pprint
 
 import pandas as pd
+from os import path
 
+from openpyxl import Workbook, load_workbook
+import openpyxl
 
-def get_date_input():
-    date_entry = input('Enter a date in YYYY-MM-DD format:\t')
-    year, month, day = map(int, date_entry.split('-'))
+def read_input():
+    
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    input_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='inputs')
+
+    output_dic = {}
+    for data in input_data.to_dict('record'):
+        # print(data)
+        output_dic[data['Variable']] = data['Value']
+    return output_dic  
+
+def get_date_input(date_entry):
+    print(date_entry)
+    day, month, year = map(int, date_entry.split('/'))
+    print(year, month, day)
     return datetime.date(year, month, day)
 
 
 # end_date = start_date + datetime.timedelta(days=14)
 def get_period_date(start_date, end_date):
+    
     date_generated = [start_date + datetime.timedelta(days=x) for x in range(0, (end_date-start_date).days + 1)]
     formatted_data = [data.strftime("%Y,%m,%d") for data in date_generated]
     exam_dates = []
@@ -38,11 +55,11 @@ def add_break(time):
     return time + datetime.timedelta(minutes=30)
 
 
-def get_period_list(start_date, stop_date, duration):
+def get_period_list(start_date, stop_date, duration, periods_per_day):
     date_data = get_period_date(start_date, stop_date)
     period_list = []
     for data in date_data:
-        for i in range(0, 3):
+        for i in range(0, periods_per_day):
             start_time, end_time = 0, 0
             if i == 0:
                 start, end = get_exam_stop_date(8, 00, duration)
@@ -75,8 +92,16 @@ def has_same_date(date1, date2):
         return True
     return False
 
+def read_period_data():
+    data = read_input()
+    start_date = pd.to_datetime(data['Start_Date(dd/mm/yyyy)'])
+    end_date = pd.to_datetime(data['Stop_Date(dd/mm/yyyy)'])
+    
+    duration = data['Exam_Duration(mins)']
+    periods_per_day = data['Periods_In_Day']
+    return get_period_list(start_date, end_date, duration, periods_per_day)
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
     # start_date = get_date_input()
     # stop_date = get_date_input()
@@ -84,6 +109,8 @@ if __name__ == "__main__":
     # data = get_period_list(start_date, stop_date, duration)
     # pprint.pprint(data)
     # pprint.pprint(len(data))
-    f_date = '2020-04-05 00:00:00'
-    l_date = '2020-04-05 00:00:00'
-    print(has_same_date(f_date, l_date))
+    # f_date = '2020-04-05 00:00:00'
+    # l_date = '2020-04-05 00:00:00'
+    # print(has_same_date(f_date, l_date))
+
+    # pprint.pprint(read_period_data())
