@@ -45,6 +45,16 @@ def get_student_group_exams(std_id):
     exam_list = [list(elem) for elem in exams]
     return exam_list
 
+def get_formated_std_data():
+    std_groups =get_all_student_ids()
+    std_dic = {}
+    for std_group in std_groups: 
+        new_dic = {std_group: get_student_group_exams(std_group)}
+        std_dic.update(new_dic)
+
+    return std_dic
+
+
 
 def __extract_exam_ids_from_name(exams: List[list]):
     res = []

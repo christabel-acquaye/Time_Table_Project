@@ -97,7 +97,7 @@ if __name__ == '__main__':
         # get_exam()
 
         # get_exams()
-        get_exam_name_from_id(id)
+        # get_exam_name_from_id(id)
         # delete_exam(id=examCode)
 
         # get_exam_column(columnName='id', id=None)
@@ -106,3 +106,4 @@ if __name__ == '__main__':
         # print(data)
 
         # print(get_closed_period())
+        get_exams(examCode=examCode)
