@@ -216,7 +216,7 @@ def checkIfDuplicates_1(listOfElems):
 
 
 def insert_into_excel(row, column, data, sheet):
-    print(f'row {row} column {column} {data}')
+    # print(f'row {row} column {column} {data}')
     cell_value = sheet.cell(row=row, column=column).value or ' \n'
     sheet.cell(row=row, column=column).value = cell_value + data
 
@@ -234,6 +234,7 @@ def export_chromosome(chromosome, sheet):
     start_row = 1
     start_column = 2
     period_dates = list(set([day for _, day in columns_and_rows]))
+    period_dates = sorted(period_dates)
     # insert headers as days
     for position, day in enumerate(period_dates):
         data = 'DAY ' + str(period_dates.index(day) + 1)
@@ -248,8 +249,10 @@ def export_chromosome(chromosome, sheet):
         column_index = start_column + period_dates.index(date)
         row_index = start_row + period_id
         examCode = get_exam_name_from_id(gene['exam_id'])
-        data = f'{examCode}'
+        print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
+        data = f'{examCode}: {rooms}; '
         insert_into_excel(row_index, column_index, data, sheet)
+    print('days', period_dates)
 
 
 def excel_data_export(chromosomes):

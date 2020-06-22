@@ -2,7 +2,7 @@
 import datetime
 import math
 import pprint
-
+import time
 import pandas as pd
 from os import path
 
@@ -94,14 +94,20 @@ def has_same_date(date1, date2):
 
 def read_period_data():
     data = read_input()
-    start_date = pd.to_datetime(data['Start_Date(dd/mm/yyyy)'])
-    end_date = pd.to_datetime(data['Stop_Date(dd/mm/yyyy)'])
-    
+    start_date = pd.to_datetime(data['Start_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
+   
+    dt = start_date.date()
+    start_date = datetime.datetime(dt.year, dt.day, dt.month, 0, 0, 0)
+    end_date = pd.to_datetime(data['Stop_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
+    dt1 = end_date.date()
+    end_date = datetime.datetime(dt1.year, dt1.day, dt1.month, 0, 0, 0)
     duration = data['Exam_Duration(mins)']
+    print(duration)
     periods_per_day = data['Periods_In_Day']
+    print(periods_per_day)
     return get_period_list(start_date, end_date, duration, periods_per_day)
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
     # start_date = get_date_input()
     # stop_date = get_date_input()
@@ -112,5 +118,7 @@ def read_period_data():
     # f_date = '2020-04-05 00:00:00'
     # l_date = '2020-04-05 00:00:00'
     # print(has_same_date(f_date, l_date))
-
-    # pprint.pprint(read_period_data())
+    # raw = '2020-04-05 00:00:00'
+    # print(Timestamp.valueof(raw))
+    # print(get_date_input(datetime(raw)))
+    pprint.pprint(read_period_data())

@@ -7,7 +7,8 @@ import pandas as pd
 
 from features.exam.service import get_exam_id_from_name, get_exams
 from .queries import use_query
-
+from openpyxl import Workbook, load_workbook
+import openpyxl
 
 def insert_students(cur, id, examId, periodId):
     params = {'periodId': periodId, 'examId': examId, 'id': id}
@@ -19,9 +20,11 @@ def get_students(id=None):
 
 
 def read_student_groups():
-    file_path = path.join(path.dirname(path.abspath(__file__)), '../../../data')
+    
     data = []
-    raw_data = pd.read_csv(file_path + '/students.csv')
+    file_path = path.join(path.dirname(path.abspath(__file__)), '../../../data')
+    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
+    raw_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='students')
     for row in raw_data.to_dict('record'):
         data.append(
             tuple((value for value in row.values() if not pd.isna(value))))
