@@ -140,7 +140,7 @@ def generate_chromosome():
 
     rooms = get_rooms()
     period_rooms = period_room_allocation(periods, rooms)
-
+    exam_no_in_period = [0 for x in range(len(periods))]
     # shuffle periods to add randomization
     random.shuffle(periods)
 
@@ -159,27 +159,32 @@ def generate_chromosome():
             #     period_duration,
             #     period_id
             # )
-
+            max_exams_per_period = 3
+            # print('period_id: ', period_id)
             if(current_exam_index + 1 > len(exams)):
                 continue
 
-            if check_any_on_same_day(period_id, exam_periods):
+            # if check_any_on_same_day(period_id, exam_periods):
+            #     continue
+            
+            if exam_no_in_period[(period_id - 1)] >= max_exams_per_period:
                 continue
 
+            # print('used period_id: ', period_id)
             exam_periods.append(period_id)
 
             period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
                 [exams[current_exam_index]], period_rooms, period_id
             )
-
+            exam_no_in_period[(period_id - 1)] += 1
             current_exam_index += 1
 
             # prepend unassigned exams to maintain exam order by size
             # exams_without_rooms.extend(next_exams_period)
             # exams = exams_without_rooms
-
+            # print(period_exams)
             chromosome.extend(period_exams)
-
+    # print(periods)
     return chromosome
 
 
@@ -253,9 +258,8 @@ def export_chromosome(chromosome, sheet):
         column_index = start_column + period_dates.index(date)
         row_index = start_row + period_id
         examCode = get_exam_name_from_id(gene['exam_id'])
-        # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id,
-        #   '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
-        data = f'{examCode}: {rooms}; '
+        # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
+        data = f'{examCode},  '
         insert_into_excel(row_index, column_index, data, sheet)
     # print('days', period_dates)
 

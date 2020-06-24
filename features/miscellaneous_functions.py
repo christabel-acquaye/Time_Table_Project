@@ -1,4 +1,3 @@
-
 import datetime
 import math
 import pprint
@@ -100,7 +99,6 @@ def read_period_data():
     start_date = pd.to_datetime(data['Start_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
 
     dt = start_date.date()
-    start_date = datetime.datetime(dt.year, dt.day, dt.month, 0, 0, 0)
     end_date = pd.to_datetime(data['Stop_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
     dt1 = end_date.date()
     end_date = datetime.datetime(dt1.year, dt1.day, dt1.month, 0, 0, 0)
