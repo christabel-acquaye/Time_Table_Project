@@ -11,23 +11,27 @@ from openpyxl import Workbook, load_workbook
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
-                                   get_exam_order_by_size, get_exams, get_exam_name_from_id)
+                                   get_exam_name_from_id,
+                                   get_exam_order_by_size, get_exams)
+from features.migration import (read_period_preference, read_precedence,
+                                read_room_preference)
 from features.miscellaneous_functions import get_date_difference
 from features.natural_selection.service import (non_dorminating_sort,
                                                 over_crowding)
 from features.penalty.cost_function import get_fitness_value
-from features.periods.service import (get_period_bound, get_period_date,
-                                      get_periods,
+from features.periods.service import (check_any_on_same_day, get_period_bound,
+                                      get_period_date, get_periods,
                                       get_periods_as_rows_and_columns,
-                                      get_periods_with_lengths, check_any_on_same_day)
+                                      get_periods_with_lengths)
 from features.rooms.service import get_rooms
 from features.solution.examAssign import period_exam_allocation
 from features.solution.roomAssign import period_room_allocation, room_compute
 from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
+                                       get_std_group_with_exams,
                                        get_student_group_exams,
-                                       read_student_groups, get_std_group_with_exams)
-from features.migration import read_room_preference,read_period_preference, read_precedence
+                                       read_student_groups)
+
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
@@ -89,11 +93,11 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 [room['no_of_stds']for room in format_rooms(room_allocated)]
             )
 
-            if not std_with_seats == exam['minSize']:
-                print('period', period_id, 'exam',
-                      exam['id'], 'std_size', exam['minSize'])
-                print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
-                    std_with_seats, exam['minSize']))
+            # if not std_with_seats == exam['minSize']:
+            # print('period', period_id, 'exam',
+            #       exam['id'], 'std_size', exam['minSize'])
+            # print("\tsome students didn't get seats, std_with_seats: %s, std_size: %s " % (
+            #     std_with_seats, exam['minSize']))
 
             period_exam_assignment = {
                 'period_id': period_id,
@@ -140,7 +144,7 @@ def generate_chromosome():
     # shuffle periods to add randomization
     random.shuffle(periods)
 
-    pprint.pprint(periods)
+    # pprint.pprint(periods)
     chromosome = []
 
     for std in student_groups:
@@ -249,10 +253,11 @@ def export_chromosome(chromosome, sheet):
         column_index = start_column + period_dates.index(date)
         row_index = start_row + period_id
         examCode = get_exam_name_from_id(gene['exam_id'])
-        print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
+        # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id,
+        #   '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
         data = f'{examCode}: {rooms}; '
         insert_into_excel(row_index, column_index, data, sheet)
-    print('days', period_dates)
+    # print('days', period_dates)
 
 
 def excel_data_export(chromosomes):
@@ -307,7 +312,6 @@ if __name__ == "__main__":
         reserved_periods = read_period_preference()
         previous_chromosome = []
         reserved_rooms = read_room_preference()
-
 
         closed_periods = [
         ]

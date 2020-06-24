@@ -1,13 +1,13 @@
 from _shared import uuid
+from features.miscellaneous_functions import get_date_input
 
 from .queries import use_query
-from features.miscellaneous_functions import get_date_input
+
 
 def insert_period(id,  length, day, time, penalty):
     '''
     Insert Period deatils into Period Table
     '''
-    print('time',time)
     params = {'id': id, 'length': length, 'day': get_date_input(day), 'time': time, 'penalty': penalty}
     return use_query(params=params, query_type='add-periods')
 
@@ -40,13 +40,15 @@ def get_period_bound():
     periods = get_periods()
     return len(periods)
 
+
 def check_any_on_same_day(period_id, exam_periods):
     dates = [get_period_date(id) for id in exam_periods]
     if get_period_date(period_id) in dates:
         return True
     return False
-        
-if __name__ == '__main__':
+
+
+# if __name__ == '__main__':
 
     # length = 120
     # day = "1997-06-04"
@@ -54,9 +56,9 @@ if __name__ == '__main__':
     # penalty = 1
     # id = "3"
     # print(list(get_periods_with_lengths()))
-    from main import app
-    with app.app_context():
-        print(get_periods(id=1))
+    # from main import app
+    # with app.app_context():
+    #     print(get_periods(id=1))
 
     # insert_period(
     #               length=length,

@@ -1,13 +1,15 @@
 import pprint
 from os import path
 
+import openpyxl
 import pandas as pd
 from openpyxl import Workbook, load_workbook
-import openpyxl
+
 from features.exam.service import insert_exam
+from features.miscellaneous_functions import read_period_data
 from features.periods.service import insert_period
 from features.rooms.service import insert_rooms
-from features.miscellaneous_functions import read_period_data
+
 
 def insert_into_excel(row, column, data):
     book = Workbook()
@@ -78,7 +80,6 @@ def read_period(insert=False):
     Function that reads the details from the excel file and inserts them into the periods table
     '''
 
-   
     period_data = read_period_data()
     normalized_data = []
 
@@ -118,13 +119,13 @@ def read_student():
         flipped = []
 
         for course in dic['course']:
-            # pprint.pprint(course)
             if course not in flipped:
                 flipped.append(course)
         dic['course'] = flipped
         student_group.append(dic)
 
     return student_group
+
 
 def read_room_preference():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
@@ -134,12 +135,13 @@ def read_room_preference():
     for data in room_data.to_dict('record'):
         item = {
             'examCode': data['ExamCode'],
-            'roomName': data['RoomName']         
+            'roomName': data['RoomName']
 
         }
         room_preference.append(item)
     return room_preference
-    
+
+
 def read_precedence():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
     book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
@@ -148,11 +150,12 @@ def read_precedence():
     for data in precedence_data.to_dict('record'):
         item = {
             'examCode': data['ExamCode'],
-            'precedence': data['Precedence']         
+            'precedence': data['Precedence']
 
         }
         normalized_data.append(item)
     return normalized_data
+
 
 def read_period_preference():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
@@ -163,19 +166,8 @@ def read_period_preference():
         item = {
             'examCode': data['ExamCode'],
             'date': data['Date'],
-            'time': data['Time']     
+            'time': data['Time']
 
         }
         normalized_data.append(item)
-    return normalized_data     
-    
-if __name__ == '__main__':
-    from main import app
-    with app.app_context():
-        print(read_period(insert=True))
-        read_exam(insert=True)
-        read_room(insert=True)
-        read_period(insert=True)
-
-
-
+    return normalized_data

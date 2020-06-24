@@ -34,4 +34,3 @@ if __name__ == '__main__':
     from main import app
     with app.app_context():
         data = get_rooms()
-    print(data)

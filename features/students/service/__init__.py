@@ -3,12 +3,14 @@ from os import path
 from typing import List
 
 import numpy as np
+import openpyxl
 import pandas as pd
+from openpyxl import Workbook, load_workbook
 
 from features.exam.service import get_exam_id_from_name, get_exams
+
 from .queries import use_query
-from openpyxl import Workbook, load_workbook
-import openpyxl
+
 
 def insert_students(cur, id, examId, periodId):
     params = {'periodId': periodId, 'examId': examId, 'id': id}
@@ -20,7 +22,7 @@ def get_students(id=None):
 
 
 def read_student_groups():
-    
+
     data = []
     file_path = path.join(path.dirname(path.abspath(__file__)), '../../../data')
     book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
@@ -47,15 +49,15 @@ def get_student_group_exams(std_id):
     exam_list = [list(elem) for elem in exams]
     return exam_list
 
+
 def get_formated_std_data():
-    std_groups =get_all_student_ids()
+    std_groups = get_all_student_ids()
     std_dic = {}
-    for std_group in std_groups: 
+    for std_group in std_groups:
         new_dic = {std_group: get_student_group_exams(std_group)}
         std_dic.update(new_dic)
 
     return std_dic
-
 
 
 def __extract_exam_ids_from_name(exams: List[list]):

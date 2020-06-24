@@ -104,5 +104,4 @@ if __name__ == "__main__":
     from main import app
     with app.app_context():
         rooms = get_index_max_room_size(get_rooms())
-    print(rooms)
     # period_room_allocation(periods, rooms)

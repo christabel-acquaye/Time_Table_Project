@@ -34,4 +34,3 @@ def get_fitness_value(chromosomes, params):
 if __name__ == "__main__":
     chromosomes = []
     params = []
-    print(get_fitness_value(chromosomes, params))

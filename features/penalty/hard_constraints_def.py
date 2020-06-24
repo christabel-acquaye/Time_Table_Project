@@ -4,7 +4,8 @@ import pprint
 
 import numpy as np
 
-from features.exam.service.__init__ import (get_exam_max_room, get_exam_id_from_name)
+from features.exam.service.__init__ import (get_exam_id_from_name,
+                                            get_exam_max_room)
 from features.miscellaneous_functions import get_date_difference, has_same_date
 from features.periods.service import get_period_date
 from features.rooms.distance_services import (find_average_distance,
@@ -187,7 +188,6 @@ def period_conflict(chromosome, closed_periods, student_groups):
     for key in grouped:
         if len(grouped[key]) > 1:
             if checkConsecutive(grouped[key]):
-                print(key, '->', grouped[key])
                 hard_count += 1
 
     return hard_count
@@ -215,7 +215,7 @@ def room_conflict(chromosome, reserved_rooms, student_groups):
         for i in range(len(data)):
             for j in range(len(reserved_rooms)):
                 try:
-                    if data[i]['exam_id'] == get_exam_id_from_name(examCode = reserved_rooms[j]['examCode']):
+                    if data[i]['exam_id'] == get_exam_id_from_name(examCode=reserved_rooms[j]['examCode']):
                         data_name = [det['name'] for det in data[i]['rooms']]
                         if any(item in data_name for item in reserved_rooms[j]['roomName']):
                             hard_count += 1
@@ -328,8 +328,6 @@ if __name__ == "__main__":
     # exam = []
     # room = []
     # val = hard_constraints_value(chromosome, student_group, period, exam, room)
-    # print(val)
     # roomA = 'OLD'
     # roomB = 'EHC 293'
-    # print(get_room_distance_penalty(roomA, roomB))
     # distance_back_to_back_conflict(chromosome, 1)

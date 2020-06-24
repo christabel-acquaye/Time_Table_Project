@@ -22,5 +22,3 @@ if __name__ == '__main__':
 
     # exams = get_exam()
     std_groups = read_student_groups()
-    pprint.pprint(read_student_groups())
-    # print(get_exam_student_group(exams, std_groups))

@@ -41,9 +41,11 @@ def get_exam_id_from_name(examCode):
     data = get_exams(examCode=examCode)
     return data[0]['id']
 
+
 def get_exam_name_from_id(id):
     data = get_exams(id=id)
     return data[0]['examCode']
+
 
 def get_closed_period():
     closed_periods = {}
@@ -103,7 +105,4 @@ if __name__ == '__main__':
         # get_exam_column(columnName='id', id=None)
 
         # data = get_exam_id_from_name(examName='CAT 154')
-        # print(data)
-
-        # print(get_closed_period())
         get_exams(examCode=examCode)

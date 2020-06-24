@@ -69,7 +69,6 @@ def room_availability_penalty(gene: dict):
         penalty += 4
 
     rooms = [item['name'] for item in gene['rooms']]
-    # print(len(rooms))
     if len(rooms) > 1:
         if (find_average_distance(rooms)) > 0:
             penalty += 4

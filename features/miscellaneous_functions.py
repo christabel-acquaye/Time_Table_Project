@@ -3,14 +3,15 @@ import datetime
 import math
 import pprint
 import time
-import pandas as pd
 from os import path
 
-from openpyxl import Workbook, load_workbook
 import openpyxl
+import pandas as pd
+from openpyxl import Workbook, load_workbook
+
 
 def read_input():
-    
+
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
     book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
     input_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='inputs')
@@ -19,7 +20,8 @@ def read_input():
     for data in input_data.to_dict('record'):
         # print(data)
         output_dic[data['Variable']] = data['Value']
-    return output_dic  
+    return output_dic
+
 
 def get_date_input(date_entry):
     print(date_entry)
@@ -30,7 +32,7 @@ def get_date_input(date_entry):
 
 # end_date = start_date + datetime.timedelta(days=14)
 def get_period_date(start_date, end_date):
-    
+
     date_generated = [start_date + datetime.timedelta(days=x) for x in range(0, (end_date-start_date).days + 1)]
     formatted_data = [data.strftime("%Y,%m,%d") for data in date_generated]
     exam_dates = []
@@ -92,10 +94,11 @@ def has_same_date(date1, date2):
         return True
     return False
 
+
 def read_period_data():
     data = read_input()
     start_date = pd.to_datetime(data['Start_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
-   
+
     dt = start_date.date()
     start_date = datetime.datetime(dt.year, dt.day, dt.month, 0, 0, 0)
     end_date = pd.to_datetime(data['Stop_Date(dd/mm/yyyy)'], format='%Y-%m-%d')
@@ -106,6 +109,7 @@ def read_period_data():
     periods_per_day = data['Periods_In_Day']
     print(periods_per_day)
     return get_period_list(start_date, end_date, duration, periods_per_day)
+
 
 if __name__ == "__main__":
 
