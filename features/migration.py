@@ -171,3 +171,15 @@ def read_period_preference():
         }
         normalized_data.append(item)
     return normalized_data
+
+
+if __name__ == "__main__":
+    from main import app
+    with app.app_context():
+        read_exam(insert = True)
+        read_room(insert = True)
+        read_period(insert = True)
+        read_period_preference()
+        read_precedence()
+        read_room_preference()
+        read_student()

@@ -259,12 +259,17 @@ def export_chromosome(chromosome, sheet):
         row_index = start_row + period_id
         examCode = get_exam_name_from_id(gene['exam_id'])
         # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
-        data = f'{examCode},  '
+        data = f'{examCode}, {rooms}; '
         insert_into_excel(row_index, column_index, data, sheet)
     # print('days', period_dates)
 
+def archive_logger(chromosomes):
+    time_stamp = datetime.datetime.now()
 
-def excel_data_export(chromosomes):
+    file_path = path.join(path.dirname(path.abspath(__file__)), f'../../data/archives/{time_stamp}.xlsx')
+    excel_data_export(chromosomes, file_path)
+
+def excel_data_export(chromosomes, file_path):
     # open workbook
     book = Workbook()
     sheet = book.active
@@ -292,7 +297,7 @@ def excel_data_export(chromosomes):
         export_chromosome(chromosome, sheet2)
 
     # save workbook
-    file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
+    
     book.save(file_path)
 
 
@@ -313,8 +318,10 @@ if __name__ == "__main__":
         # population[0][1]['std_with_seats'] -= 1
 
         # closed_periods = get_closed_period()
+        with open('population.json') as f:
+            data = json.load(f)
         reserved_periods = read_period_preference()
-        previous_chromosome = []
+        previous_chromosome = data[0]
         reserved_rooms = read_room_preference()
 
         closed_periods = [
@@ -331,7 +338,9 @@ if __name__ == "__main__":
         }
         updated_population = get_fitness_value(population, params)
         # pprint.pprint(updated_population[0]['soft_constraint'])
-        excel_data_export(updated_population)
+        file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
+        excel_data_export(updated_population, file_path)
+        archive_logger(updated_population)
         # with open('updated_population.json', 'w') as f:
         #     json.dump(updated_population, f, indent=1)
         # pprint.pprint(non_dorminating_sort(updated_population))
