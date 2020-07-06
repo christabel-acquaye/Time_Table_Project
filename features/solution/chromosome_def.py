@@ -259,7 +259,7 @@ def export_chromosome(chromosome, sheet):
         row_index = start_row + period_id
         examCode = get_exam_name_from_id(gene['exam_id'])
         # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
-        data = f'{examCode}, {rooms}; '
+        data = f'{examCode}: {rooms}; '
         insert_into_excel(row_index, column_index, data, sheet)
     # print('days', period_dates)
 
