@@ -1,7 +1,17 @@
 import math
 import pprint
+import operator
 
 
+def get_chromosome_fitness(chromosomes, chromosome_id):
+    return chromosomes[chromosome_id]['hard_constraint'],chromosomes[chromosome_id]['soft_constraint']
+
+
+def get_distance_average(ls1, ls2):
+    c = list(map(operator.add, ls1,ls2))
+    c = [x/2 for x in c]
+    return c
+    
 def non_dorminating_sort(chromosomes):
     """
         [A, B, C]
@@ -23,62 +33,122 @@ def non_dorminating_sort(chromosomes):
             y1 = reference_chromosome['soft_constraint']
             y2 = other_chromosome['soft_constraint']
 
-            # (x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)
+           
             if ((x1 <= x2 and y1 <= y2) and (x1 < x2 or y1 < y2)):
-                domination_count[reference_position] += 1
-                domination_count[other_position] -= 1
+    
+                # domination_count[other_position] += 1
                 dominated_elements[reference_position].append(other_position)
+        
+    for id in range(0,(len(chromosomes))+1):
+        for sublist in dominated_elements:
+            if id in sublist:
+                domination_count[id] += 1
+      
+    chromosomes_rank = sorted(range(len(domination_count)), reverse=False, key=lambda k: domination_count[k])
+   
+    domination_count = sorted(domination_count, reverse=False)
+   
+    print(domination_count)
+    print(chromosomes_rank)
+    res = {key+1 : [chromosomes_rank[idx]  
+        for idx in range(len(chromosomes_rank)) if domination_count[idx]== i] 
+        for key, i in enumerate(set(domination_count))} 
 
-            chromosomes_rank = sorted(range(len(domination_count)), reverse=True, key=lambda k: domination_count[k])
-            domination_count = sorted(domination_count, reverse=True)
-    for i in range(len(domination_count)):
-        if domination_count[i] >= 0:
-            non_dorminating_chromosomes.append(chromosomes_rank[i])
+    
+    # for i in range(len(domination_count)):
+    #     if domination_count[i] >= 0:
+    #         non_dorminating_chromosomes.append(chromosomes_rank[i])
+    #     else:
+    #         dorminating_chromosomes.append(chromosomes_rank[i])
+
+    # return dorminating_chromosomes, non_dorminating_chromosomes
+    return res
+def calc_crowding_distance(front_ls, fitness):
+    """
+
+    Arguments:
+        
+    Returns:
+       
+    """
+    
+   
+    distance  = [0] * len(front_ls)
+    den = fitness[len(fitness)-1] - fitness[0]
+
+    for i, item in enumerate(front_ls):
+        if i == 0 or i == (len(front_ls)-1):
+            distance[0] = math.inf
+            distance[len(front_ls)-1] = math.inf
         else:
-            dorminating_chromosomes.append(chromosomes_rank[i])
+            distance[i] = abs(0 + ((fitness[(i+1)] - fitness[(i-1)])/abs(den)))
+    return distance
+    
+def get_crowding_dis_ordered_ls(chromosomes, front_ls):
+    """
 
-    return dorminating_chromosomes, non_dorminating_chromosomes
+    Arguments:
+        
+    Returns:
+       
+    """
+    hard = []
+    soft = []
+    # if len(front_ls) == 2:
+    #     return front_ls
+    for id, item in enumerate(front_ls):
+        fitness1, fitness2 = get_chromosome_fitness(chromosomes, item)
+        
+        hard.append(fitness1)
+        soft.append(fitness2)
 
-# Function to find index of list
+    crowding_distance_on_hard = calc_crowding_distance(front_ls, hard)
+    crowding_distance_on_soft = calc_crowding_distance(front_ls, soft)
+    
+    averge_distance = get_distance_average(crowding_distance_on_hard, crowding_distance_on_soft)
+    zipped_lists = zip(averge_distance, front_ls)
+    sorted_zipped_lists = sorted(zipped_lists, reverse=True)
+    sorted_list1 = [element for _, element in sorted_zipped_lists]
+    
+    return sorted_list1
 
+def complete_nsga(keep,chromosomes):
+    """
 
-def index_of(a, list):
-    for i in range(0, len(list)):
-        if list[i] == a:
-            return i
-    return -1
+    Arguments:
+        
+    Returns:
+       
+    """
 
+    result = non_dorminating_sort(chromosomes)
+    ls = list(result.values())
+    print("ls", ls)
+    res = []
 
-def sort_by_values(list1, values):
-    sorted_list = []
-    while(len(sorted_list) != len(list1)):
-        if index_of(min(values), values) in list1:
-            sorted_list.append(index_of(min(values), values))
-        values[index_of(min(values), values)] = math.inf
-    return sorted_list
+    for sublist in ls:
+     
 
+        if len(sublist) <= keep:
+            for item in sublist:
+                res.append(item)
+            keep = keep - len(sublist)
 
-def over_crowding(non_dorminating_chromosomes, dorminating_chromosomes):
-    crowding_distance = [0 for i in range(0, len(dorminating_chromosomes))]
-    fitness_value1 = [chromosome['hard_constraint'] for chromosome in non_dorminating_chromosomes]
-    fitness_value2 = [chromosome['soft_constraint'] for chromosome in non_dorminating_chromosomes]
-    fitness_value1_sorted = sort_by_values(dorminating_chromosomes, fitness_value1)
-    fitness_value2_sorted = sort_by_values(dorminating_chromosomes, fitness_value2)
-    pprint.pprint(crowding_distance)
-    # crowding_distance[0] = 100000000
-    # crowding_distance[len(dorminating_chromosomes) - 1] = 100000000
-    # for i in range((1, len(list(dorminating_chromosomes)-1))):
-    #     crowding_distance[i] = crowding_distance[i] + (fitness_value1[fitness_value1_sorted[i+1]] -
-    #                                                    fitness_value2[fitness_value1_sorted[i-1]])/(max(fitness_value1)-min(fitness_value1))
-    # for i in range((1, len(dorminating_chromosomes)-1)):
-    #     crowding_distance[i] = crowding_distance[i] + (fitness_value1[fitness_value2_sorted[i+1]] -
-    #                                                    fitness_value2[fitness_value2_sorted[i-1]])/(max(fitness_value2)-min(fitness_value2))
-    return crowding_distance
-
-
-def get_first_generation_parents(dorminating_chromosomes, selected_chromosome):
-    return dorminating_chromosomes, selected_chromosome
-
+        else:
+          
+            new_ls = get_crowding_dis_ordered_ls(chromosomes,sublist)
+            
+            l = new_ls[0:keep]
+            
+            for i in l:
+                res.append(i)
+            break
+        
+          
+            
+    return res
+    
+            
 
 def natural_selection(population):
     """
@@ -95,5 +165,58 @@ def natural_selection(population):
     return non_dominated_chromosomes
 
 
+
+
 if __name__ == "__main__":
-    pass
+    chromosomes = [
+        {
+            "hard_constraint": 65,
+            "soft_constraint": 51
+        },
+        {
+            "hard_constraint": 56,
+            "soft_constraint": 52
+        },     
+       
+        {
+            "hard_constraint": 62,
+            "soft_constraint": 49
+        },  
+        {
+            "hard_constraint": 57,
+            "soft_constraint": 52
+        },  
+        {
+            "hard_constraint": 59,
+            "soft_constraint": 47
+        },  
+      
+        {
+            "hard_constraint": 56,
+            "soft_constraint": 61
+        },  
+
+        {
+            "hard_constraint": 56,
+            "soft_constraint": 49
+        },  
+
+        {
+            "hard_constraint": 58,
+            "soft_constraint": 54
+        },  
+
+        {
+            "hard_constraint": 60,
+            "soft_constraint": 46
+        },  
+
+        {
+            "hard_constraint": 59,
+            "soft_constraint": 51
+        },  
+
+    ]
+    keep =  5
+    print(non_dorminating_sort(chromosomes))
+    # print(complete_nsga(keep,chromosomes))

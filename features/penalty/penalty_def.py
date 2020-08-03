@@ -172,7 +172,7 @@ def get_total_penalty_value(chromosome: List[dict], threshold: int, reserved_per
     penalty = []
 
     for gene in chromosome:
-        penalty.append(period_penalty(gene, reserved_periods))
+        # penalty.append(period_penalty(gene, reserved_periods))
 
         penalty.append(room_availability_penalty(gene))
         penalty.append(room_split_penalty(gene))

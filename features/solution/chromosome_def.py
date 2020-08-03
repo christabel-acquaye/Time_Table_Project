@@ -17,7 +17,7 @@ from features.migration import (read_period_preference, read_precedence,
                                 read_room_preference)
 from features.miscellaneous_functions import get_date_difference
 from features.natural_selection.service import (non_dorminating_sort,
-                                                over_crowding)
+                                               get_chromosome_fitness, complete_nsga)
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import (check_any_on_same_day, get_period_bound,
                                       get_period_date, get_periods,
@@ -31,10 +31,13 @@ from features.students.service import (get_exam_student_group,
                                        get_std_group_with_exams,
                                        get_student_group_exams,
                                        read_student_groups)
+from features.reproduction.service import chromosomes_cross_over
 
 
 def format_rooms(rooms):
     return [{'name': room['roomName'], 'no_of_stds': room['size']} for room in rooms]
+
+
 
 
 def best_fit_exams_in_period(exams, duration):
@@ -231,14 +234,15 @@ def insert_into_excel(row, column, data, sheet):
 
 
 def export_chromosome(chromosome, sheet):
+    count = 1
     columns_and_rows = get_periods_as_rows_and_columns()
-    start_row = 2
+    start_row = 1
     start_column = 1
     period_nos = list(columns_and_rows)
     # insert headers as period
-    for position, period in enumerate(period_nos):
-        data = 'PERIOD ' + str(period_nos.index(period) + 1)
-        insert_into_excel(start_row + position, start_column, data, sheet)
+    for i in range(1,4):
+        data = 'PERIOD ' + str(i)
+        insert_into_excel(start_row + i, start_column, data, sheet)
 
     start_row = 1
     start_column = 2
@@ -256,17 +260,27 @@ def export_chromosome(chromosome, sheet):
         # get column isheetndex for period
         date = next((day for _period, day in columns_and_rows if int(_period) == int(period_id)))
         column_index = start_column + period_dates.index(date)
-        row_index = start_row + period_id
+        if (period_id % 3) == 1:
+            row_index1 = 2
+
+        elif (period_id %3) == 2:
+            row_index1 = 3
+            
+        elif (period_id % 3) == 0:
+            row_index1 = 4
+            
+        
         examCode = get_exam_name_from_id(gene['exam_id'])
         # print('Row index: ', row_index, '\nColumn index: ', column_index, '\nPeriod id: ', period_id, '\nDay Index: ', period_dates.index(date), '\nExam: ', examCode, '\nDay: ', date)
         data = f'{examCode}: {rooms}; '
-        insert_into_excel(row_index, column_index, data, sheet)
+        insert_into_excel(row_index1, column_index, data, sheet)
+        
     # print('days', period_dates)
 
-def archive_logger(chromosomes):
+def archive_logger(chromosomes, generation_count):
     time_stamp = datetime.datetime.now()
 
-    file_path = path.join(path.dirname(path.abspath(__file__)), f'../../data/archives/{time_stamp}.xlsx')
+    file_path = path.join(path.dirname(path.abspath(__file__)), f'../../data/archives/{generation_count}.xlsx')
     excel_data_export(chromosomes, file_path)
 
 def excel_data_export(chromosomes, file_path):
@@ -290,8 +304,8 @@ def excel_data_export(chromosomes, file_path):
         data = chromosome['soft_constraint']
         sheet.cell(row=start_row + position + 1, column=start_column + 1).value = data
     #     insert_into_excel(start_row + position, start_column + 1, data, sheet)
-    for chromosome in chromosomes:
-        name = "Chromosome " + str(chromosomes.index(chromosome) + 1)
+    for position, chromosome in enumerate(chromosomes):
+        name = "Chromosome " + str((position)+1)
         book.create_sheet(name)
         sheet2 = book[name]
         export_chromosome(chromosome, sheet2)
@@ -337,10 +351,39 @@ if __name__ == "__main__":
             'prefered_periods':  []
         }
         updated_population = get_fitness_value(population, params)
+        with open('check.json', 'w') as f:
+            json.dump(updated_population, f, indent=1)
         # pprint.pprint(updated_population[0]['soft_constraint'])
         file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
-        excel_data_export(updated_population, file_path)
-        archive_logger(updated_population)
+        # excel_data_export(updated_population, file_path)
+        archive_logger(updated_population,1)
+        selected_parents = complete_nsga(5,updated_population)
+        next_generation = []
+        print('here', selected_parents)
+        for ind, parent in enumerate(selected_parents):
+            print('Selected', selected_parents[ind-1], selected_parents[ind])
+            child1, child2 = chromosomes_cross_over(updated_population[selected_parents[ind-1]], updated_population[selected_parents[ind]], params)
+            if child1 not in next_generation:                 
+                next_generation.append(child1)
+            if child2 not in next_generation:
+                next_generation.append(child2)
+        
+        print(len(next_generation), len(selected_parents))
+        next_generation = get_fitness_value(next_generation, params)
+        for ind, parent in enumerate(selected_parents):
+            next_generation.append(updated_population[selected_parents[ind]])
+        archive_logger(updated_population, 1)
+        archive_logger(next_generation, 2)
+       
+        
+
+       
+        with open('population1.json', 'w') as f:
+            json.dump(next_generation, f, indent=1)
+        # pprint.pprint(complete_nsga(5,updated_population))
+
+        # pprint.pprint(get_chromosome_fitness(updated_population, 0))
+       
         # with open('updated_population.json', 'w') as f:
         #     json.dump(updated_population, f, indent=1)
         # pprint.pprint(non_dorminating_sort(updated_population))

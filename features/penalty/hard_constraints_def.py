@@ -300,6 +300,7 @@ def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms,
     Returns:
         int -- total hard constraints counted in the chromosome
     """
+    # pprint.pprint(chromosome)
     hard_constraints = []
     # todo: call methods to return the data for these variables
     student_groups = get_all_student_ids()

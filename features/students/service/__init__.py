@@ -49,7 +49,6 @@ def get_student_group_exams(std_id):
     exam_list = [list(elem) for elem in exams]
     return exam_list
 
-
 def get_formated_std_data():
     std_groups = get_all_student_ids()
     std_dic = {}

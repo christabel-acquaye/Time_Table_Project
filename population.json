@@ -1,397 +1,30 @@
 [
  [
   {
-   "period_id": 7,
-   "exam_id": "29",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 112
-    }
-   ],
-   "std_with_seats": 112
-  },
-  {
-   "period_id": 9,
-   "exam_id": "30",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 21,
-   "exam_id": "31",
+   "period_id": 2,
+   "exam_id": "10",
    "rooms": [
     {
      "name": "OLD",
      "no_of_stds": 400
     },
     {
-     "name": "EHC_102",
+     "name": "NB_T2",
+     "no_of_stds": 200
+    },
+    {
+     "name": "EHC_101",
      "no_of_stds": 200
     },
     {
      "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_201",
      "no_of_stds": 50
     }
    ],
    "std_with_seats": 850
   },
   {
-   "period_id": 12,
-   "exam_id": "32",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 19,
-   "exam_id": "33",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 38
-    }
-   ],
-   "std_with_seats": 38
-  },
-  {
-   "period_id": 7,
-   "exam_id": "34",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 22
-    }
-   ],
-   "std_with_seats": 22
-  },
-  {
-   "period_id": 9,
-   "exam_id": "35",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 21,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "NB_T4",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 12,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 19,
-   "exam_id": "38",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 182
-    }
-   ],
-   "std_with_seats": 182
-  },
-  {
-   "period_id": 7,
-   "exam_id": "1",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 217
-    }
-   ],
-   "std_with_seats": 217
-  },
-  {
-   "period_id": 9,
-   "exam_id": "2",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 271
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 123
-    }
-   ],
-   "std_with_seats": 394
-  },
-  {
-   "period_id": 21,
-   "exam_id": "3",
-   "rooms": [
-    {
-     "name": "NB_T5",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 97
-    }
-   ],
-   "std_with_seats": 497
-  },
-  {
-   "period_id": 12,
-   "exam_id": "4",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 309
-    }
-   ],
-   "std_with_seats": 309
-  },
-  {
-   "period_id": 19,
-   "exam_id": "5",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 8,
-   "exam_id": "6",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    }
-   ],
-   "std_with_seats": 800
-  },
-  {
-   "period_id": 13,
-   "exam_id": "7",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 107
-    }
-   ],
-   "std_with_seats": 107
-  },
-  {
-   "period_id": 16,
-   "exam_id": "8",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "NB_T5",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 900
-  },
-  {
-   "period_id": 2,
-   "exam_id": "9",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 120
-    }
-   ],
-   "std_with_seats": 120
-  },
-  {
-   "period_id": 8,
-   "exam_id": "24",
-   "rooms": [
-    {
-     "name": "NB_T2",
-     "no_of_stds": 171
-    }
-   ],
-   "std_with_seats": 171
-  },
-  {
-   "period_id": 13,
-   "exam_id": "25",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 16,
-   "exam_id": "26",
-   "rooms": [
-    {
-     "name": "EHC_101",
-     "no_of_stds": 9
-    }
-   ],
-   "std_with_seats": 9
-  },
-  {
-   "period_id": 2,
-   "exam_id": "27",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 55
-    }
-   ],
-   "std_with_seats": 55
-  },
-  {
-   "period_id": 15,
-   "exam_id": "28",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 8,
-   "exam_id": "19",
-   "rooms": [
-    {
-     "name": "NB_T4",
-     "no_of_stds": 32
-    }
-   ],
-   "std_with_seats": 32
-  },
-  {
-   "period_id": 13,
-   "exam_id": "20",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 15
-    }
-   ],
-   "std_with_seats": 15
-  },
-  {
-   "period_id": 16,
-   "exam_id": "21",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 12
-    }
-   ],
-   "std_with_seats": 12
-  },
-  {
-   "period_id": 2,
-   "exam_id": "22",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 225
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 23
-    }
-   ],
-   "std_with_seats": 248
-  },
-  {
-   "period_id": 15,
-   "exam_id": "23",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 87
-    }
-   ],
-   "std_with_seats": 87
-  },
-  {
-   "period_id": 15,
-   "exam_id": "10",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 284
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 166
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 20,
+   "period_id": 6,
    "exam_id": "11",
    "rooms": [
     {
@@ -402,7 +35,7 @@
    "std_with_seats": 100
   },
   {
-   "period_id": 1,
+   "period_id": 15,
    "exam_id": "12",
    "rooms": [
     {
@@ -413,7 +46,7 @@
    "std_with_seats": 31
   },
   {
-   "period_id": 18,
+   "period_id": 14,
    "exam_id": "13",
    "rooms": [
     {
@@ -421,18 +54,18 @@
      "no_of_stds": 400
     },
     {
-     "name": "NB_T5",
+     "name": "NB_T4",
      "no_of_stds": 200
     },
     {
-     "name": "EHC_102",
+     "name": "NB_T5",
      "no_of_stds": 190
     }
    ],
    "std_with_seats": 790
   },
   {
-   "period_id": 11,
+   "period_id": 16,
    "exam_id": "14",
    "rooms": [
     {
@@ -443,7 +76,7 @@
    "std_with_seats": 174
   },
   {
-   "period_id": 14,
+   "period_id": 18,
    "exam_id": "15",
    "rooms": [
     {
@@ -454,7 +87,7 @@
    "std_with_seats": 95
   },
   {
-   "period_id": 6,
+   "period_id": 17,
    "exam_id": "16",
    "rooms": [
     {
@@ -465,7 +98,7 @@
    "std_with_seats": 108
   },
   {
-   "period_id": 3,
+   "period_id": 12,
    "exam_id": "17",
    "rooms": [
     {
@@ -476,7 +109,7 @@
    "std_with_seats": 60
   },
   {
-   "period_id": 10,
+   "period_id": 9,
    "exam_id": "18",
    "rooms": [
     {
@@ -485,134 +118,9 @@
     }
    ],
    "std_with_seats": 6
-  }
- ],
- [
-  {
-   "period_id": 12,
-   "exam_id": "1",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 217
-    }
-   ],
-   "std_with_seats": 217
   },
   {
-   "period_id": 20,
-   "exam_id": "2",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 394
-    }
-   ],
-   "std_with_seats": 394
-  },
-  {
-   "period_id": 8,
-   "exam_id": "3",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 97
-    }
-   ],
-   "std_with_seats": 497
-  },
-  {
-   "period_id": 19,
-   "exam_id": "4",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 309
-    }
-   ],
-   "std_with_seats": 309
-  },
-  {
-   "period_id": 17,
-   "exam_id": "5",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 16,
-   "exam_id": "6",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 200
-    }
-   ],
-   "std_with_seats": 800
-  },
-  {
-   "period_id": 3,
-   "exam_id": "7",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 107
-    }
-   ],
-   "std_with_seats": 107
-  },
-  {
-   "period_id": 14,
-   "exam_id": "8",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 900
-  },
-  {
-   "period_id": 5,
-   "exam_id": "9",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 120
-    }
-   ],
-   "std_with_seats": 120
-  },
-  {
-   "period_id": 12,
+   "period_id": 2,
    "exam_id": "24",
    "rooms": [
     {
@@ -623,40 +131,40 @@
    "std_with_seats": 171
   },
   {
-   "period_id": 20,
+   "period_id": 6,
    "exam_id": "25",
    "rooms": [
     {
-     "name": "NB_T5",
+     "name": "OLD",
      "no_of_stds": 80
     }
    ],
    "std_with_seats": 80
   },
   {
-   "period_id": 8,
+   "period_id": 15,
    "exam_id": "26",
    "rooms": [
     {
-     "name": "NB_T4",
+     "name": "OLD",
      "no_of_stds": 9
     }
    ],
    "std_with_seats": 9
   },
   {
-   "period_id": 19,
+   "period_id": 14,
    "exam_id": "27",
    "rooms": [
     {
-     "name": "NB_T3",
+     "name": "NB_T2",
      "no_of_stds": 55
     }
    ],
    "std_with_seats": 55
   },
   {
-   "period_id": 17,
+   "period_id": 16,
    "exam_id": "28",
    "rooms": [
     {
@@ -667,670 +175,103 @@
    "std_with_seats": 29
   },
   {
-   "period_id": 12,
-   "exam_id": "19",
-   "rooms": [
-    {
-     "name": "NB_T2",
-     "no_of_stds": 32
-    }
-   ],
-   "std_with_seats": 32
-  },
-  {
-   "period_id": 20,
-   "exam_id": "20",
-   "rooms": [
-    {
-     "name": "EHC_102",
-     "no_of_stds": 15
-    }
-   ],
-   "std_with_seats": 15
-  },
-  {
-   "period_id": 8,
-   "exam_id": "21",
-   "rooms": [
-    {
-     "name": "EHC_102",
-     "no_of_stds": 12
-    }
-   ],
-   "std_with_seats": 12
-  },
-  {
-   "period_id": 19,
-   "exam_id": "22",
-   "rooms": [
-    {
-     "name": "NB_T2",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 48
-    }
-   ],
-   "std_with_seats": 248
-  },
-  {
-   "period_id": 17,
-   "exam_id": "23",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 87
-    }
-   ],
-   "std_with_seats": 87
-  },
-  {
-   "period_id": 16,
-   "exam_id": "10",
-   "rooms": [
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T5",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 50
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 3,
-   "exam_id": "11",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 14,
-   "exam_id": "12",
-   "rooms": [
-    {
-     "name": "EHC_201",
-     "no_of_stds": 31
-    }
-   ],
-   "std_with_seats": 31
-  },
-  {
-   "period_id": 5,
-   "exam_id": "13",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 280
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 110
-    }
-   ],
-   "std_with_seats": 790
-  },
-  {
-   "period_id": 13,
-   "exam_id": "14",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 174
-    }
-   ],
-   "std_with_seats": 174
-  },
-  {
-   "period_id": 11,
-   "exam_id": "15",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 95
-    }
-   ],
-   "std_with_seats": 95
-  },
-  {
-   "period_id": 1,
-   "exam_id": "16",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 108
-    }
-   ],
-   "std_with_seats": 108
-  },
-  {
-   "period_id": 18,
-   "exam_id": "17",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 60
-    }
-   ],
-   "std_with_seats": 60
-  },
-  {
-   "period_id": 6,
-   "exam_id": "18",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 16,
+   "period_id": 2,
    "exam_id": "34",
    "rooms": [
     {
-     "name": "NB_T2",
+     "name": "EHC_102",
      "no_of_stds": 22
     }
    ],
    "std_with_seats": 22
   },
   {
-   "period_id": 3,
+   "period_id": 6,
    "exam_id": "35",
    "rooms": [
     {
-     "name": "EHC_101",
+     "name": "OLD",
      "no_of_stds": 29
     }
    ],
    "std_with_seats": 29
   },
   {
+   "period_id": 15,
+   "exam_id": "36",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 19
+    }
+   ],
+   "std_with_seats": 19
+  },
+  {
    "period_id": 14,
    "exam_id": "36",
    "rooms": [
     {
-     "name": "NB_T4",
+     "name": "NB_T1",
      "no_of_stds": 19
     }
    ],
    "std_with_seats": 19
   },
   {
-   "period_id": 5,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "NB_T5",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 13,
+   "period_id": 16,
    "exam_id": "38",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "NB_T3",
      "no_of_stds": 182
     }
    ],
    "std_with_seats": 182
   },
   {
-   "period_id": 13,
-   "exam_id": "29",
-   "rooms": [
-    {
-     "name": "NB_T4",
-     "no_of_stds": 112
-    }
-   ],
-   "std_with_seats": 112
-  },
-  {
-   "period_id": 11,
-   "exam_id": "30",
+   "period_id": 18,
+   "exam_id": "1",
    "rooms": [
     {
      "name": "OLD",
-     "no_of_stds": 100
+     "no_of_stds": 217
     }
    ],
-   "std_with_seats": 100
+   "std_with_seats": 217
   },
   {
-   "period_id": 1,
-   "exam_id": "31",
+   "period_id": 17,
+   "exam_id": "2",
    "rooms": [
     {
      "name": "OLD",
      "no_of_stds": 292
     },
     {
-     "name": "NB_T3",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 158
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 18,
-   "exam_id": "32",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 6,
-   "exam_id": "33",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 38
-    }
-   ],
-   "std_with_seats": 38
-  }
- ],
- [
-  {
-   "period_id": 8,
-   "exam_id": "24",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 171
-    }
-   ],
-   "std_with_seats": 171
-  },
-  {
-   "period_id": 12,
-   "exam_id": "25",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 15,
-   "exam_id": "26",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 9
-    }
-   ],
-   "std_with_seats": 9
-  },
-  {
-   "period_id": 17,
-   "exam_id": "27",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 55
-    }
-   ],
-   "std_with_seats": 55
-  },
-  {
-   "period_id": 19,
-   "exam_id": "28",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 8,
-   "exam_id": "10",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 229
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 21
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 12,
-   "exam_id": "11",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 15,
-   "exam_id": "12",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 31
-    }
-   ],
-   "std_with_seats": 31
-  },
-  {
-   "period_id": 17,
-   "exam_id": "13",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 345
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
      "name": "NB_T5",
-     "no_of_stds": 45
+     "no_of_stds": 102
     }
    ],
-   "std_with_seats": 790
-  },
-  {
-   "period_id": 19,
-   "exam_id": "14",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 174
-    }
-   ],
-   "std_with_seats": 174
-  },
-  {
-   "period_id": 18,
-   "exam_id": "15",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 95
-    }
-   ],
-   "std_with_seats": 95
-  },
-  {
-   "period_id": 1,
-   "exam_id": "16",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 108
-    }
-   ],
-   "std_with_seats": 108
-  },
-  {
-   "period_id": 9,
-   "exam_id": "17",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 60
-    }
-   ],
-   "std_with_seats": 60
-  },
-  {
-   "period_id": 6,
-   "exam_id": "18",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 8,
-   "exam_id": "34",
-   "rooms": [
-    {
-     "name": "NB_T5",
-     "no_of_stds": 22
-    }
-   ],
-   "std_with_seats": 22
+   "std_with_seats": 394
   },
   {
    "period_id": 12,
-   "exam_id": "35",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 15,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 17,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "NB_T4",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 19,
-   "exam_id": "38",
-   "rooms": [
-    {
-     "name": "EHC_101",
-     "no_of_stds": 182
-    }
-   ],
-   "std_with_seats": 182
-  },
-  {
-   "period_id": 18,
-   "exam_id": "29",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 112
-    }
-   ],
-   "std_with_seats": 112
-  },
-  {
-   "period_id": 1,
-   "exam_id": "30",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 9,
-   "exam_id": "31",
+   "exam_id": "3",
    "rooms": [
     {
      "name": "OLD",
      "no_of_stds": 340
     },
     {
-     "name": "EHC_102",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 110
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 6,
-   "exam_id": "32",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 11,
-   "exam_id": "33",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 38
-    }
-   ],
-   "std_with_seats": 38
-  },
-  {
-   "period_id": 18,
-   "exam_id": "1",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
-     "no_of_stds": 17
-    }
-   ],
-   "std_with_seats": 217
-  },
-  {
-   "period_id": 1,
-   "exam_id": "2",
-   "rooms": [
-    {
-     "name": "EHC_102",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 194
-    }
-   ],
-   "std_with_seats": 394
-  },
-  {
-   "period_id": 9,
-   "exam_id": "3",
-   "rooms": [
-    {
      "name": "NB_T5",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 97
+     "no_of_stds": 157
     }
    ],
    "std_with_seats": 497
   },
   {
-   "period_id": 6,
+   "period_id": 9,
    "exam_id": "4",
    "rooms": [
     {
@@ -1341,7 +282,7 @@
    "std_with_seats": 309
   },
   {
-   "period_id": 11,
+   "period_id": 8,
    "exam_id": "5",
    "rooms": [
     {
@@ -1352,7 +293,7 @@
    "std_with_seats": 80
   },
   {
-   "period_id": 21,
+   "period_id": 11,
    "exam_id": "6",
    "rooms": [
     {
@@ -1360,18 +301,18 @@
      "no_of_stds": 400
     },
     {
-     "name": "EHC_102",
+     "name": "NB_T3",
      "no_of_stds": 200
     },
     {
-     "name": "NB_T3",
+     "name": "NB_T5",
      "no_of_stds": 200
     }
    ],
    "std_with_seats": 800
   },
   {
-   "period_id": 10,
+   "period_id": 4,
    "exam_id": "7",
    "rooms": [
     {
@@ -1382,7 +323,7 @@
    "std_with_seats": 107
   },
   {
-   "period_id": 14,
+   "period_id": 5,
    "exam_id": "8",
    "rooms": [
     {
@@ -1390,11 +331,11 @@
      "no_of_stds": 400
     },
     {
-     "name": "NB_T5",
+     "name": "NB_T1",
      "no_of_stds": 200
     },
     {
-     "name": "NB_T3",
+     "name": "NB_T5",
      "no_of_stds": 200
     },
     {
@@ -1405,7 +346,7 @@
    "std_with_seats": 900
   },
   {
-   "period_id": 3,
+   "period_id": 20,
    "exam_id": "9",
    "rooms": [
     {
@@ -1416,7 +357,78 @@
    "std_with_seats": 120
   },
   {
-   "period_id": 11,
+   "period_id": 18,
+   "exam_id": "29",
+   "rooms": [
+    {
+     "name": "EHC_102",
+     "no_of_stds": 112
+    }
+   ],
+   "std_with_seats": 112
+  },
+  {
+   "period_id": 17,
+   "exam_id": "30",
+   "rooms": [
+    {
+     "name": "NB_T3",
+     "no_of_stds": 100
+    }
+   ],
+   "std_with_seats": 100
+  },
+  {
+   "period_id": 12,
+   "exam_id": "31",
+   "rooms": [
+    {
+     "name": "EHC_102",
+     "no_of_stds": 200
+    },
+    {
+     "name": "NB_T2",
+     "no_of_stds": 200
+    },
+    {
+     "name": "EHC_201",
+     "no_of_stds": 200
+    },
+    {
+     "name": "NB_T4",
+     "no_of_stds": 200
+    },
+    {
+     "name": "NB_T3",
+     "no_of_stds": 50
+    }
+   ],
+   "std_with_seats": 850
+  },
+  {
+   "period_id": 9,
+   "exam_id": "32",
+   "rooms": [
+    {
+     "name": "NB_T4",
+     "no_of_stds": 6
+    }
+   ],
+   "std_with_seats": 6
+  },
+  {
+   "period_id": 8,
+   "exam_id": "33",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 38
+    }
+   ],
+   "std_with_seats": 38
+  },
+  {
+   "period_id": 8,
    "exam_id": "19",
    "rooms": [
     {
@@ -1427,7 +439,7 @@
    "std_with_seats": 32
   },
   {
-   "period_id": 21,
+   "period_id": 11,
    "exam_id": "20",
    "rooms": [
     {
@@ -1438,7 +450,7 @@
    "std_with_seats": 15
   },
   {
-   "period_id": 10,
+   "period_id": 4,
    "exam_id": "21",
    "rooms": [
     {
@@ -1449,7 +461,7 @@
    "std_with_seats": 12
   },
   {
-   "period_id": 14,
+   "period_id": 5,
    "exam_id": "22",
    "rooms": [
     {
@@ -1457,14 +469,14 @@
      "no_of_stds": 200
     },
     {
-     "name": "EHC_102",
+     "name": "NB_T3",
      "no_of_stds": 48
     }
    ],
    "std_with_seats": 248
   },
   {
-   "period_id": 3,
+   "period_id": 20,
    "exam_id": "23",
    "rooms": [
     {
@@ -1477,7 +489,7 @@
  ],
  [
   {
-   "period_id": 13,
+   "period_id": 9,
    "exam_id": "1",
    "rooms": [
     {
@@ -1488,7 +500,7 @@
    "std_with_seats": 217
   },
   {
-   "period_id": 20,
+   "period_id": 21,
    "exam_id": "2",
    "rooms": [
     {
@@ -1499,7 +511,7 @@
    "std_with_seats": 394
   },
   {
-   "period_id": 21,
+   "period_id": 7,
    "exam_id": "3",
    "rooms": [
     {
@@ -1507,14 +519,14 @@
      "no_of_stds": 400
     },
     {
-     "name": "NB_T5",
+     "name": "NB_T1",
      "no_of_stds": 97
     }
    ],
    "std_with_seats": 497
   },
   {
-   "period_id": 17,
+   "period_id": 20,
    "exam_id": "4",
    "rooms": [
     {
@@ -1525,7 +537,7 @@
    "std_with_seats": 309
   },
   {
-   "period_id": 16,
+   "period_id": 4,
    "exam_id": "5",
    "rooms": [
     {
@@ -1536,7 +548,7 @@
    "std_with_seats": 80
   },
   {
-   "period_id": 1,
+   "period_id": 19,
    "exam_id": "6",
    "rooms": [
     {
@@ -1544,18 +556,18 @@
      "no_of_stds": 400
     },
     {
-     "name": "NB_T4",
+     "name": "EHC_101",
      "no_of_stds": 200
     },
     {
-     "name": "NB_T3",
+     "name": "EHC_201",
      "no_of_stds": 200
     }
    ],
    "std_with_seats": 800
   },
   {
-   "period_id": 10,
+   "period_id": 12,
    "exam_id": "7",
    "rooms": [
     {
@@ -1566,7 +578,7 @@
    "std_with_seats": 107
   },
   {
-   "period_id": 11,
+   "period_id": 17,
    "exam_id": "8",
    "rooms": [
     {
@@ -1574,7 +586,7 @@
      "no_of_stds": 400
     },
     {
-     "name": "NB_T3",
+     "name": "NB_T2",
      "no_of_stds": 200
     },
     {
@@ -1582,14 +594,14 @@
      "no_of_stds": 200
     },
     {
-     "name": "NB_T5",
+     "name": "EHC_102",
      "no_of_stds": 100
     }
    ],
    "std_with_seats": 900
   },
   {
-   "period_id": 19,
+   "period_id": 1,
    "exam_id": "9",
    "rooms": [
     {
@@ -1600,78 +612,7 @@
    "std_with_seats": 120
   },
   {
-   "period_id": 13,
-   "exam_id": "29",
-   "rooms": [
-    {
-     "name": "NB_T3",
-     "no_of_stds": 112
-    }
-   ],
-   "std_with_seats": 112
-  },
-  {
-   "period_id": 20,
-   "exam_id": "30",
-   "rooms": [
-    {
-     "name": "EHC_102",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 21,
-   "exam_id": "31",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 50
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 17,
-   "exam_id": "32",
-   "rooms": [
-    {
-     "name": "NB_T3",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 16,
-   "exam_id": "33",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 38
-    }
-   ],
-   "std_with_seats": 38
-  },
-  {
-   "period_id": 13,
+   "period_id": 9,
    "exam_id": "19",
    "rooms": [
     {
@@ -1682,7 +623,7 @@
    "std_with_seats": 32
   },
   {
-   "period_id": 20,
+   "period_id": 21,
    "exam_id": "20",
    "rooms": [
     {
@@ -1693,18 +634,18 @@
    "std_with_seats": 15
   },
   {
-   "period_id": 21,
+   "period_id": 7,
    "exam_id": "21",
    "rooms": [
     {
-     "name": "EHC_201",
+     "name": "EHC_102",
      "no_of_stds": 12
     }
    ],
    "std_with_seats": 12
   },
   {
-   "period_id": 17,
+   "period_id": 20,
    "exam_id": "22",
    "rooms": [
     {
@@ -1712,14 +653,14 @@
      "no_of_stds": 200
     },
     {
-     "name": "NB_T1",
+     "name": "NB_T5",
      "no_of_stds": 48
     }
    ],
    "std_with_seats": 248
   },
   {
-   "period_id": 16,
+   "period_id": 4,
    "exam_id": "23",
    "rooms": [
     {
@@ -1730,133 +671,23 @@
    "std_with_seats": 87
   },
   {
-   "period_id": 1,
-   "exam_id": "24",
-   "rooms": [
-    {
-     "name": "NB_T2",
-     "no_of_stds": 171
-    }
-   ],
-   "std_with_seats": 171
-  },
-  {
-   "period_id": 10,
-   "exam_id": "25",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 11,
-   "exam_id": "26",
-   "rooms": [
-    {
-     "name": "EHC_201",
-     "no_of_stds": 9
-    }
-   ],
-   "std_with_seats": 9
-  },
-  {
-   "period_id": 19,
-   "exam_id": "27",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 55
-    }
-   ],
-   "std_with_seats": 55
-  },
-  {
-   "period_id": 9,
-   "exam_id": "28",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 1,
-   "exam_id": "34",
-   "rooms": [
-    {
-     "name": "EHC_101",
-     "no_of_stds": 22
-    }
-   ],
-   "std_with_seats": 22
-  },
-  {
-   "period_id": 10,
-   "exam_id": "35",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 11,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 19,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 9,
-   "exam_id": "38",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 182
-    }
-   ],
-   "std_with_seats": 182
-  },
-  {
    "period_id": 9,
    "exam_id": "10",
    "rooms": [
     {
+     "name": "NB_T3",
+     "no_of_stds": 200
+    },
+    {
+     "name": "NB_T5",
+     "no_of_stds": 200
+    },
+    {
      "name": "NB_T2",
      "no_of_stds": 200
     },
     {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
+     "name": "EHC_201",
      "no_of_stds": 200
     },
     {
@@ -1867,37 +698,41 @@
    "std_with_seats": 850
   },
   {
-   "period_id": 3,
+   "period_id": 21,
    "exam_id": "11",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "EHC_201",
      "no_of_stds": 100
     }
    ],
    "std_with_seats": 100
   },
   {
-   "period_id": 6,
+   "period_id": 7,
    "exam_id": "12",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "NB_T4",
      "no_of_stds": 31
     }
    ],
    "std_with_seats": 31
   },
   {
-   "period_id": 2,
+   "period_id": 20,
    "exam_id": "13",
    "rooms": [
     {
-     "name": "OLD",
-     "no_of_stds": 400
+     "name": "EHC_201",
+     "no_of_stds": 200
     },
     {
-     "name": "NB_T1",
+     "name": "EHC_101",
+     "no_of_stds": 200
+    },
+    {
+     "name": "NB_T2",
      "no_of_stds": 200
     },
     {
@@ -1908,7 +743,7 @@
    "std_with_seats": 790
   },
   {
-   "period_id": 18,
+   "period_id": 4,
    "exam_id": "14",
    "rooms": [
     {
@@ -1919,18 +754,18 @@
    "std_with_seats": 174
   },
   {
-   "period_id": 12,
+   "period_id": 19,
    "exam_id": "15",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "NB_T5",
      "no_of_stds": 95
     }
    ],
    "std_with_seats": 95
   },
   {
-   "period_id": 14,
+   "period_id": 12,
    "exam_id": "16",
    "rooms": [
     {
@@ -1941,18 +776,18 @@
    "std_with_seats": 108
   },
   {
-   "period_id": 7,
+   "period_id": 17,
    "exam_id": "17",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "EHC_201",
      "no_of_stds": 60
     }
    ],
    "std_with_seats": 60
   },
   {
-   "period_id": 5,
+   "period_id": 1,
    "exam_id": "18",
    "rooms": [
     {
@@ -1961,297 +796,59 @@
     }
    ],
    "std_with_seats": 6
-  }
- ],
- [
-  {
-   "period_id": 17,
-   "exam_id": "19",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 32
-    }
-   ],
-   "std_with_seats": 32
   },
   {
    "period_id": 19,
-   "exam_id": "20",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 15
-    }
-   ],
-   "std_with_seats": 15
-  },
-  {
-   "period_id": 9,
-   "exam_id": "21",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 12
-    }
-   ],
-   "std_with_seats": 12
-  },
-  {
-   "period_id": 6,
-   "exam_id": "22",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 248
-    }
-   ],
-   "std_with_seats": 248
-  },
-  {
-   "period_id": 11,
-   "exam_id": "23",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 87
-    }
-   ],
-   "std_with_seats": 87
-  },
-  {
-   "period_id": 17,
-   "exam_id": "34",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 22
-    }
-   ],
-   "std_with_seats": 22
-  },
-  {
-   "period_id": 19,
-   "exam_id": "35",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 29
-    }
-   ],
-   "std_with_seats": 29
-  },
-  {
-   "period_id": 9,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 6,
-   "exam_id": "36",
-   "rooms": [
-    {
-     "name": "EHC_101",
-     "no_of_stds": 19
-    }
-   ],
-   "std_with_seats": 19
-  },
-  {
-   "period_id": 11,
-   "exam_id": "38",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 182
-    }
-   ],
-   "std_with_seats": 182
-  },
-  {
-   "period_id": 17,
    "exam_id": "29",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "EHC_102",
      "no_of_stds": 112
     }
    ],
    "std_with_seats": 112
   },
   {
-   "period_id": 19,
+   "period_id": 12,
    "exam_id": "30",
    "rooms": [
     {
-     "name": "OLD",
+     "name": "NB_T5",
      "no_of_stds": 100
     }
    ],
    "std_with_seats": 100
   },
   {
-   "period_id": 9,
+   "period_id": 17,
    "exam_id": "31",
    "rooms": [
     {
-     "name": "OLD",
-     "no_of_stds": 369
-    },
-    {
-     "name": "NB_T5",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T2",
+     "name": "NB_T1",
      "no_of_stds": 200
     },
     {
      "name": "NB_T3",
-     "no_of_stds": 81
-    }
-   ],
-   "std_with_seats": 850
-  },
-  {
-   "period_id": 6,
-   "exam_id": "32",
-   "rooms": [
-    {
-     "name": "NB_T2",
-     "no_of_stds": 6
-    }
-   ],
-   "std_with_seats": 6
-  },
-  {
-   "period_id": 11,
-   "exam_id": "33",
-   "rooms": [
+     "no_of_stds": 200
+    },
     {
      "name": "NB_T4",
-     "no_of_stds": 38
-    }
-   ],
-   "std_with_seats": 38
-  },
-  {
-   "period_id": 8,
-   "exam_id": "10",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T3",
      "no_of_stds": 200
     },
     {
      "name": "NB_T5",
+     "no_of_stds": 200
+    },
+    {
+     "name": "EHC_EXT_A",
      "no_of_stds": 50
     }
    ],
    "std_with_seats": 850
   },
   {
-   "period_id": 5,
-   "exam_id": "11",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 100
-    }
-   ],
-   "std_with_seats": 100
-  },
-  {
-   "period_id": 7,
-   "exam_id": "12",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 31
-    }
-   ],
-   "std_with_seats": 31
-  },
-  {
-   "period_id": 18,
-   "exam_id": "13",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 400
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 190
-    }
-   ],
-   "std_with_seats": 790
-  },
-  {
-   "period_id": 16,
-   "exam_id": "14",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 174
-    }
-   ],
-   "std_with_seats": 174
-  },
-  {
-   "period_id": 20,
-   "exam_id": "15",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 95
-    }
-   ],
-   "std_with_seats": 95
-  },
-  {
-   "period_id": 4,
-   "exam_id": "16",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 108
-    }
-   ],
-   "std_with_seats": 108
-  },
-  {
-   "period_id": 12,
-   "exam_id": "17",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 60
-    }
-   ],
-   "std_with_seats": 60
-  },
-  {
-   "period_id": 2,
-   "exam_id": "18",
+   "period_id": 1,
+   "exam_id": "32",
    "rooms": [
     {
      "name": "OLD",
@@ -2261,150 +858,22 @@
    "std_with_seats": 6
   },
   {
-   "period_id": 8,
-   "exam_id": "1",
-   "rooms": [
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 17
-    }
-   ],
-   "std_with_seats": 217
-  },
-  {
-   "period_id": 5,
-   "exam_id": "2",
+   "period_id": 6,
+   "exam_id": "33",
    "rooms": [
     {
      "name": "OLD",
-     "no_of_stds": 300
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 94
+     "no_of_stds": 38
     }
    ],
-   "std_with_seats": 394
+   "std_with_seats": 38
   },
   {
-   "period_id": 7,
-   "exam_id": "3",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 369
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 128
-    }
-   ],
-   "std_with_seats": 497
-  },
-  {
-   "period_id": 18,
-   "exam_id": "4",
-   "rooms": [
-    {
-     "name": "NB_T3",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 109
-    }
-   ],
-   "std_with_seats": 309
-  },
-  {
-   "period_id": 16,
-   "exam_id": "5",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 80
-    }
-   ],
-   "std_with_seats": 80
-  },
-  {
-   "period_id": 20,
-   "exam_id": "6",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 305
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T4",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_102",
-     "no_of_stds": 95
-    }
-   ],
-   "std_with_seats": 800
-  },
-  {
-   "period_id": 4,
-   "exam_id": "7",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 107
-    }
-   ],
-   "std_with_seats": 107
-  },
-  {
-   "period_id": 12,
-   "exam_id": "8",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 340
-    },
-    {
-     "name": "EHC_101",
-     "no_of_stds": 200
-    },
-    {
-     "name": "NB_T1",
-     "no_of_stds": 200
-    },
-    {
-     "name": "EHC_201",
-     "no_of_stds": 160
-    }
-   ],
-   "std_with_seats": 900
-  },
-  {
-   "period_id": 2,
-   "exam_id": "9",
-   "rooms": [
-    {
-     "name": "OLD",
-     "no_of_stds": 120
-    }
-   ],
-   "std_with_seats": 120
-  },
-  {
-   "period_id": 8,
+   "period_id": 6,
    "exam_id": "24",
    "rooms": [
     {
-     "name": "NB_T2",
+     "name": "OLD",
      "no_of_stds": 171
     }
    ],
@@ -2415,44 +884,99 @@
    "exam_id": "25",
    "rooms": [
     {
-     "name": "EHC_101",
+     "name": "OLD",
      "no_of_stds": 80
     }
    ],
    "std_with_seats": 80
   },
   {
-   "period_id": 7,
+   "period_id": 13,
    "exam_id": "26",
    "rooms": [
     {
-     "name": "EHC_101",
+     "name": "OLD",
      "no_of_stds": 9
     }
    ],
    "std_with_seats": 9
   },
   {
-   "period_id": 18,
+   "period_id": 15,
    "exam_id": "27",
    "rooms": [
     {
-     "name": "EHC_102",
+     "name": "OLD",
      "no_of_stds": 55
     }
    ],
    "std_with_seats": 55
   },
   {
-   "period_id": 16,
+   "period_id": 3,
    "exam_id": "28",
    "rooms": [
     {
-     "name": "NB_T4",
+     "name": "OLD",
      "no_of_stds": 29
     }
    ],
    "std_with_seats": 29
+  },
+  {
+   "period_id": 6,
+   "exam_id": "34",
+   "rooms": [
+    {
+     "name": "EHC_201",
+     "no_of_stds": 22
+    }
+   ],
+   "std_with_seats": 22
+  },
+  {
+   "period_id": 5,
+   "exam_id": "35",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 29
+    }
+   ],
+   "std_with_seats": 29
+  },
+  {
+   "period_id": 13,
+   "exam_id": "36",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 19
+    }
+   ],
+   "std_with_seats": 19
+  },
+  {
+   "period_id": 15,
+   "exam_id": "36",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 19
+    }
+   ],
+   "std_with_seats": 19
+  },
+  {
+   "period_id": 3,
+   "exam_id": "38",
+   "rooms": [
+    {
+     "name": "OLD",
+     "no_of_stds": 182
+    }
+   ],
+   "std_with_seats": 182
   }
  ]
 ]
