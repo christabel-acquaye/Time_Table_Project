@@ -314,6 +314,25 @@ def excel_data_export(chromosomes, file_path):
     
     book.save(file_path)
 
+def generate_over_generation(updated_population):
+    selected_parents = complete_nsga(50,updated_population)
+    next_generation = []
+    for ind, parent in enumerate(selected_parents):
+        child1, child2 = chromosomes_cross_over(updated_population[selected_parents[ind-1]], 
+                                                updated_population[selected_parents[ind]], params)
+        if child1 not in next_generation:                 
+            next_generation.append(child1)
+        if child2 not in next_generation:
+            next_generation.append(child2)
+        next_generation = get_fitness_value(next_generation, params)
+        for ind, parent in enumerate(selected_parents):
+            next_generation.append(updated_population[selected_parents[ind]])
+        # s
+        return next_generation
+    
+
+        
+            
 
 if __name__ == "__main__":
     from main import app
@@ -355,31 +374,36 @@ if __name__ == "__main__":
             json.dump(updated_population, f, indent=1)
         # pprint.pprint(updated_population[0]['soft_constraint'])
         file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
-        # excel_data_export(updated_population, file_path)
-        archive_logger(updated_population,1)
-        selected_parents = complete_nsga(5,updated_population)
-        next_generation = []
-        print('here', selected_parents)
-        for ind, parent in enumerate(selected_parents):
-            print('Selected', selected_parents[ind-1], selected_parents[ind])
-            child1, child2 = chromosomes_cross_over(updated_population[selected_parents[ind-1]], updated_population[selected_parents[ind]], params)
-            if child1 not in next_generation:                 
-                next_generation.append(child1)
-            if child2 not in next_generation:
-                next_generation.append(child2)
+        excel_data_export(updated_population, file_path)
+        next_gen = updated_population
         
-        print(len(next_generation), len(selected_parents))
-        next_generation = get_fitness_value(next_generation, params)
-        for ind, parent in enumerate(selected_parents):
-            next_generation.append(updated_population[selected_parents[ind]])
-        archive_logger(updated_population, 1)
-        archive_logger(next_generation, 2)
+        for i in range(10):
+            next_gen = generate_over_generation(next_gen)
+            archive_logger(next_gen, (i+1))
+            print('At least it woked')
+        # archive_logger(updated_population,1)
+        # selected_parents = complete_nsga(5,updated_population)
+        # next_generation = []
+        # print('here', selected_parents)
+        # for ind, parent in enumerate(selected_parents):
+        #     print('Selected', selected_parents[ind-1], selected_parents[ind])
+        #     child1, child2 = chromosomes_cross_over(updated_population[selected_parents[ind-1]], updated_population[selected_parents[ind]], params)
+        #     if child1 not in next_generation:                 
+        #         next_generation.append(child1)
+        #     if child2 not in next_generation:
+        #         next_generation.append(child2)
+        
+        # print(len(next_generation), len(selected_parents))
+        # next_generation = get_fitness_value(next_generation, params)
+        # for ind, parent in enumerate(selected_parents):
+        #     next_generation.append(updated_population[selected_parents[ind]])
+        # archive_logger(updated_population, 1)
+        # archive_logger(next_generation, 2)
        
         
 
        
-        with open('population1.json', 'w') as f:
-            json.dump(next_generation, f, indent=1)
+        
         # pprint.pprint(complete_nsga(5,updated_population))
 
         # pprint.pprint(get_chromosome_fitness(updated_population, 0))

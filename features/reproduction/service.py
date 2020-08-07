@@ -24,20 +24,28 @@ def find_gene_index_in_chromosome(exam_id, chromosome_interest):
 
 def chromosomes_cross_over(chromosome_interest1, chromosome_interest2, params):
     # pprint.pprint(chromosome_interest2)
-    chromosome_size = len(chromosome_interest1['data'])
+    chromosome_size = len(chromosome_interest1['data']) 
+    generated_rand_check = []
+    print('chromosome size:', chromosome_size)
     ran1 = 0
-    for id in range(len(chromosome_interest1['data'])):
-        gene = chromosome_interest1['data'][id]
+    i = 0
+    for i in range(len(chromosome_interest1['data'])):
         ran1 = random.randint(0, (chromosome_size - 1))
-        if id == ran1:
-            search_id = gene['exam_id']
-            swap_data = gene
-            ind, fig = find_gene_index_in_chromosome(search_id, chromosome_interest2)
-            temp_period = swap_data['period_id']
-            swap_data['period_id'] = fig['period_id']
-            fig['period_id'] = temp_period
-            chromosome_interest1['data'][id] = fig
-            chromosome_interest2['data'][ind] = swap_data
+        generated_rand_check.append(ran1)
+        # print(ran1,'rand1')
+        for id in range(len(chromosome_interest1['data'])):
+            if id == ran1:
+                gene = chromosome_interest1['data'][id]
+                search_id = gene['exam_id']
+                print(search_id)
+                swap_data = gene
+                ind, fig = find_gene_index_in_chromosome(search_id, chromosome_interest2)
+                # temp_period = swap_data['period_id']
+                # swap_data['period_id'] = fig['period_id']
+                # fig['period_id'] = temp_period
+                chromosome_interest1['data'][id] = fig
+                chromosome_interest2['data'][ind] = swap_data
+        i += 1
             # pprint.pprint(chromosome_interest1)
     # chromosome_interest1 = get_fitness_value(chromosome_interest1['data'], params)
     # chromosome_interest2 = calculate_chromosome_penalties(chromosome_interest2['data'], params)
@@ -221,13 +229,27 @@ if __name__ == "__main__":
     "hard_constraint": 48
     },
             
-    nls = []
-    nls.append(data[0])   
-    print(len(nls)) 
-    nls.append(a)
-    print(len(nls))
-    
-            
+    # nls = []
+    # nls.append(data[0])   
+    # print(len(nls)) 
+    # nls.append(a)
+    # print(len(nls))
+    params = {
+            'threshold': 1000,
+            'closed_periods': [],
+            'reserved_rooms': [],
+            'reserved_periods': [],
+            'previous_chromosome': [],
+            'prefered_rooms': [],  # get prefered rooms,r
+            'prefered_periods':  []
+        }
+           
 
-    # print(chromosomes_cross_over(data[0], data[1]))
-    
+    child1, child2 = chromosomes_cross_over(data[0], data[1], params)
+    # print(child1 == child2)
+    # print(child1 == data[0])
+    # print(child1 == data[1])
+    # pprint.pprint(data[0])
+    pprint.pprint(child1)
+    pprint.pprint(child2)
+    # print(chromosomes_cross_over(data[0], data[1], params))

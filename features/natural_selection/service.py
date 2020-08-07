@@ -81,7 +81,10 @@ def calc_crowding_distance(front_ls, fitness):
             distance[0] = math.inf
             distance[len(front_ls)-1] = math.inf
         else:
-            distance[i] = abs(0 + ((fitness[(i+1)] - fitness[(i-1)])/abs(den)))
+            if den == 0:
+                distance[i] = abs(0 + ((fitness[(i+1)] - fitness[(i-1)])/1))
+            else:
+                distance[i] = abs(0 + ((fitness[(i+1)] - fitness[(i-1)])/abs(den)))
     return distance
     
 def get_crowding_dis_ordered_ls(chromosomes, front_ls):
