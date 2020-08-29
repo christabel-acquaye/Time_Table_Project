@@ -87,9 +87,13 @@ def get_date_difference(date1, date2):
 
 
 def has_same_date(date1, date2):
-    date1 = datetime.datetime.strptime(date1, "%Y-%d-%m %H:%M:%S")
-    date2 = datetime.datetime.strptime(date2, "%Y-%d-%m %H:%M:%S")
-    if date1 == date2:
+    # print('Test  dates', date1, type(date1))
+
+    date1 = datetime.datetime.strptime(date1, '%Y-%d-%m %H:%M:%S') if isinstance(date1, str) else date1
+    # date1 = datetime.datetime.strptime(date1, "%Y-%d-%m %H:%M:%S")
+    # date2 = datetime.datetime.strptime(date2, "%Y-%d-%m %H:%M:%S")
+    date1 = datetime.datetime.strptime(date2, '%Y-%d-%m %H:%M:%S') if isinstance(date2, str) else date2
+    if date1 != date2:
         return True
     return False
 

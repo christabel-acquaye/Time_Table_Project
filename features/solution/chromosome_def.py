@@ -31,7 +31,9 @@ from features.students.service import (get_exam_student_group,
                                        get_std_group_with_exams,
                                        get_student_group_exams,
                                        read_student_groups)
-from features.reproduction.service import chromosomes_cross_over
+from features.reproduction.service import (chromosomes_cross_over,
+                                            get_all_children,
+                                            mutation)
 
 
 def format_rooms(rooms):
@@ -88,7 +90,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 exam['minSize'],
                 rooms_available[period_id]
             )
-
+            available_rooms = sorted(available_rooms, key=lambda k: k['roomName'])
             rooms_available[period_id] = available_rooms
             # print('\trooms allocated', format_rooms(room_allocated))
             # print('\tstudents with seats', sum([ room[1] for room in format_rooms(room_allocated)]) )
@@ -314,21 +316,37 @@ def excel_data_export(chromosomes, file_path):
     
     book.save(file_path)
 
-def generate_over_generation(updated_population):
-    selected_parents = complete_nsga(50,updated_population)
-    next_generation = []
-    for ind, parent in enumerate(selected_parents):
-        child1, child2 = chromosomes_cross_over(updated_population[selected_parents[ind-1]], 
-                                                updated_population[selected_parents[ind]], params)
-        if child1 not in next_generation:                 
-            next_generation.append(child1)
-        if child2 not in next_generation:
-            next_generation.append(child2)
-        next_generation = get_fitness_value(next_generation, params)
-        for ind, parent in enumerate(selected_parents):
-            next_generation.append(updated_population[selected_parents[ind]])
-        # s
-        return next_generation
+def get_selected_parent_data(selected_parents, population):
+    selected_parents_data = []
+    print(selected_parents)
+    for ind, item in enumerate(selected_parents):
+        selected_parents_data.append(population[item])
+    return selected_parents_data
+
+def check_chromosomes_to_be_mutated(best_hard,chromosome):
+    if chromosome['hard_constraint'] >= best_hard:
+        return True
+    else:
+        return False
+
+def generate_over_generation(updated_population, keep, params):
+    best_hard = updated_population[0]['hard_constraint']
+    next_gen = get_all_children(updated_population)
+    next_gen = get_fitness_value(next_gen, params)
+    for child in next_gen:
+        if check_chromosomes_to_be_mutated(best_hard, child):
+            print("mutate me")
+            print('best', best_hard)
+            print('chls', child['hard_constraint'])
+            print('chls_new-hrd', mutation(child, params, best_hard))
+    for ind, parent in enumerate(updated_population):
+        next_gen.append(parent)
+    print('Length of  before populatioon,', len(next_gen))
+    # keep = int(len(next_gen) / 2)
+    selected_parents = complete_nsga(keep, next_gen)
+    selected_parents_data = get_selected_parent_data(selected_parents, next_gen)
+    print('Length of aftr populatioon,', len(selected_parents_data))
+    return selected_parents_data
     
 
         
@@ -376,9 +394,16 @@ if __name__ == "__main__":
         file_path = path.join(path.dirname(path.abspath(__file__)), '../../data/Chromosome_data.xlsx')
         excel_data_export(updated_population, file_path)
         next_gen = updated_population
+
+       
+        # with open('check1.json', 'w') as f:
+        #     json.dump(next_gen, f, indent=1)
+        # print('After adding parents', len(selected_parents))
         
-        for i in range(10):
-            next_gen = generate_over_generation(next_gen)
+
+
+        for i in range(2):
+            next_gen = generate_over_generation(next_gen, population_size, params)
             archive_logger(next_gen, (i+1))
             print('At least it woked')
         # archive_logger(updated_population,1)

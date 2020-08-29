@@ -18,6 +18,7 @@ def get_periods(penalty=None, id=None):
 
 
 def get_period_date(id=None):
+    # print('id', id)
     data = get_periods(id=str(id))
     return data[0]['day']
 

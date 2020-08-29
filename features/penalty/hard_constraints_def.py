@@ -125,7 +125,7 @@ def student_conflict(chromosome, student_groups):
     std_gene = [get_specific_genes(student_group_id, chromosome) for student_group_id in student_groups]
     hard_count = []
     for student_group_chromosome in std_gene:
-        # hard_count.append(more_than_one_exams_per_day(student_group_chromosome))
+        hard_count.append(more_than_one_exams_per_day(student_group_chromosome))
         # hard_count.append(back_to_back_conflict(student_group_chromosome))
         hard_count.append(distance_back_to_back_conflict(student_group_chromosome))
     return sum(hard_count)
@@ -251,19 +251,19 @@ def exam_conflict(student_group_chromosome):
     hard_count = 0
 
     for i in range(len(exam_room_assigned)):
-        if __get_difference(exam_room_assigned[i], len(room_data[i])) <= 0:
+        if __get_difference(exam_room_assigned[i], len(room_data[i])) >= 0:
             hard_count = hard_count
 
-        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 1:
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == -1:
             hard_count += 1
 
-        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 2:
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == -2:
             hard_count += 2
 
-        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == 3:
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) == -3:
             hard_count += 3
 
-        elif __get_difference(exam_room_assigned[i], len(room_data[i])) >= 4:
+        elif __get_difference(exam_room_assigned[i], len(room_data[i])) >= -4:
             hard_count += 4
 
     return hard_count
@@ -306,10 +306,10 @@ def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms,
     student_groups = get_all_student_ids()
     periods = []
     rooms = []
-    hard_constraints.append(student_conflict(chromosome, student_groups))
+    # hard_constraints.append(student_conflict(chromosome, student_groups))
     hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
-    hard_constraints.append(exam_conflict(chromosome))
-    hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
+    # hard_constraints.append(exam_conflict(chromosome))
+    # hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
     # if previous_chromosome:
     #     hard_constraints.append(get_perturbation_penalty(previous_chromosome, chromosome))
     return sum(hard_constraints)

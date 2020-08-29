@@ -1,8 +1,16 @@
 import random
 import pprint
-from features.penalty.hard_constraints_def import get_total_hard_constraints_value
+import datetime
+from features.penalty.hard_constraints_def import get_total_hard_constraints_value, __get_difference,has_duplicates
+from features.exam.service.__init__ import (get_exam_id_from_name,
+                                            get_exam_max_room, 
+                                            get_exam_enrollment 
+                                            )
 from features.penalty.penalty_def import get_total_penalty_value
 from features.penalty.cost_function import get_fitness_value
+from features.periods.service import get_period_date
+from features.students.service import get_all_student_ids,  get_specific_genes
+from features.rooms.service import get_rooms
 
 def find_gene_index_in_chromosome(exam_id, chromosome_interest):
         for ind,  elem in enumerate(chromosome_interest['data']):
@@ -22,11 +30,11 @@ def find_gene_index_in_chromosome(exam_id, chromosome_interest):
 #     return chromosome_interest
         
 
-def chromosomes_cross_over(chromosome_interest1, chromosome_interest2, params):
+def chromosomes_cross_over(chromosome_interest1, chromosome_interest2):
     # pprint.pprint(chromosome_interest2)
     chromosome_size = len(chromosome_interest1['data']) 
     generated_rand_check = []
-    print('chromosome size:', chromosome_size)
+    # print('chromosome size:', chromosome_size)
     ran1 = 0
     i = 0
     for i in range(len(chromosome_interest1['data'])):
@@ -37,7 +45,7 @@ def chromosomes_cross_over(chromosome_interest1, chromosome_interest2, params):
             if id == ran1:
                 gene = chromosome_interest1['data'][id]
                 search_id = gene['exam_id']
-                print(search_id)
+                # print(search_id)
                 swap_data = gene
                 ind, fig = find_gene_index_in_chromosome(search_id, chromosome_interest2)
                 # temp_period = swap_data['period_id']
@@ -46,11 +54,131 @@ def chromosomes_cross_over(chromosome_interest1, chromosome_interest2, params):
                 chromosome_interest1['data'][id] = fig
                 chromosome_interest2['data'][ind] = swap_data
         i += 1
+
+    # if chromosome_interest1['data'] is None:
+    #         print("Child1 doesnt have flesh")
+    # if chromosome_interest2['data'] is None:
+    #         print("Child2 doesnt have flesh")
             # pprint.pprint(chromosome_interest1)
     # chromosome_interest1 = get_fitness_value(chromosome_interest1['data'], params)
     # chromosome_interest2 = calculate_chromosome_penalties(chromosome_interest2['data'], params)
     return chromosome_interest1['data'], chromosome_interest2['data']
 
+
+def get_all_children(parents):
+    children = []
+    for ind, parent in enumerate(parents):
+        for other_ind, other_parent in enumerate(parents[(ind):]):
+            child1, child2 = chromosomes_cross_over(parent, other_parent)
+            if order_chromosome_by_period(child1) == order_chromosome_by_period(child2): 
+                # children.append(child1)
+                continue
+
+            if order_chromosome_by_period(child1) not in order_all(children):
+                children.append(child1)
+            if order_chromosome_by_period(child2) not in order_all(children):
+                children.append(child2)
+            # if (order_chromosome_by_period(child1) == order_chromosome_by_period(parent['data'])) or (order_chromosome_by_period(child1) == order_chromosome_by_period(other_parent['data'])): continue
+            # pprint.pprint(child1)
+            # pprint.pprint(child2)
+            
+    return children
+
+def get_occupied_rooms_for_periods(period_id, chromosome):
+    occupied_rooms = []
+    for gene in chromosome:
+        if gene['period_id'] == period_id:
+            occupied_rooms.append(gene['rooms'])
+
+    occupied_rooms = [item for sublist in occupied_rooms for item in sublist]
+    return occupied_rooms
+
+def order_chromosome_by_period(chromosome):
+    newlist = sorted(chromosome, key=lambda k: k['period_id']) 
+    return newlist
+
+def order_all(chromosomes):
+    
+    new_chromosomes = []
+    for ind, chromosome in enumerate(chromosomes):
+      
+        arranged_chromosome = order_chromosome_by_period(chromosome)
+        new_chromosomes.append(arranged_chromosome)
+
+    return new_chromosomes
+
+def check_uniqueness(generation):
+    unique_gen = []
+    for item in generation:
+        for other_item in generation:
+            if item == other_item: continue
+            if generation[item] == generation[other_item]:
+                continue
+            else: 
+                unique_gen.append(generation[item])
+    return  unique_gen
+
+
+def my_custom_random(all_period_max, exclude):
+    print(exclude)
+    randInt = random.randint(1,all_period_max)
+    return my_custom_random(all_period_max, exclude) if randInt in exclude else randInt 
+
+
+def refined_get_rooms():
+    all_rooms = []
+    for room in get_rooms():
+        room = {
+            'name': room['roomName'],
+            'size': room['size']
+        }
+        all_rooms.append(room)
+    return all_rooms
+
+
+def get_avaliable_rooms_for_period(period_id, chromosome):
+    all_rooms = refined_get_rooms()
+    occupied_rooms = get_occupied_rooms_for_periods(period_id, chromosome)
+
+    available_rooms = [x for x in a if x not in [2, 3, 7]]
+    return available_rooms
+
+def mutation(chromosome, params, best_hard):
+
+    # # More rooms assigned
+    # for gene in chromosome['data']:
+    #     # print(gene['exam_id'])
+    #     max_room_assigned = get_exam_max_room(gene['exam_id'])
+    #     print('max rooms', max_room_assigned, 'spec-room', len(gene['rooms']))
+    #     if len(gene['rooms']) > max_room_assigned:
+    #         print('max rooms', max_room_assigned, 'spec-room', len(gene['rooms']))
+    #         print('enrollment', get_exam_enrollment(gene['exam_id']))
+    #         for room in gene['rooms']:
+    #             print('room', room['no_of_stds'])
+       
+    student_groups = get_all_student_ids()     
+   
+    # two exams for a student group should not have the same period
+    for student_group_id in student_groups:
+        std_exams = get_specific_genes(student_group_id, chromosome['data'])
+        std_exam_ids = list((gene['period_id'] for gene in std_exams))  # get period ids for student exams
+        std_exam_ids.sort()
+        uniq_std_exams = list({v['period_id']:v for v in std_exams}.values())
+        # print(student_groups.index(student_group_id))
+        for id, gene in enumerate(uniq_std_exams):
+            for other_id, other_gene in enumerate(std_exams):
+                if gene['period_id'] == other_gene['period_id']:
+                    if (gene['exam_id'] != other_gene['exam_id']) and (gene['rooms'] != other_gene['rooms']):
+                        ran_period = my_custom_random((len(chromosome['data'])-1), std_exam_ids)
+                        # print(ran_period, 'rand+period')
+                        # gene['period_id'] = 
+    chromosome['hard_constraint'] = get_total_hard_constraints_value(chromosome['data'],
+                                                                params['closed_periods'], params['reserved_rooms'],
+                                                                params['previous_chromosome'])
+            # if chromosome['hard_constraint'] >= best_hard:
+            #     mutation(chromosome, params, best_hard)
+
+    return chromosome['hard_constraint']
 if __name__ == "__main__":
 
     data = [
@@ -80,7 +208,7 @@ if __name__ == "__main__":
         "std_with_seats": 850
     },
     {
-        "period_id": 4,
+        "period_id": 2,
         "exam_id": "D",
         "rooms": [
         {
@@ -114,7 +242,7 @@ if __name__ == "__main__":
    {
     "data": [
     {
-        "period_id": 10,
+        "period_id": 100,
         "exam_id": "A",
         "rooms": [
         {
@@ -137,7 +265,7 @@ if __name__ == "__main__":
         "std_with_seats": 850
     },
     {
-        "period_id": 20,
+        "period_id": 200,
         "exam_id": "B",
         "rooms": [
         {
@@ -146,7 +274,7 @@ if __name__ == "__main__":
         },]
     },
     {
-        "period_id": 30,
+        "period_id": 300,
         "exam_id": "C",
         "rooms": [
         {
@@ -155,7 +283,7 @@ if __name__ == "__main__":
         },]
     },
     {
-        "period_id": 40,
+        "period_id": 400,
         "exam_id": "D",
         "rooms": [
         {
@@ -168,15 +296,11 @@ if __name__ == "__main__":
     "hard_constraint": 10
     },
 
-   
-
-    ]
-    
-    a =  {
+   {
     "data": [
     {
-        "period_id": 20,
-        "exam_id": "20",
+        "period_id": 1000,
+        "exam_id": "A",
         "rooms": [
         {
         "name": "OLD",
@@ -198,8 +322,8 @@ if __name__ == "__main__":
         "std_with_seats": 850
     },
     {
-        "period_id": 20,
-        "exam_id": "30",
+        "period_id": 2000,
+        "exam_id": "B",
         "rooms": [
         {
         "name": "OLD",
@@ -207,8 +331,8 @@ if __name__ == "__main__":
         },]
     },
     {
-        "period_id": 30,
-        "exam_id": "40",
+        "period_id": 3000,
+        "exam_id": "C",
         "rooms": [
         {
         "name": "OLD",
@@ -216,8 +340,8 @@ if __name__ == "__main__":
         },]
     },
     {
-        "period_id": 40,
-        "exam_id": "10",
+        "period_id": 4000,
+        "exam_id": "D",
         "rooms": [
         {
         "name": "OLD",
@@ -225,9 +349,72 @@ if __name__ == "__main__":
         },]
     }
     ],
-    "soft_constraint": 40,
-    "hard_constraint": 48
+    "soft_constraint": 20,
+    "hard_constraint": 10
     },
+
+ {
+    "data": [
+    {
+        "period_id": 10000,
+        "exam_id": "A",
+        "rooms": [
+        {
+        "name": "OLD",
+        "no_of_stds": 400
+        },
+        {
+        "name": "EHC_102",
+        "no_of_stds": 200
+        },
+        {
+        "name": "NB_T3",
+        "no_of_stds": 200
+        },
+        {
+        "name": "NB_T5",
+        "no_of_stds": 50
+        }
+        ],
+        "std_with_seats": 850
+    },
+    {
+        "period_id": 20000,
+        "exam_id": "B",
+        "rooms": [
+        {
+        "name": "OLD",
+        "no_of_stds": 400
+        },]
+    },
+    {
+        "period_id": 30000,
+        "exam_id": "C",
+        "rooms": [
+        {
+        "name": "OLD",
+        "no_of_stds": 400
+        },]
+    },
+    {
+        "period_id": 40000,
+        "exam_id": "D",
+        "rooms": [
+        {
+        "name": "OLD",
+        "no_of_stds": 400
+        },]
+    }
+    ],
+    "soft_constraint": 20,
+    "hard_constraint": 10
+    },
+
+
+   
+
+    ]
+   
             
     # nls = []
     # nls.append(data[0])   
@@ -244,12 +431,18 @@ if __name__ == "__main__":
             'prefered_periods':  []
         }
            
+    children = []
+    # print(type(data))
+    # res = order_all(data)
+    # for item in res:
+    #     pprint.pprint(item)
 
-    child1, child2 = chromosomes_cross_over(data[0], data[1], params)
-    # print(child1 == child2)
-    # print(child1 == data[0])
-    # print(child1 == data[1])
-    # pprint.pprint(data[0])
-    pprint.pprint(child1)
-    pprint.pprint(child2)
-    # print(chromosomes_cross_over(data[0], data[1], params))
+    # print(len(data))
+    # res = get_all_children(data)
+    # print(len(res))
+    # for item in res:
+    #     pprint.pprint(item)
+    print(get_occupied_rooms_for_periods(2, data[0]['data']))
+    # roms = get_rooms()
+    # print(roms)
+    
