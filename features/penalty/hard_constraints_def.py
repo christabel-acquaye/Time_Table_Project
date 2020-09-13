@@ -306,10 +306,10 @@ def get_total_hard_constraints_value(chromosome, closed_periods, reserved_rooms,
     student_groups = get_all_student_ids()
     periods = []
     rooms = []
-    # hard_constraints.append(student_conflict(chromosome, student_groups))
+    hard_constraints.append(student_conflict(chromosome, student_groups))
     hard_constraints.append(period_conflict(chromosome, closed_periods, student_groups))
-    # hard_constraints.append(exam_conflict(chromosome))
-    # hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
+    hard_constraints.append(exam_conflict(chromosome))
+    hard_constraints.append(room_conflict(chromosome, reserved_rooms, student_groups))
     # if previous_chromosome:
     #     hard_constraints.append(get_perturbation_penalty(previous_chromosome, chromosome))
     return sum(hard_constraints)

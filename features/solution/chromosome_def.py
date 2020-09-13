@@ -7,7 +7,7 @@ from os import path
 import openpyxl
 import pandas as pd
 from openpyxl import Workbook, load_workbook
-
+from features.penalty.hard_constraints_def import get_total_hard_constraints_value
 from _shared import NotEnoughRooms
 from features.exam.service import (get_closed_period, get_exam_bound,
                                    get_exam_column, get_exam_id_from_name,
@@ -30,10 +30,12 @@ from features.solution.services import rand_gen
 from features.students.service import (get_exam_student_group,
                                        get_std_group_with_exams,
                                        get_student_group_exams,
-                                       read_student_groups)
+                                       read_student_groups,
+                                       get_all_student_ids,
+                                       get_specific_genes )
 from features.reproduction.service import (chromosomes_cross_over,
                                             get_all_children,
-                                            mutation)
+                                            my_custom_random)
 
 
 def format_rooms(rooms):
@@ -81,7 +83,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
        exams_without_rooms [list] -- exams which size exceeds room availabilty for the particular period
        rooms_available [list] -- rooms available after assignment
     """
-
+    # print('check type,', type(exams), type(rooms_available), type(period_id))
     period_exams = []
     exams_without_rooms = []
     for position, exam in enumerate(exams):
@@ -91,6 +93,7 @@ def fit_exams_in_rooms(exams, rooms_available, period_id):
                 rooms_available[period_id]
             )
             available_rooms = sorted(available_rooms, key=lambda k: k['roomName'])
+            # print('print the periods', period_id)
             rooms_available[period_id] = available_rooms
             # print('\trooms allocated', format_rooms(room_allocated))
             # print('\tstudents with seats', sum([ room[1] for room in format_rooms(room_allocated)]) )
@@ -144,7 +147,9 @@ def generate_chromosome():
     periods = get_periods_with_lengths()
 
     rooms = get_rooms()
+    # print('This is what I want', type(rooms))
     period_rooms = period_room_allocation(periods, rooms)
+    # print('This is what I want', type(period_rooms))
     exam_no_in_period = [0 for x in range(len(periods))]
     # shuffle periods to add randomization
     random.shuffle(periods)
@@ -154,6 +159,7 @@ def generate_chromosome():
 
     for std in student_groups:
         exams = std['exams']
+        # print('hereh', exams)
         exam_periods = []
         current_exam_index = 0
 
@@ -177,7 +183,7 @@ def generate_chromosome():
 
             # print('used period_id: ', period_id)
             exam_periods.append(period_id)
-
+            # print('hereh', type(period_id), period_id )  # print('hereh', type([exams[current_exam_index]]))
             period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
                 [exams[current_exam_index]], period_rooms, period_id
             )
@@ -223,11 +229,50 @@ def checkIfDuplicates_1(listOfElems):
         return True
 
 
-# def a(chromosome):
-#     data = [gene['period_id'] for gene in chromosome]
-#     dates = [get_period_date(period) for period in data]
-#     return checkIfDuplicates_1(dates)
-
+def get_all_assigned_exams_for_a_period(period_id, chromosome):
+    return [gene['exam_id'] for gene in chromosome if gene['period_id'] == period_id]
+    
+def mutation(chromosome, params, best_hard):
+    # print('constraint before', chromosome['hard_constraint'])
+    rooms = get_rooms()
+    student_groups = get_all_student_ids()     
+    periods = get_periods_with_lengths()
+    period_rooms = period_room_allocation(periods, rooms)
+   
+    # two exams for a student group should not have the same period
+    for student_group_id in student_groups:
+        std_exams = get_specific_genes(student_group_id, chromosome['data'])
+        std_exam_ids = list((gene['period_id'] for gene in std_exams))  # get period ids for student exams
+        std_exam_ids.sort()
+        uniq_std_exams = list({v['period_id']:v for v in std_exams}.values())
+        
+        # print(student_groups.index(student_group_id))
+        for id, gene in enumerate(uniq_std_exams):
+            for other_id, other_gene in enumerate(std_exams):
+                if gene['period_id'] == other_gene['period_id']:
+                    if (gene['exam_id'] != other_gene['exam_id']) and (gene['rooms'] != other_gene['rooms']):
+                        ran_period = my_custom_random(21, std_exam_ids)
+                        # print('length nefore ', len(chromosome['data']))
+                        chromosome['data'] = [i for i in chromosome['data'] if not (i['period_id'] == ran_period)]
+                        # print('length after ', len(chromosome['data']))
+                        exams_to_be_assigned_rooms = get_all_assigned_exams_for_a_period(ran_period, chromosome['data'])
+                        
+                        exams_to_be_assigned_rooms.append(gene['exam_id'])
+                        
+                    
+                        exam_for_period = [get_exams(id = exam)[0] for exam in exams_to_be_assigned_rooms]
+                        # print('here', exam_for_period)
+                        period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(exam_for_period, period_rooms, ran_period)
+                        # print(period_exams)
+                        chromosome['data'].extend(period_exams)
+                        # print('length afterwards ', len(chromosome['data']))
+    chromosome['hard_constraint'] = get_total_hard_constraints_value(chromosome['data'],
+                                                                params['closed_periods'], params['reserved_rooms'],
+                                                                params['previous_chromosome'])
+            # if chromosome['hard_constraint'] >= best_hard:
+            #     mutation(chromosome, params, best_hard)
+    print('constraint after', chromosome['hard_constraint'])
+    return chromosome['hard_constraint']
 
 def insert_into_excel(row, column, data, sheet):
     # print(f'row {row} column {column} {data}')
@@ -336,9 +381,9 @@ def generate_over_generation(updated_population, keep, params):
     for child in next_gen:
         if check_chromosomes_to_be_mutated(best_hard, child):
             print("mutate me")
-            print('best', best_hard)
-            print('chls', child['hard_constraint'])
-            print('chls_new-hrd', mutation(child, params, best_hard))
+            # print('best', best_hard)
+            # print('chls', child['hard_constraint'])
+            # print('chls_new-hrd', mutation(child, params, best_hard))
     for ind, parent in enumerate(updated_population):
         next_gen.append(parent)
     print('Length of  before populatioon,', len(next_gen))
@@ -402,7 +447,7 @@ if __name__ == "__main__":
         
 
 
-        for i in range(2):
+        for i in range(10):
             next_gen = generate_over_generation(next_gen, population_size, params)
             archive_logger(next_gen, (i+1))
             print('At least it woked')

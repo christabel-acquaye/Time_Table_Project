@@ -9,7 +9,7 @@ from features.exam.service.__init__ import (get_exam_id_from_name,
 from features.penalty.penalty_def import get_total_penalty_value
 from features.penalty.cost_function import get_fitness_value
 from features.periods.service import get_period_date
-from features.students.service import get_all_student_ids,  get_specific_genes
+
 from features.rooms.service import get_rooms
 
 def find_gene_index_in_chromosome(exam_id, chromosome_interest):
@@ -143,42 +143,7 @@ def get_avaliable_rooms_for_period(period_id, chromosome):
     available_rooms = [x for x in a if x not in [2, 3, 7]]
     return available_rooms
 
-def mutation(chromosome, params, best_hard):
 
-    # # More rooms assigned
-    # for gene in chromosome['data']:
-    #     # print(gene['exam_id'])
-    #     max_room_assigned = get_exam_max_room(gene['exam_id'])
-    #     print('max rooms', max_room_assigned, 'spec-room', len(gene['rooms']))
-    #     if len(gene['rooms']) > max_room_assigned:
-    #         print('max rooms', max_room_assigned, 'spec-room', len(gene['rooms']))
-    #         print('enrollment', get_exam_enrollment(gene['exam_id']))
-    #         for room in gene['rooms']:
-    #             print('room', room['no_of_stds'])
-       
-    student_groups = get_all_student_ids()     
-   
-    # two exams for a student group should not have the same period
-    for student_group_id in student_groups:
-        std_exams = get_specific_genes(student_group_id, chromosome['data'])
-        std_exam_ids = list((gene['period_id'] for gene in std_exams))  # get period ids for student exams
-        std_exam_ids.sort()
-        uniq_std_exams = list({v['period_id']:v for v in std_exams}.values())
-        # print(student_groups.index(student_group_id))
-        for id, gene in enumerate(uniq_std_exams):
-            for other_id, other_gene in enumerate(std_exams):
-                if gene['period_id'] == other_gene['period_id']:
-                    if (gene['exam_id'] != other_gene['exam_id']) and (gene['rooms'] != other_gene['rooms']):
-                        ran_period = my_custom_random((len(chromosome['data'])-1), std_exam_ids)
-                        # print(ran_period, 'rand+period')
-                        # gene['period_id'] = 
-    chromosome['hard_constraint'] = get_total_hard_constraints_value(chromosome['data'],
-                                                                params['closed_periods'], params['reserved_rooms'],
-                                                                params['previous_chromosome'])
-            # if chromosome['hard_constraint'] >= best_hard:
-            #     mutation(chromosome, params, best_hard)
-
-    return chromosome['hard_constraint']
 if __name__ == "__main__":
 
     data = [

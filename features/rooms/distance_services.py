@@ -4,7 +4,7 @@ from os import path
 import numpy as np
 import openpyxl
 import pandas as pd
-
+from .service import get_rooms
 
 def read_distances():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../../data')
@@ -44,14 +44,15 @@ def find_average_distance(rooms):
         distances.append(get_distance_between_rooms(rooms[i-1], rooms[i])[0])
     return (sum(distances[1:])/len(rooms))
 
-
 if __name__ == "__main__":
 
     # ls = read_distances()
-    # roomA = 'NB'
-    # roomB = 'OLD'
+    roomA = 'OLD'
+    roomB = 'EHC_EXT_A'
 
     # distnce = get_distance_between_rooms(roomA, roomB)
+    ls = get_rooms()
+    print(ls)
     # actual_distance = distnce[0]
     # print(actual_distance)
     # if 0.1 <= actual_distance <= 1.0:
@@ -61,9 +62,9 @@ if __name__ == "__main__":
     # elif 2.1 <= actual_distance <= 5.0:
     #     print(7)
 
-    roomA = ['EHC_101', 'NB_232', 'OLD_21', 'EHC_212', 'EHC_212', 'EHC_232', 'NB_232']
-    roomB = ['NB_232', 'EHC_212', 'EHC_232', 'NB_232']
-    pprint.pprint(get_distance_between_rooms(roomA[0], roomA[1]))
+    # roomA = ['EHC_101', 'NB_232', 'OLD_21', 'EHC_212', 'EHC_212', 'EHC_232', 'NB_232']
+    # roomB = ['NB_232', 'EHC_212', 'EHC_232', 'NB_232']
+    # pprint.pprint((get_distance_between_rooms(roomA, roomB))[0])
     # print(len(roomA))
     # print(find_average_distance(roomA))
-    print(find_average_distance(roomB))
+    # print(find_average_distance(roomB))
