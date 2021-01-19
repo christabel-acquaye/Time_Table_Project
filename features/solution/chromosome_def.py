@@ -143,13 +143,13 @@ def generate_chromosome():
     #  Get exams ordered in descending order of enrollment size
     student_groups = get_std_group_with_exams()  # [ {'student_id: 1, exams: []},{'student_id: 1, exams: []},  ]
     random.shuffle(student_groups)
-
+    # Gets all available periods 
     periods = get_periods_with_lengths()
-
+    # Gets rooms available for exams period
     rooms = get_rooms()
-    # print('This is what I want', type(rooms))
+    # Assigns shuffled rooms to available periods.
     period_rooms = period_room_allocation(periods, rooms)
-    # print('This is what I want', type(period_rooms))
+    
     exam_no_in_period = [0 for x in range(len(periods))]
     # shuffle periods to add randomization
     random.shuffle(periods)
@@ -183,7 +183,7 @@ def generate_chromosome():
 
             # print('used period_id: ', period_id)
             exam_periods.append(period_id)
-            # print('hereh', type(period_id), period_id )  # print('hereh', type([exams[current_exam_index]]))
+            
             period_exams, exams_without_rooms, period_rooms = fit_exams_in_rooms(
                 [exams[current_exam_index]], period_rooms, period_id
             )
@@ -400,6 +400,7 @@ def generate_over_generation(updated_population, keep, params):
 if __name__ == "__main__":
     from main import app
     with app.app_context():
+        # Should be an even integer 
         population_size = int(input('Population Size: \t'))
         population = generate_population(population_size)
         with open('population.json', 'w') as f:

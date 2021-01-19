@@ -167,7 +167,7 @@ def run_prepared_query(cur: Cursor, prepared_query: str, params=None, dim: Union
     else:
         cur.execute(prepared_query, params)
 
-    logger.debug(f'[SQL] {cur._last_executed.decode("utf-8")}')
+    # logger.debug(f'[SQL] {cur._last_executed.decode("utf-8")}')
 
     return cur.fetchall()
 
