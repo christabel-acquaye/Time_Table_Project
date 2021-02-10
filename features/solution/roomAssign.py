@@ -95,7 +95,7 @@ def room_compute(current_student_size, room_data, room_allocated=None):
 
 def period_room_allocation(periods, rooms):
     """Function that returns an assignment of rooms available for a list of period
-        For every period, it shows a list of available rooms after eliminating reserved rooms.
+        
 
     Arguments:
         periods [list] -- students enrolled for an exam

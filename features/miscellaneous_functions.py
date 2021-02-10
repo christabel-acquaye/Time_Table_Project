@@ -12,8 +12,8 @@ from openpyxl import Workbook, load_workbook
 def read_input():
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    input_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='inputs')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    input_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='inputs')
 
     output_dic = {}
     for data in input_data.to_dict('record'):

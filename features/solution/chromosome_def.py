@@ -442,8 +442,8 @@ if __name__ == "__main__":
         next_gen = updated_population
 
        
-        # with open('check1.json', 'w') as f:
-        #     json.dump(next_gen, f, indent=1)
+        with open('check1.json', 'w') as f:
+            json.dump(next_gen, f, indent=1)
         # print('After adding parents', len(selected_parents))
         
 

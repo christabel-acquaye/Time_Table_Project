@@ -25,8 +25,8 @@ def read_exam(insert=False):
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    exam_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='exams')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    exam_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='exams')
 
     normalized_data = []
 
@@ -36,7 +36,7 @@ def read_exam(insert=False):
             'length': data['Length'],
             'alt': data['Alt_Seating'],
             'minSize': data['MinSize'],
-            'maxRooms': data['MaxRooms'],
+            'maxRooms': data['MaxRoom'],
             'average': data['Average'],
             'examCode': data['ExamCode']
         }
@@ -53,8 +53,8 @@ def read_room(insert=False):
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    room_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='rooms')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    room_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='rooms')
 
     normalized_data = []
     for data in room_data.to_dict('record'):
@@ -105,8 +105,8 @@ def read_student():
     '''
 
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    student_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='students')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    student_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='students')
 
     student_group = []
     for data in student_data.to_dict('record'):
@@ -129,8 +129,8 @@ def read_student():
 
 def read_room_preference():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    room_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='room_preference')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    room_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='room_preference')
     room_preference = []
     for data in room_data.to_dict('record'):
         item = {
@@ -144,8 +144,8 @@ def read_room_preference():
 
 def read_precedence():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    precedence_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='precedence')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    precedence_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='precedence')
     normalized_data = []
     for data in precedence_data.to_dict('record'):
         item = {
@@ -159,8 +159,8 @@ def read_precedence():
 
 def read_period_preference():
     file_path = path.join(path.dirname(path.abspath(__file__)), '../data')
-    book = openpyxl.load_workbook(file_path + '/exam_input_data_test_01.xlsx')
-    period_preference_data = pd.read_excel(file_path + '/exam_input_data_test_01.xlsx', sheet_name='period_preference')
+    book = openpyxl.load_workbook(file_path + '/First_Year_Updated.xlsx')
+    period_preference_data = pd.read_excel(file_path + '/First_Year_Updated.xlsx', sheet_name='period_preference')
     normalized_data = []
     for data in period_preference_data.to_dict('record'):
         item = {
